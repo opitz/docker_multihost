@@ -5,27 +5,17 @@
 
 echo v.2.3
 # v.2.1 - added hostmane to container
-# v.2.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
-# v.2.3 - now using setup details  to make changes easier
-# v.2.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost sommand script
+# v.2.2 - now removing all other multihost container and serving php5.6 over 80 / 443
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
 # setup details - most likely to be edited for a new installation
-#sites_enabled_path='/home/opitz/workbench/vhosts/sites-enabled'
-#www_path=/home/opitz/workbench
-#moodledata_path=/home/opitz/workbench/vhosts/moodledata
-#filedir_path=/media/opitz/moodledata/filedir
-#xchange_path=/home/opitz/workbench/xchange
-#db_host_ip=161.23.44.17
-
-# check for the config file and get the settings
-if [ ! -f /etc/multihost.conf ]
-        then
-        echo No configuration file found at /etc/multihost.conf file found - aborting!
-        exit 1
-fi
-. /etc/multihost.conf
+sites_enabled_path='/home/opitz/workbench/vhosts/sites-enabled'
+www_path=/home/opitz/workbench
+moodledata_path=/home/opitz/workbench/vhosts/moodledata
+filedir_path=/media/opitz/moodledata/filedir
+xchange_path=/home/opitz/workbench/xchange
+db_host_ip=161.23.44.17
 
 while getopts ":p:o:" x; do
     case "${x}" in
@@ -80,7 +70,6 @@ if [ "${o}" == "u" ]
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} service apache2 restart
-	echo "docker exec ${servername} service apache2 restart">/usr/sbin/reboot_multihost
 else
 	os=centos7_php${php_v}_httpd
 	conf_path=/etc/httpd/sites-enabled
@@ -101,8 +90,7 @@ else
 		-v ${xchange_path}:/xchange \
 		--add-host db_host:${db_host_ip} \
 		${os}
-	docker exec ${servername} systemctl restart httpd
-	echo "docker exec ${servername} systemctl restart httpd">/usr/sbin/reboot_multihost
+	docker exec ${servername} systemctl start httpd
 fi
 
 echo now running ${servername}
