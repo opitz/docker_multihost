@@ -10,11 +10,11 @@ echo v.2.3
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
 # setup details - most likely to be edited for a new installation
-sites_enabled_path='/home/opitz/workbench/vhosts/sites-enabled'
-www_path=/home/opitz/workbench
-moodledata_path=/home/opitz/workbench/vhosts/moodledata
-filedir_path=/media/opitz/moodledata/filedir
-xchange_path=/home/opitz/workbench/xchange
+sites_enabled_path='/var/sites-enabled'
+www_path=/var/www
+moodledata_path=/var/moodledata
+filedir_path=/filedir_alt
+xchange_path=/var/xchange
 db_host_ip=161.23.44.17
 
 while getopts ":p:o:" x; do
