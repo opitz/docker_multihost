@@ -29,6 +29,7 @@ Additinally it will create 3 new commands
 run_multihost
 -------------
 located at: /usr/sbin/
+
 To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/sbin/run_multihost) and needs to be executable
 
 You can run a Docker container  with one of the following uses:
@@ -48,11 +49,13 @@ This script will also update the /usr/sbin/reboot_multihost command according to
 reboot_multihost
 ----------------
 located at: /usr/sbin
+
 This command allows to reboot the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
 deploy_vhost <servername>
 -------------------------
 located at: /usr/sbin
+
 With this command a new VHOST may be added to the multihost server
 
 The servername must be unique and in the webroot of the multihost server needs to be a folder with the same name.
@@ -61,6 +64,7 @@ When the server has been deplyed you will need to cange your local /etc/hosts fi
 multihost.config
 ----------------
 located at: /etc/multihost.conf
+
 This file contains all settings for the multihost and needs to be configured according to the situation
 
 
