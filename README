@@ -1,4 +1,4 @@
-This repository containes the Dockerfiles to create the following Docker images
+This repository contains the Dockerfiles to create the following Docker images
  * centos7_php7_httpd
  * centos7_php56_httpd
  * ubuntu_php7_apache2
