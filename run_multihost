@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+# script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
+# m.opitz@qmul.ac.uk | 2017-11-16
+
+echo v.2.3
+# v.2.1 - added hostmane to container
+# v.2.2 - now removing all other multihost container and serving php5.6 over 80 / 443
+
+usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
+
+# setup details - most likely to be edited for a new installation
+sites_enabled_path='/home/opitz/workbench/vhosts/sites-enabled'
+www_path=/home/opitz/workbench
+moodledata_path=/home/opitz/workbench/vhosts/moodledata
+filedir_path=/media/opitz/moodledata/filedir
+xchange_path=/home/opitz/workbench/xchange
+db_host_ip=161.23.44.17
+
+while getopts ":p:o:" x; do
+    case "${x}" in
+        o)
+            o=${OPTARG}
+            ;;
+        p)
+            p=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ "${p}" == "5" ]
+	then
+	php_v=56
+	port=80
+	ssl_port=443
+else
+	php_v=7
+	port=80
+	ssl_port=443
+fi
+
+# remove any exsiting multihost container, running or not
+docker rm -f multihost_centos7_php7_httpd >/dev/null 2>/dev/null
+docker rm -f multihost_centos7_php56_httpd >/dev/null 2>/dev/null
+docker rm -f multihost_ubuntu_php7_apache2 >/dev/null 2>/dev/null
+docker rm -f multihost_ubuntu_php56_apache2 >/dev/null 2>/dev/null
+
+
+if [ "${o}" == "u" ]
+	then
+	os=ubuntu_php${php_v}_apache2
+	conf_path=/etc/apache2/sites-enabled
+	servername=multihost_${os}
+
+#	docker rm -f ${servername} >/dev/null 2>/dev/null
+	docker run -itd \
+		--name ${servername} \
+		-h ${servername} \
+		-p ${port}:80 \
+		-p ${ssl_port}:443 \
+		-v ${sites_enabled_path}:${conf_path} \
+		-v ${www_path}:/var/www \
+		-v ${moodledata_path}:/var/moodledata \
+		-v ${filedir_path}:/filedir \
+		-v ${xchange_path}:/xchange \
+		--add-host db_host:${db_host_ip} \
+		${os}
+	docker exec ${servername} service apache2 restart
+else
+	os=centos7_php${php_v}_httpd
+	conf_path=/etc/httpd/sites-enabled
+	servername=multihost_${os}
+
+#	docker rm -f ${servername} >/dev/null 2>/dev/null
+	docker run -itd \
+		--privileged=true \
+		--name ${servername} \
+		-h ${servername} \
+		-p ${port}:80 \
+		-p ${ssl_port}:443 \
+		-v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+		-v ${sites_enabled_path}:${conf_path} \
+		-v ${www_path}:/var/www \
+		-v ${moodledata_path}:/var/moodledata \
+		-v ${filedir_path}:/filedir \
+		-v ${xchange_path}:/xchange \
+		--add-host db_host:${db_host_ip} \
+		${os}
+	docker exec ${servername} systemctl start httpd
+fi
+
+echo now running ${servername}
