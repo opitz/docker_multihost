@@ -19,6 +19,7 @@ build_all.sh
 This script will build all Docker images and will prepare the Docker host for running the multihost.
 It will install the basic config file into
  * /etc/multihost.conf
+
 The script will then automatically open and editor and ask to update the settings in this file as this is needed to complete the setup.
 
 Additinally it will create 3 new commands
