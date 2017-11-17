@@ -7,17 +7,9 @@ echo v.2.3
 # v.2.1 - added hostmane to container
 # v.2.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.2.3 - now using setup details  to make changes easier
-# v.2.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost sommand script
+# v.2.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost command script
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
-
-# setup details - most likely to be edited for a new installation
-#sites_enabled_path='/home/opitz/workbench/vhosts/sites-enabled'
-#www_path=/home/opitz/workbench
-#moodledata_path=/home/opitz/workbench/vhosts/moodledata
-#filedir_path=/media/opitz/moodledata/filedir
-#xchange_path=/home/opitz/workbench/xchange
-#db_host_ip=161.23.44.17
 
 # check for the config file and get the settings
 if [ ! -f /etc/multihost.conf ]

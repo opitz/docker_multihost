@@ -61,6 +61,10 @@ With this command a new VHOST may be added to the multihost server
 The servername must be unique and in the webroot of the multihost server needs to be a folder with the same name.
 When the server has been deplyed you will need to cange your local /etc/hosts file accordingly to access the VHOST.
 
+default.configuration
+---------------------
+This file needs to be placed inside the 'sites-enabled' repository in order for the 'deploy_vhost' command to work. It contains the default configuration for each new vhost and needs to have the name 'default.configuration'.
+
 multihost.config
 ----------------
 located at: /etc/multihost.conf
