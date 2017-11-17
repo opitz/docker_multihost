@@ -3,11 +3,12 @@
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
 # m.opitz@qmul.ac.uk | 2017-11-16
 
-echo v.2.3
+echo v.2.5
 # v.2.1 - added hostmane to container
 # v.2.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.2.3 - now using setup details  to make changes easier
 # v.2.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost command script
+# v.2.5 - renamed reboot_multihost to restart_multihost
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -72,7 +73,7 @@ if [ "${o}" == "u" ]
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} service apache2 restart
-	echo "docker exec ${servername} service apache2 restart">/usr/sbin/reboot_multihost
+	echo "docker exec ${servername} service apache2 restart">/usr/sbin/restart_multihost
 else
 	os=centos7_php${php_v}_httpd
 	conf_path=/etc/httpd/sites-enabled
@@ -94,7 +95,7 @@ else
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} systemctl restart httpd
-	echo "docker exec ${servername} systemctl restart httpd">/usr/sbin/reboot_multihost
+	echo "docker exec ${servername} systemctl restart httpd">/usr/sbin/restart_multihost
 fi
 
 echo now running ${servername}

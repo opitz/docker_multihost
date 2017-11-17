@@ -24,7 +24,7 @@ The script will then automatically open and editor and ask to update the setting
 
 Additinally it will create 3 new commands
  * run_multihost - run or restart a multihost instance
- * reboot_multihost - reboot the Apache2/httpd server inside the Docker container to allow changes in configuration
+ * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
 
 run_multihost
@@ -45,13 +45,13 @@ You will need to adopt the settings to the host repositories to the situation on
  * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
  * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker comntainers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
 
-This script will also update the /usr/sbin/reboot_multihost command according to the selected container
+This script will also create/update the /usr/sbin/restart_multihost command (see below) according to the selected container
 
-reboot_multihost
+restart_multihost
 ----------------
 located at: /usr/sbin
 
-This command allows to reboot the Apache2/httpd server inside the Docker container so to reload changes in config files.
+This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
 deploy_vhost <servername>
 -------------------------
@@ -64,8 +64,7 @@ When the server has been deplyed you will need to cange your local /etc/hosts fi
 
 default.configuration
 ---------------------
-
-When running 'build_all.sh' this file will automatically be placed inside the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information.
+When running 'build_all.sh' this file will automatically be placed inside the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information during the initial build using build_all.sh.
 
 It is needed in order for the 'deploy_vhost' command to work. It contains the default configuration for each new vhost and needs to have the name 'default.configuration'.
 
@@ -73,6 +72,8 @@ multihost.config
 ----------------
 located at: /etc/multihost.conf
 
-This file contains all settings for the multihost and needs to be configured according to the situation
+This file contains all user defined settings for the multihost.
+
+It is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
 
