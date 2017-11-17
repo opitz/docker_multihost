@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-echo 'multihost builder v.1.2'
+echo 'multihost builder v.1.3'
 docker build -t centos7_php7_httpd centos7_php7_httpd
 docker build -t centos7_php56_httpd centos7_php56_httpd
 docker build -t ubuntu_php7_apache2 ubuntu_php7_apache2
@@ -22,6 +22,7 @@ echo '--------------------------------------------------------'
 echo "A '/etc/multihost.conf' file has been placed and needs to be configured in order to finish the inital setup."
 echo "Please press any key to open that file with an editor, make the necessay changes and save them."
 echo "The setup will continue after you have closed the editor."
+read -n 1 -s
 sudo nano /etc/multihost.conf
 
 # check for the config file and get the settings
