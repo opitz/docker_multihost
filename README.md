@@ -19,7 +19,7 @@ build_all.sh
 This script will build all Docker images and will prepare the Docker host for running the multihost.
 It will install the basic config file into
  * /etc/multihost.conf
-This will have to be changed according to your setup.
+The script will then automatically open and editor and ask to update the settings in this file as this is needed to complete the setup.
 
 Additinally it will create 3 new commands
  * run_multihost - run or restart a multihost instance
@@ -63,7 +63,10 @@ When the server has been deplyed you will need to cange your local /etc/hosts fi
 
 default.configuration
 ---------------------
-This file needs to be placed inside the 'sites-enabled' repository in order for the 'deploy_vhost' command to work. It contains the default configuration for each new vhost and needs to have the name 'default.configuration'.
+
+When running 'build_all.sh' this file will automatically be placed inside the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information.
+
+It is needed in order for the 'deploy_vhost' command to work. It contains the default configuration for each new vhost and needs to have the name 'default.configuration'.
 
 multihost.config
 ----------------
