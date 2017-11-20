@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # script to deploy a new VHOST to multihost
-# m.opitz@qmul.ac.uk | 2017-11-17
+# m.opitz@qmul.ac.uk | 2017-11-20
 
-echo v.1.1
+echo v.1.2
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
 
@@ -51,7 +51,7 @@ mkdir ${moodledata_path}/${servername}
 chmod -R 777 ${moodledata_path}/${servername}
 ln -s ${filedir_path} ${moodledata_path}/${servername}/filedir
 
-reboot_multihost
+restart_multihost
 
 echo "VHOST ${servername} configured and activated - please add ${servername} to your local /etc/hosts file"
 
