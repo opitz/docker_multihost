@@ -29,9 +29,9 @@ Additinally it will create 3 new commands
 
 run_multihost
 -------------
-located at: /usr/sbin/
+located at: /usr/local/bin/
 
-To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/sbin/run_multihost) and needs to be executable
+To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable
 
 You can run a Docker container  with one of the following uses:
  * run_multihost 		= centos7_php7_httpd (default)
@@ -45,17 +45,17 @@ You will need to adopt the settings to the host repositories to the situation on
  * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
  * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker comntainers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
 
-This script will also create/update the /usr/sbin/restart_multihost command (see below) according to the selected container
+This script will also create/update the /usr/local/bin/restart_multihost command (see below) according to the selected container
 
 restart_multihost
 ----------------
-located at: /usr/sbin
+located at: /usr/local/bin
 
 This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
 deploy_vhost <servername>
 -------------------------
-located at: /usr/sbin
+located at: /usr/local/bin
 
 With this command a new VHOST may be added to the multihost server
 

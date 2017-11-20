@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-echo 'multihost builder v.1.5'
+echo 'multihost builder v.1.6'
 docker build -t centos7_php7_httpd centos7_php7_httpd 
 docker build -t centos7_php56_httpd centos7_php56_httpd
 docker build -t ubuntu_php7_apache2 ubuntu_php7_apache2
 docker build -t ubuntu_php56_apache2 ubuntu_php56_apache2
 
-sudo cp run_multihost /usr/sbin/run_multihost
-sudo chmod  777 /usr/sbin/run_multihost
+sudo cp run_multihost /usr/local/bin/run_multihost
+sudo chmod  777 /usr/local/bin/run_multihost
 
-sudo touch /usr/sbin/restart_multihost
-sudo chmod 777 /usr/sbin/restart_multihost
+sudo touch /usr/local/bin/restart_multihost
+sudo chmod 777 /usr/local/bin/restart_multihost
 
-sudo cp deploy_vhost /usr/sbin/deploy_vhost
-sudo chmod  777 /usr/sbin/deploy_vhost
+sudo cp deploy_vhost /usr/local/bin/deploy_vhost
+sudo chmod  777 /usr/local/bin/deploy_vhost
 
 sudo cp multihost.conf /etc/multihost.conf
 sudo chmod 777 /etc/multihost.conf
