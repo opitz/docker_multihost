@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 # script to (re-)install all scripts/commands for multihost
 echo 'install multihost commands v.1.0'
 
