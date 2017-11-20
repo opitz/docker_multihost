@@ -25,7 +25,7 @@ else
 	sudo cp deploy_vhost /usr/local/bin/deploy_vhost
 	sudo chmod  777 /usr/local/bin/deploy_vhost
 fi
-echo "---------------------------"
+echo "--------------------------------"
 echo Done!
 echo ' '
 
