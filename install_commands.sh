@@ -1,31 +1,68 @@
 #!/usr/bin/env bash
 # script to (re-)install all scripts/commands for multihost
-echo 'install multihost commands v.1.0'
-
-if [ ! -f run_multihost ]
-	then
-	echo "Could not find 'run_multihost' command - skipping!"
-else
-	sudo cp run_multihost /usr/local/bin/run_multihost
-	sudo chmod  777 /usr/local/bin/run_multihost
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
 fi
 
-if [ ! -f restart_multihost ]
-        then
-        echo "Could not find 'restart_multihost' command - skipping!"
-else
-	sudo cp restart_multihost /usr/local/bin/restart_multihost
-	sudo chmod 777 /usr/local/bin/restart_multihost
-fi
+echo ' '
+echo 'install multihost commands v.2.1'
+echo '--------------------------------------------------------'
+usage() {
+	if [ $1 ]
+		then
+		echo "ERROR: $1";
+	fi
+	echo "Usage: $0 <command_name>" 1>&2;
+	exit 1;
+}
 
-if [ ! -f deploy_vhost ]
-        then
-        echo "Could not find 'deploy_host' command - skipping!"
-else
-	sudo cp deploy_vhost /usr/local/bin/deploy_vhost
-	sudo chmod  777 /usr/local/bin/deploy_vhost
-fi
-echo "--------------------------------"
+# 	check for the updated config file and read the settings 
+	if [ ! -f /etc/multihost.conf ]
+		then
+		echo "No configuration file found at /etc/multihost.conf - aborting!"
+		exit 1
+	fi
+	. /etc/multihost.conf
+
+install_command() {
+
+
+	if [ ! $1 ]
+		then
+		usage 'no command given - aborting!'
+	fi
+    if [ $2 ] 
+            then 
+            command_path=$2
+    fi
+
+	if [ ! -f $1 ]
+        	then
+		echo "Could not find command file '$1' - skipping!"
+	else
+		if [ -f $command_path/$1 ]
+			then
+			update=1
+		else
+			update=0
+		fi
+
+    	sudo cp $1 $command_path/$1
+    	sudo chmod  777 $command_path/$1
+		if [ $update -eq 1 ]
+			then
+			echo "--> command '$1' has been updated in $command_path/."
+		else
+			echo "--> command '$1' has been installed into $command_path/."
+		fi
+	fi
+}
+
+install_command run_multihost
+install_command restart_multihost
+install_command deploy_vhost
+
 echo Done!
 echo ' '
 
