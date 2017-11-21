@@ -22,15 +22,21 @@ This script will build all Docker images and will prepare the Docker host for ru
 It will install the basic config file into
  * /etc/multihost.conf
 
-The script will then automatically open and editor and ask to update the settings in this file as this is needed to complete the setup.
+The script will wait for any input and then automatically open an editor and ask to update the settings in this file as this is needed to complete the setup.
 
-It will then call the 'install_commands.sh' command file (see below) to finish the installation.
+You will need to adopt the settings to these repositories on the <b>host</b> machine according to your setup:
+ * sites_enabled_path	: path to the folder 'sites-enabled' that contains the server .config files which will be used by apache2/httpd in the Docker container
+ * www_path		: path to the general document root for the apache2/httpd server - it will comtain subdirectories that should match the .config files in sites-enabled
+ * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
+ * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker comntainers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
+
+After the setting have been changed/confirmed the installation will finish by calling the 'install_commands.sh' command file (see below).
 
 install_commands.sh
 -------------------
 <i>needs to run as superuser</i>
 
-This script will create/update 3 multihost commands:
+This script will install/update 3 multihost CLI commands (plese see descriptions of these commands further below):
  * run_multihost - run or restart a multihost instance
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
@@ -41,19 +47,13 @@ run_multihost
 -------------
 <i>located at: /usr/local/bin/</i>
 
-To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable
+To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable.
 
-You can run a Docker container  with one of the following uses:
+You can run a Docker container  with one of the following options:
  * run_multihost 		= centos7_php7_httpd (default)
  * run_multihost -ou 		= ubuntu_php7_apache2
  * run_multihost -p5 		= centos7_php56_httpd
  * run_multihost -ou -p5 	= ubuntu_php56_apache2 
-
-You will need to adopt the settings to these repositories on the <b>host</b> machine according to your setup:
- * sites_enabled_path	: path to the folder 'sites-enabled' that contains the server .config files which will be used by apache2/httpd in the Docker container
- * www_path		: path to the general document root for the apache2/httpd server - it will comtain subdirectories that should match the .config files in sites-enabled
- * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
- * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker comntainers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
 
 This script will also create/update the /usr/local/bin/restart_multihost command (see below) according to the selected container
 
@@ -70,7 +70,7 @@ deploy_vhost <i>servername</i>
 With this command a new VHOST with the name <i>servername</i> will be added to the multihost server.
 
 The servername must be unique and in the webroot of the multihost server needs to be a folder with the same name.
-When the VHOST has been deplyed the apacje2/httpd service will be restarted. 
+When the VHOST has been deplyed the Apache2/httpd service will be restarted. 
 
 You then will need to change your local /etc/hosts file accordingly to access the VHOST.
 
