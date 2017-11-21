@@ -62,6 +62,7 @@ install_command() {
 install_command run_multihost
 install_command restart_multihost
 install_command deploy_vhost
+install_command remove_vhost
 
 echo Done!
 echo ' '
