@@ -84,9 +84,7 @@ multihost.config
 ----------------
 <i>located at: /etc/multihost.conf</i>
 
-This file contains all user defined settings for the multihost.
-
-It is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
+This file contains all user defined settings for the multihost. It contains the settings that were edited or confirmed when runnung the build_all.sh script and is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
 ----------------
 v.2.1
