@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'multihost builder v.2.1'
+echo 'multihost builder v.1.0'
 echo '--------------------------------------------------------'
 
 if [ $1 == 'nodocker' ]

@@ -3,7 +3,7 @@
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
 # m.opitz@qmul.ac.uk | 2017-11-20
 
-echo v.2.6
+echo v.1.0
 # v.2.1 - added hostmane to container
 # v.2.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.2.3 - now using setup details  to make changes easier

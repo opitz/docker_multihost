@@ -88,5 +88,25 @@ multihost.conf
 
 This file contains all user defined settings for the multihost. It contains the settings that were edited or confirmed when running the build_all.sh script and is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
+remove_vhost <i>servername</i>
+------------------------------
+<i>located at: /usr/local/bin</i>
+
+This command will remove all settings of a given VHOST - but not the web data itself!
+
+uninstall_all.sh
 ----------------
-v.2.1
+<i>needs to run as superuser</i>
+
+This will remove the complete multihost docker installation from the machine - but NOT the web data nor any configuration files.
+
+The script will call the remove_commands.sh script.
+
+remove_commands.sh
+------------------
+<i>needs to run as superuser</i>
+
+This script will remove all multihost CLI commands.
+
+----------------
+v.1.0

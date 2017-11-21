@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# script to remove a VHOST from multihost
+# m.opitz@qmul.ac.uk | 2017-11-21
+echo ' '
+echo remove multihost VHOST v.1.0
+echo -------------------------------------
+
+usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
+
+if [ ! $1 ]
+	then
+	usage
+fi
+
+# check for the config file and get the settings
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo No configuration file found at /etc/multihost.conf file found - aborting!
+	exit 1
+fi
+. /etc/multihost.conf
+
+servername=$1
+
+if [ ! -f ${sites_enabled_path}/${servername}.conf ]
+	then
+	echo "--> Could not find ${sites_enabled_path}/${servername}.conf - skipping!"
+else
+	sudo rm ${sites_enabled_path}/${servername}.conf >/dev/null 2>/dev/null
+	echo "--> ${sites_enabled_path}/${servername}.conf has been removed."
+fi
+
+if [ ! -d ${moodledata_path}/${servername} ]
+	then
+	echo "--> Could not find ${moodledata_path}/${servername} - skipping!"
+else
+	sudo rm -r ${moodledata_path}/${servername} >/dev/null 2>/dev/null
+	echo "--> ${moodledata_path}/${servername} has been removed."
+fi
+
+#if [ ! -d ${www_path}/${servername} ]
+#	then
+#	echo "--> No webroot folder found at ${www_path}/${servername} - skipping!"
+#else
+#	sudo rm -r ${www_path}/${servername} >/dev/null 2>/dev/null
+#fi
+
+restart_multihost
+
+echo "VHOST ${servername} has been removed from this server."
+echo ' '
