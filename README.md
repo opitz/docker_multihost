@@ -22,11 +22,11 @@ This script will build all Docker images and will prepare the Docker host for ru
 It will install the basic config file into
  * /etc/multihost.conf
 
-It will call the 'install_commands.sh' command file (see below).
-
 The script will then automatically open and editor and ask to update the settings in this file as this is needed to complete the setup.
 
-install_commands_sh
+It will then call the 'install_commands.sh' command file (see below) to finish the installation.
+
+install_commands.sh
 -------------------
 needs to run as superuser
 
@@ -35,7 +35,7 @@ This script will create/update 3 multihost commands:
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
 
- It will be called by the 'build_all.sh' script but can be evoked alone in case you need to update the commands.
+ It will be called by the 'build_all.sh' script but can be evoked separately in case you need to update the commands.
 
 run_multihost
 -------------
@@ -49,7 +49,7 @@ You can run a Docker container  with one of the following uses:
  * run_multihost -p5 		= centos7_php56_httpd
  * run_multihost -ou -p5 	= ubuntu_php56_apache2 
 
-You will need to adopt the settings to the host repositories to the situation on the Docker server:
+You will need to adopt the settings to the following host repositories according to the situation on the Docker server:
  * sites_enabled_path	: path to the folder that contains the server .config files that will be used by apache2/httpd in the Docker container
  * www_path		: path to the general document root of the apache2/httpd server - it will comtain subdirectories that should match the .config files in sites-enabld
  * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
@@ -63,7 +63,7 @@ located at: /usr/local/bin
 
 This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
-deploy_vhost <servername>
+deploy_vhost <i>servername</i>i>
 -------------------------
 located at: /usr/local/bin
 
@@ -86,4 +86,5 @@ This file contains all user defined settings for the multihost.
 
 It is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
-
+----------------
+v.2.1
