@@ -3,16 +3,18 @@ Dockerfiles
 All you need to build and run an Apache2/httpd multihost server with as many VHOSTs as needed.
 For this all served data and all config files are kept outside the Docker container and are forwarded into the running Docker container.
 
-For every VHOST served the following files are needed on Dockerhost
- * a directory inside /var/www/ that contains the data served
- * a .config file inside /var/sites-enabled that will define a named VHOST
- * a WRITABLE directory inside /var/moodledata/ to provide a separate space for every Moodle instance served (not needed for any non-Moodle VHOST)
-
 This repository contains the Dockerfiles to create the following Docker images
  * centos7_php7_httpd
  * centos7_php56_httpd
  * ubuntu_php7_apache2
  * ubuntu_php56_apache2
+
+For every VHOST served the following files are needed on Dockerhost
+ * a directory inside /var/www/ that contains the data served
+ * a .config file inside /var/sites-enabled that will define a named VHOST
+ * a WRITABLE directory inside /var/moodledata/ to provide a separate space for every Moodle instance served (not needed for any non-Moodle VHOST)
+
+There is a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
 
 build_all.sh
 ------------
@@ -36,7 +38,7 @@ install_commands.sh
 -------------------
 <i>needs to run as superuser</i>
 
-This script will install/update 3 multihost CLI commands (plese see descriptions of these commands further below):
+This script will install/update 3 multihost CLI commands (please see descriptions of these commands further below):
  * run_multihost - run or restart a multihost instance
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
@@ -47,7 +49,7 @@ run_multihost
 -------------
 <i>located at: /usr/local/bin/</i>
 
-To run a Docker container a script is provided. It should idally placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable.
+To run a Docker container a script is provided. It should ideally be placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable.
 
 You can run a Docker container  with one of the following options:
  * run_multihost 		= centos7_php7_httpd (default)
@@ -76,15 +78,15 @@ You then will need to change your local /etc/hosts file accordingly to access th
 
 default.configuration
 ---------------------
-When running 'build_all.sh' this file will automatically be placed inside the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information during the initial build using build_all.sh.
+When running 'build_all.sh' this file will automatically be copied into the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information during the initial build using build_all.sh.
 
-It is needed in order for the 'deploy_vhost' command to work. It contains the default configuration for each new vhost and needs to have the name 'default.configuration'.
+It will be used by the 'deploy_vhost' command when creating a config file for the new VHOST. It needs to have the name 'default.configuration'.
 
-multihost.config
-----------------
+multihost.conf
+--------------
 <i>located at: /etc/multihost.conf</i>
 
-This file contains all user defined settings for the multihost. It contains the settings that were edited or confirmed when runnung the build_all.sh script and is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
+This file contains all user defined settings for the multihost. It contains the settings that were edited or confirmed when running the build_all.sh script and is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
 ----------------
 v.2.1
