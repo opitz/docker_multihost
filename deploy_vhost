@@ -2,14 +2,25 @@
 
 # script to deploy a new VHOST to multihost
 # m.opitz@qmul.ac.uk | 2017-11-20
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
 
-echo v.1.0
+echo ' '
+echo "deploy vhost v.1.2"
+echo "------------------"
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
 
 if [ ! $1 ]
 	then
 	usage
+fi
+
+# if run as superuser/root automatically change the local /etc/hosts file for the new server if it hasn't an entry already
+if [[ $EUID -eq 0 ]]; then 
+   sudoit=1
 fi
 
 # check for the config file and get the settings
@@ -24,13 +35,13 @@ servername=$1
 
 if [ -f ${sites_enabled_path}/${servername}.conf ]
 	then
-	echo A server with the name ${servername} already exists - aborting!
+	echo "A server with the name ${servername} already exists - aborting!"
 	exit 1
 fi
 
 if [ ! -d ${www_path}/${servername} ]
 	then
-	echo No webroot folder found at ${www_path}/${servername} - aborting!
+	echo "No webroot folder found at ${www_path}/${servername} - aborting!"
 	exit 1
 fi
 
@@ -43,15 +54,28 @@ fi
 cp ${sites_enabled_path}/default.configuration ${sites_enabled_path}/${servername}.conf
 sed -i "s/TheServerName/${servername}/g" ${sites_enabled_path}/${servername}.conf
 chmod 777 ${sites_enabled_path}/${servername}.conf
+echo "--> ${sites_enabled_path}/${servername}.conf has been placed."
+
 if [ -d ${moodledata_path}/${servername} ]
 	then
 	sudo rm -r ${moodledata_path}/${servername}
 fi
 mkdir ${moodledata_path}/${servername}
 chmod -R 777 ${moodledata_path}/${servername}
-ln -s ${filedir_path} ${moodledata_path}/${servername}/filedir
-
+ln -s /filedir ${moodledata_path}/${servername}/filedir
+echo "--> A moodledata folder has been created at ${moodledata_path}/${servername}"
 restart_multihost
 
-echo "VHOST ${servername} configured and activated - please add ${servername} to your local /etc/hosts file"
+#res=$(cat /etc/hosts | grep -E "\b\s${servername}\b"; echo $?)
+#if [ $res -ne 0 ]
+#	then
+#	sudo echo "127.0.0.1    ${servername}" >> /etc/hosts
+#	echo "--> your /etc/hosts file has been updated for ${servername}"
+#else
+#	echo "--> an entry for ${servername} is already configured in your /etc/hosts file and has not been changed."
+#	echo "    please check it for correct settings"
+#fi
 
+echo "--> VHOST ${servername} configured and activated"
+echo "    Finally please config your /etc/hosts file for ${servername}."
+echo ' '

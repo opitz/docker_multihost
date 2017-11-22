@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# script to remove a VHOST from multihost
+# m.opitz@qmul.ac.uk | 2017-11-22
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
+
+echo ' '
+echo purge moodlecache v.1.1
+echo -------------------------------------
+
+usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
+
+if [ ! $1 ]
+	then
+	usage
+fi
+
+# check for the config file and get the settings
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo No configuration file found at /etc/multihost.conf file found - aborting!
+	exit 1
+fi
+. /etc/multihost.conf
+
+servername=$1
+
+if [ ! -d ${moodledata_path}/${servername} ]
+	then
+	echo "--> Could not find ${moodledata_path}/${servername} - aborting!"
+else
+	sudo rm -r ${moodledata_path}/${servername}/cache >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/filter >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/localcache >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/lock >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/muc >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/sessions >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/temp >/dev/null 2>/dev/null
+	sudo rm -r ${moodledata_path}/${servername}/trashdir >/dev/null 2>/dev/null
+	echo "--> The cache for ${moodledata_path}/${servername} has been removed."
+fi
+
+echo ' '

@@ -44,6 +44,7 @@ This script will install/update 3 multihost CLI commands (please see description
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
  * remove_vhost - this command will remove the settings for a given VHOST from the web server - but will NOT remove the web root data.
  * multihost_default - this command will make one of the existing VHOSTs teh default VHOST that is served when using the default server name or IP address. 
+ * purge_moodlecache - this command removes all cached files for a given moodle VHOST.
 
  It will be called by the 'build_all.sh' script but can be evoked separately in case you need to update the commands.
 
@@ -69,7 +70,7 @@ This command allows to restart the Apache2/httpd server inside the Docker contai
 
 deploy_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/local/bin</i>
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
 
 With this command a new VHOST with the name <i>servername</i> will be added to the multihost server.
 
@@ -83,6 +84,14 @@ multihost_default <i>servername</i>
 <i>located at: /usr/local/bin</i>
 
 This command will make the given existing servername the default VHOST which is served when accessing the server by it's original DNS name or it's IP address.
+
+purge_moodlecache <i>servername</i>
+-----------------------------------
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
+
+Since cached data is preserved between restarts or even rebuilds of the multihost server they may be purged using this command.
+
+It removes all cached data for the given Moodle VHOST. The data then will be recreated by the application.
 
 default.configuration
 ---------------------
@@ -98,7 +107,7 @@ This file contains all user defined settings for the multihost. It contains the 
 
 remove_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/local/bin</i>
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
 
 This command will remove all settings of a given VHOST - but not the web data itself!
 
@@ -117,4 +126,4 @@ remove_commands.sh
 This script will remove all multihost CLI commands.
 
 ----------------
-v.1.1
+v.1.2

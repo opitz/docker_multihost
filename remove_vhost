@@ -2,8 +2,13 @@
 
 # script to remove a VHOST from multihost
 # m.opitz@qmul.ac.uk | 2017-11-21
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
+
 echo ' '
-echo remove multihost VHOST v.1.0
+echo remove multihost VHOST v.1.1
 echo -------------------------------------
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
@@ -39,12 +44,8 @@ else
 	echo "--> ${moodledata_path}/${servername} has been removed."
 fi
 
-#if [ ! -d ${www_path}/${servername} ]
-#	then
-#	echo "--> No webroot folder found at ${www_path}/${servername} - skipping!"
-#else
-#	sudo rm -r ${www_path}/${servername} >/dev/null 2>/dev/null
-#fi
+# here we will remove the entry for this server from the /etc/hosts file if it exists
+# later...
 
 restart_multihost
 

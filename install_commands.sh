@@ -64,6 +64,7 @@ install_command restart_multihost
 install_command deploy_vhost
 install_command remove_vhost
 install_command multihost_default
+install_command purge_moodlecache
 
 echo Done!
 echo ' '

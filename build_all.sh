@@ -50,6 +50,16 @@ else
 	sudo ./install_commands.sh
 fi
 
+# check if a dummy directory '/filedir' exists and create it otherwise
+# this directory will be used for symlinks inside the moodledata/vhost folder.
+# they look pretty useless from the outside - but inside the docker container the symlinks actually
+# points to a existing /filedir directory which has been mapped there when running the docker container
+if [ ! -d /filedir ]
+	then
+	sudo mkdir /filedir
+	chmod -R 755 /filedir
+fi
+
 # check if sites_enabled_path exists and create it otherwise
 if [ ! -d ${sites_enabled_path} ]
 	then
@@ -67,7 +77,7 @@ sudo chmod 777 ${sites_enabled_path}/default.configuration
 if [ ! -d ${www_path}/html ]
 	then
 	sudo mkdir ${www_path}/html
-	echo "This the default webroot directory. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
+	echo "${www_path}/html is the default webroot directory. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
 	sudo chmod 777 -R ${www_path}/html
 fi
 

@@ -51,6 +51,7 @@ remove_command restart_multihost
 remove_command deploy_vhost
 remove_command remove_vhost
 remove_command multihost_default
+remove_command purge_moodlecache
 
 echo Done!
 echo ' '
