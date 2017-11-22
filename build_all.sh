@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'multihost builder v.1.0'
+echo 'multihost builder v.1.1'
 echo '--------------------------------------------------------'
 
 if [ $1 == 'nodocker' ]
@@ -48,6 +48,13 @@ if [ ! -f install_commands.sh ]
 	echo "CRITICAL: No command installation script found - skipping installation of multihost commands!"
 else
 	sudo ./install_commands.sh
+fi
+
+# check if sites_enabled_path exists and create it otherwise
+if [ ! -d ${sites_enabled_path} ]
+	then
+	sudo mkdir -p ${sites_enabled_path}
+	sudo chmod 777 -R ${sites_enabled_path}
 fi
 
 sudo cp default.configuration ${sites_enabled_path}/default.configuration
