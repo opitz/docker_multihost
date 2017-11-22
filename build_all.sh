@@ -57,8 +57,19 @@ if [ ! -d ${sites_enabled_path} ]
 	sudo chmod 777 -R ${sites_enabled_path}
 fi
 
+sudo cp 000-default.conf ${sites_enabled_path}/000-default.conf
+sudo chmod 777 ${sites_enabled_path}/000-default.conf
+
 sudo cp default.configuration ${sites_enabled_path}/default.configuration
 sudo chmod 777 ${sites_enabled_path}/default.configuration
+
+# check if default html webroot exists and create it otherwise with a simple message
+if [ ! -d ${www_path}/html ]
+	then
+	sudo mkdir ${www_path}/html
+	echo "This the default webroot directory. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
+	sudo chmod 777 -R ${www_path}/html
+fi
 
 echo ' '
 if [ ! -f $command_path/run_multihost ]

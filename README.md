@@ -42,6 +42,8 @@ This script will install/update 3 multihost CLI commands (please see description
  * run_multihost - run or restart a multihost instance
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
+ * remove_vhost - this command will remove the settings for a given VHOST from the web server - but will NOT remove the web root data.
+ * multihost_default - this command will make one of the existing VHOSTs teh default VHOST that is served when using the default server name or IP address. 
 
  It will be called by the 'build_all.sh' script but can be evoked separately in case you need to update the commands.
 
@@ -76,6 +78,12 @@ When the VHOST has been deplyed the Apache2/httpd service will be restarted.
 
 You then will need to change your local /etc/hosts file accordingly to access the VHOST.
 
+multihost_default <i>servername</i>
+-----------------------------------
+<i>located at: /usr/local/bin</i>
+
+This command will make the given existing servername the default VHOST which is served when accessing the server by it's original DNS name or it's IP address.
+
 default.configuration
 ---------------------
 When running 'build_all.sh' this file will automatically be copied into the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information during the initial build using build_all.sh.
@@ -109,4 +117,4 @@ remove_commands.sh
 This script will remove all multihost CLI commands.
 
 ----------------
-v.1.0
+v.1.1

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# script to make one of the VHOSTs teh default server
+# m.opitz@qmul.ac.uk | 2017-11-22
+echo ' '
+echo "multihost default v.1.0"
+echo "---------------------------------------"
+
+usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
+
+if [ ! $1 ]
+	then
+	usage
+fi
+
+servername=$1
+if [ ${servername} == 'html' ]
+	then
+	echo "Cannot replace 'html' with itself - aborting"
+	quit 1
+fi
+
+# check for the config file and get the settings
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo No configuration file found at /etc/multihost.conf file found - aborting!
+	exit 1
+fi
+. /etc/multihost.conf
+
+if [ ! -d ${www_path}/${servername} ]
+	then
+	echo "No server found at ${www_path}/${servername} - aborting!"
+	quit 1
+fi
+
+rm -rf ${www_path}/html 2>/dev/null
+cd ${www_path}
+ln -s ${servername} html
+echo "${servername} is now the default VHOST."
+echo ' '

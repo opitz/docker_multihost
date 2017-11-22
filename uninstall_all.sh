@@ -6,12 +6,12 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'multihost uninstaller v.0.1'
+echo 'multihost uninstaller v.1.1'
 echo '--------------------------------------------------------'
 
 if [ $1 == 'nodocker' ]
 	then
-	echo "--> Bypassing building Docker images."
+	echo "--> Bypassing removing Docker images."
 else
 # 	remove any exsiting multihost container, running or not
 	docker rm -f multihost_centos7_php7_httpd >/dev/null 2>/dev/null
@@ -43,7 +43,7 @@ fi
 
 # removing the sites-enabled folder and all its content
 sudo rm -r ${sites_enabled_path}/ >/dev/null 2>/dev/null
-echo "'--> $sites_enabled_path' directory hasbeen removed."
+echo "--> $sites_enabled_path' directory has been removed."
 
 # removing the configuration file
 if [ -f /etc/multihost.conf ]
@@ -52,13 +52,6 @@ if [ -f /etc/multihost.conf ]
 	echo "--> Removed an existing '/etc/multihost.conf' file."
 fi
 
-echo ' '
-if [ ! -f $command_path/run_multihost ]
-	then
-	echo "FAILURE! The 'run_multihost' command could not be found!"
-	echo "You may want to check your installation."
-else
-	echo 'All Done!'
-	echo "You may run 'run_multihost' to start the multihost server now."
-fi
+echo 'All Done!'
+echo "The multihost server has been removed,"
 echo ' '
