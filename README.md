@@ -40,7 +40,7 @@ install_commands.sh
 -------------------
 <i>needs to run as superuser</i>
 
-This script will install/update 3 multihost CLI commands (please see descriptions of these commands further below):
+This script will install/update the following multihost CLI commands (please see descriptions of these commands further below):
  * run_multihost - run or restart a multihost instance
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
  * deploy_vhost - this command allows to ad a new VHOST to the multihost server
@@ -52,9 +52,9 @@ This script will install/update 3 multihost CLI commands (please see description
 
 run_multihost
 -------------
-<i>located at: /usr/local/bin/</i>
+<i>located at: /usr/bin/</i>
 
-To run a Docker container a script is provided. It should ideally be placed in your PATH (e.g. /usr/local/bin/run_multihost) and needs to be executable.
+To run a Docker container a script is provided. It should ideally be placed in your PATH (e.g. /usr/bin/run_multihost) and needs to be executable.
 
 You can run a Docker container  with one of the following options:
  * run_multihost 		= centos7_php7_httpd (default)
@@ -66,30 +66,30 @@ This script will also create/update the /usr/local/bin/restart_multihost command
 
 restart_multihost
 ----------------
-<i>located at: /usr/local/bin</i>
+<i>located at: /usr/bin</i>
 
 This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
 deploy_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
 
 With this command a new VHOST with the name <i>servername</i> will be added to the multihost server.
 
 The servername must be unique and in the webroot of the multihost server needs to be a folder with the same name.
-When the VHOST has been deplyed the Apache2/httpd service will be restarted. 
+When the VHOST has been deployed the Apache2/httpd service will be restarted to activate the new VHOST. 
 
 You then will need to change your local /etc/hosts file accordingly to access the VHOST.
 
 multihost_default <i>servername</i>
 -----------------------------------
-<i>located at: /usr/local/bin</i>
+<i>located at: /usr/bin</i>
 
 This command will make the given existing servername the default VHOST which is served when accessing the server by it's original DNS name or it's IP address.
 
 purge_moodlecache <i>servername</i>
 -----------------------------------
-<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
 
 Since cached data is preserved between restarts or even rebuilds of the multihost server they may be purged using this command.
 
@@ -97,9 +97,9 @@ It removes all cached data for the given Moodle VHOST. The data then will be rec
 
 default.configuration
 ---------------------
-When running 'build_all.sh' this file will automatically be copied into the 'sites-enabled' folder - this is why it is crucial that the multihost.conf file is updated with correct information during the initial build using build_all.sh.
+When running 'build_all.sh' this file will automatically be copied into the 'sites-enabled' folder.
 
-It will be used by the 'deploy_vhost' command when creating a config file for the new VHOST. It needs to have the name 'default.configuration'.
+It will be used by the 'deploy_vhost' command when creating a config file for the new VHOST and it needs to have the name 'default.configuration'.
 
 multihost.conf
 --------------
@@ -109,7 +109,7 @@ This file contains all user defined settings for the multihost. It contains the 
 
 remove_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
 
 This command will remove all settings of a given VHOST - but not the web data itself!
 
@@ -133,9 +133,9 @@ update_all.sh [nodocker]
 ------------------------
 <i>needs to run as superuser</i>
 
-Use this script to easily update all installed scripts and commands
+Use this script to easily update all installed scripts and commands. It will preserve the current settings in /etc/multihost.conf.
 
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.2
+v.1.3
