@@ -122,7 +122,7 @@ else
 	# deploy the multihost-help VHOST
 	check_path $www_path/multihost-help
 	cp ./index.html $www_path/multihost-help/index.html
-	sudo deploy_vhost multihost-help
+	sudo deploy_vhost multihost-help no_moodle
 	sudo multihost_default multihost-help
 
 	echo 'All Done!'
