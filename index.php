@@ -17,7 +17,7 @@
 	It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 </p>
 <p>
-	This is one of them - but the very basic one.	
+	The server is currently running with IP address <b><?php echo $_SERVER['SERVER_ADDR']; ?></b>
 </p>
 <p>
 	This is the internal 'multihost-help' webpage which currently serves as the default web content.<br>
@@ -50,7 +50,7 @@
 	<ul>
 		<li>Add a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>
-		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server.</li>
+		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server (<?php echo $_SERVER['SERVER_ADDR']; ?>).</li>
 	</ul>
 	<br>
 	<i>In the above cases replace <i>servername</i> with the actual server name you are about to deploy.</i>
@@ -66,5 +66,5 @@
 
 </p>
 <hr>
-<span class="footer">v.1.0 2017-11-23</span>
+<span class="footer">v.1.1 2017-11-23</span>
 </body>

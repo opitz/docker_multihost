@@ -121,7 +121,7 @@ if [ ! -f $command_path/run_multihost ]
 else
 	# deploy the multihost-help VHOST
 	check_path $www_path/multihost-help
-	cp ./index.html $www_path/multihost-help/index.html
+	cp ./index.php $www_path/multihost-help/index.php
 	sudo deploy_vhost multihost-help no_moodle
 	sudo multihost_default multihost-help
 
