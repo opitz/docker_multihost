@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
 # script to make one of the VHOSTs teh default server
-# m.opitz@qmul.ac.uk | 2017-11-22
+# m.opitz@qmul.ac.uk | 2017-11-23
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
+
 echo ' '
-echo "multihost default v.1.1"
+echo "multihost default v.1.2"
 echo "---------------------------------------"
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
