@@ -16,11 +16,13 @@ For every VHOST served the following files are needed on Dockerhost
 
 There is a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
 
-build_all.sh
-------------
+build_all.sh [nodocker]
+-----------------------
 <i>needs to run as superuser.</i>
 
 This script will build all Docker images and will prepare the Docker host for running the multihost.
+Use the 'nodocker' option to skip the building process for docker images
+
 It will install the basic config file into
  * /etc/multihost.conf
 
@@ -111,11 +113,13 @@ remove_vhost <i>servername</i>
 
 This command will remove all settings of a given VHOST - but not the web data itself!
 
-uninstall_all.sh
-----------------
+uninstall_all.sh [nodocker]
+---------------------------
 <i>needs to run as superuser</i>
 
 This will remove the complete multihost docker installation from the machine - but NOT the web data nor any configuration files.
+
+Use the 'nodocker' option to keep existing Docker images.
 
 The script will call the remove_commands.sh script.
 
@@ -124,6 +128,14 @@ remove_commands.sh
 <i>needs to run as superuser</i>
 
 This script will remove all multihost CLI commands.
+
+update_all.sh [nodocker]
+------------------------
+<i>needs to run as superuser</i>
+
+Use this script to easily update all installed scripts and commands
+
+Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
 v.1.2
