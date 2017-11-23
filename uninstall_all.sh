@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'multihost uninstaller v.1.1'
+echo 'Docker multihost uninstaller v.1.2'
 echo '--------------------------------------------------------'
 
 if [ "$1" == "nodocker" ]
@@ -55,6 +55,13 @@ if [ -d $moodledata_path ]
 	echo "--> '$moodledata_path' directory has been removed."
 fi
 
+# removing the moodledata-help webroot folder and all its content
+if [ -d $www_path/multihost-help ]
+	then
+	sudo rm -r $www_path/multihost-help >/dev/null 2>/dev/null
+	echo "--> '$www_path/multihost-help' directory has been removed."
+fi
+
 # removing the html default webroot if it is a link only
 if [ -L $www_path/html ]
 	then
@@ -70,5 +77,5 @@ if [ -f /etc/multihost.conf ]
 fi
 
 echo 'All Done!'
-echo "The multihost server has been removed,"
+echo "The Docker multihost server has been removed,"
 echo ' '

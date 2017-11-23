@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'multihost builder v.1.2'
+echo 'Docker multihost builder v.1.3'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -119,7 +119,13 @@ if [ ! -f $command_path/run_multihost ]
 	echo "FAILURE! The 'run_multihost' command could not be found!"
 	echo "You may want to check your installation."
 else
+	# deploy the multihost-help VHOST
+	check_path $www_path/multihost-help
+	cp ./index.html $www_path/multihost-help/index.html
+	sudo deploy_vhost multihost-help
+	sudo multihost_default multihost-help
+
 	echo 'All Done!'
-	echo "You may run 'run_multihost' to start the multihost server now."
+	echo "You may run 'run_multihost' to start the Docker multihost server now."
 fi
 echo ' '

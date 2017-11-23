@@ -71,5 +71,5 @@ fi
 restart_multihost
 
 echo "--> VHOST ${servername} configured and activated"
-echo "--> Please config your /etc/hosts file for ${servername}."
+echo "--> Please config your /etc/hosts file for '${servername}'."
 echo ' '
