@@ -1,15 +1,42 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
+# 2017-11-23
+
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo 'multihost builder v.1.1'
+echo 'multihost builder v.1.2'
 echo '--------------------------------------------------------'
 
-if [ $1 == 'nodocker' ]
+check_path() {
+# check if path $1 exists and create it otherwise
+	if [ ! $1 ]
+		then
+		echo "no path given to check (mumble mumble) - ignoring"
+	else
+		if [ ! -d $1 ]
+			then
+			echo "--> creating $1"
+			sudo mkdir -p $1
+			sudo chmod 777 -R $1
+		else
+			if [ "$2" != "no_chmod" ]
+				then
+				echo "--> checking $1"
+				sudo chmod 777 -R $1
+			else
+				echo "--> checking (no chmod) $1"	
+			fi
+		fi
+	fi
+}
+
+#-------------------------------------------------------------
+
+if [ "$1" == "nodocker" ]
 	then
 	echo "--> Bypassing building Docker images."
 else
@@ -54,18 +81,13 @@ fi
 # this directory will be used for symlinks inside the moodledata/vhost folder.
 # they look pretty useless from the outside - but inside the docker container the symlinks actually
 # points to a existing /filedir directory which has been mapped there when running the docker container
-if [ ! -d /filedir ]
-	then
-	sudo mkdir /filedir
-	chmod -R 755 /filedir
-fi
+check_path '/filedir'
+
+# check if moodledata_path exists and create it otherwise
+check_path $moodledata_path
 
 # check if sites_enabled_path exists and create it otherwise
-if [ ! -d ${sites_enabled_path} ]
-	then
-	sudo mkdir -p ${sites_enabled_path}
-	sudo chmod 777 -R ${sites_enabled_path}
-fi
+check_path $sites_enabled_path
 
 sudo cp 000-default.conf ${sites_enabled_path}/000-default.conf
 sudo chmod 777 ${sites_enabled_path}/000-default.conf
@@ -73,13 +95,23 @@ sudo chmod 777 ${sites_enabled_path}/000-default.conf
 sudo cp default.configuration ${sites_enabled_path}/default.configuration
 sudo chmod 777 ${sites_enabled_path}/default.configuration
 
+# check if basic webroot exists and create it otherwise
+# each VHOST will need to have a subdirectory in here 
+check_path $www_path no_chmod
+
 # check if default html webroot exists and create it otherwise with a simple message
 if [ ! -d ${www_path}/html ]
 	then
 	sudo mkdir ${www_path}/html
-	echo "${www_path}/html is the default webroot directory. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
+	echo "${www_path}/html is the default webroot directory for multihost. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
 	sudo chmod 777 -R ${www_path}/html
 fi
+
+# check if filedir directory exists and create it otherwise
+check_path $filedir_path no_chmod
+
+# check if xchange directory exists and create it otherwise
+check_path $xchange_path
 
 echo ' '
 if [ ! -f $command_path/run_multihost ]

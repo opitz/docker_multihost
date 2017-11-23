@@ -9,7 +9,7 @@ echo ' '
 echo 'multihost uninstaller v.1.1'
 echo '--------------------------------------------------------'
 
-if [ $1 == 'nodocker' ]
+if [ "$1" == "nodocker" ]
 	then
 	echo "--> Bypassing removing Docker images."
 else
@@ -42,8 +42,25 @@ else
 fi
 
 # removing the sites-enabled folder and all its content
-sudo rm -r ${sites_enabled_path}/ >/dev/null 2>/dev/null
-echo "--> $sites_enabled_path' directory has been removed."
+if [ -d $sites_enabled_path ]
+	then
+	sudo rm -r $sites_enabled_path >/dev/null 2>/dev/null
+	echo "--> '$sites_enabled_path' directory has been removed."
+fi
+
+# removing the moodledata folder and all its content
+if [ -d $moodledata_path ]
+	then
+	sudo rm -r $moodledata_path >/dev/null 2>/dev/null
+	echo "--> '$moodledata_path' directory has been removed."
+fi
+
+# removing the html default webroot if it is a link only
+if [ -L $www_path/html ]
+	then
+	sudo rm -r $www_path/html >/dev/null 2>/dev/null
+	echo "--> '$www_path/html' symlink has been removed."
+fi
 
 # removing the configuration file
 if [ -f /etc/multihost.conf ]
