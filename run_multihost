@@ -1,26 +1,29 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2017-11-20
+# m.opitz@qmul.ac.uk | 2017-11-23
 
-echo v.1.0
-# v.2.1 - added hostmane to container
-# v.2.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
-# v.2.3 - now using setup details  to make changes easier
-# v.2.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost command script
-# v.2.5 - renamed reboot_multihost to restart_multihost
-# v.2.6 - installing scripts into /usr/local/bin instead of /usr/sbin
+echo v.1.1
+# v.0.1 - added hostmane to container
+# v.0.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
+# v.0.3 - now using setup details  to make changes easier
+# v.0.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost command script
+# v.0.5 - renamed reboot_multihost to restart_multihost
+# v.0.6 - installing scripts into /usr/local/bin instead of /usr/sbin
+# v.1.0 - working release
+# v.1.1 - using $command_path from multihost.conf now
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
 # check for the config file and get the settings
 if [ ! -f /etc/multihost.conf ]
         then
-        echo No configuration file found at /etc/multihost.conf file found - aborting!
+        echo "ERROR! Could not read configuration file at /etc/multihost.conf - aborting!"
         exit 1
 fi
 . /etc/multihost.conf
 
+# get options
 while getopts ":p:o:" x; do
     case "${x}" in
         o)
@@ -36,6 +39,7 @@ while getopts ":p:o:" x; do
 done
 shift $((OPTIND-1))
 
+# if option -p5 is set use PHP 5.6 otherwise use PHP 7 by default
 if [ "${p}" == "5" ]
 	then
 	php_v=56
@@ -53,7 +57,7 @@ docker rm -f multihost_centos7_php56_httpd >/dev/null 2>/dev/null
 docker rm -f multihost_ubuntu_php7_apache2 >/dev/null 2>/dev/null
 docker rm -f multihost_ubuntu_php56_apache2 >/dev/null 2>/dev/null
 
-
+# check if an option is set to use Ubuntu as OS otherwise use Centos by default
 if [ "${o}" == "u" ]
 	then
 	os=ubuntu_php${php_v}_apache2
@@ -74,7 +78,7 @@ if [ "${o}" == "u" ]
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} service apache2 restart
-	echo "docker exec ${servername} service apache2 restart">/usr/local/bin/restart_multihost
+	echo "docker exec ${servername} service apache2 restart">${command_path}/restart_multihost
 else
 	os=centos7_php${php_v}_httpd
 	conf_path=/etc/httpd/sites-enabled
@@ -96,7 +100,7 @@ else
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} systemctl restart httpd
-	echo "docker exec ${servername} systemctl restart httpd">/usr/local/bin/restart_multihost
+	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
 fi
 
 echo now running ${servername}
