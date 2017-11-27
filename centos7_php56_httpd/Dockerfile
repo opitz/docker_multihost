@@ -1,6 +1,6 @@
-FROM centos:7
+FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.0 - 2017-10-16
+# v.1.1 - 2017-11-27
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
 ENV https_proxy https://wwwcache.qmul.ac.uk:8080
@@ -33,6 +33,7 @@ RUN yum install -y \
 	mod_ssl \
 	systemd \
 	openssl \
+	cronie \
 	nano 
 
 RUN yum -y clean all
@@ -50,7 +51,7 @@ RUN openssl genrsa -des3 -passout pass:x -out /etc/ssl/private/apache.pass.key 2
 RUN echo "IncludeOptional sites-enabled/*conf" >> /etc/httpd/conf/httpd.conf
 
 # remove the default ssl configuration
-RUN mv /etc/httpd/conf.d/ssl.conf /etc/ht
+RUN mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
 
 # setup xdebug
 #RUN rm /etc/php.d/15-xdebug.ini && \
@@ -63,6 +64,16 @@ RUN echo "zend_extension=xdebug.so" >> /etc/php.d/xdebug.ini && \
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
 	chmod -R 777 /var/moodledata
+
+## set PHP max execution time
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed "s/^;date.timezone =$/date.timezone = Europe\/London /" $phpini; \
+	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
+	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
+
+# set PHP memory limit
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
 
 # install systemd - the resulting image needs to run with --privileged=true !!
 

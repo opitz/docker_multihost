@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2017-11-23
+# m.opitz@qmul.ac.uk | 2017-11-27
 
 echo v.1.1
 # v.0.1 - added hostmane to container
@@ -12,6 +12,7 @@ echo v.1.1
 # v.0.6 - installing scripts into /usr/local/bin instead of /usr/sbin
 # v.1.0 - working release
 # v.1.1 - using $command_path from multihost.conf now
+# v.1.2 - now using/starting cron , using IP of host as environment variable inside the docker containers
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -22,6 +23,10 @@ if [ ! -f /etc/multihost.conf ]
         exit 1
 fi
 . /etc/multihost.conf
+
+# get ip address of machine the docker containers are running on
+ip=$(hostname -i)
+echo "--> Running on IP address $ip"
 
 # get options
 while getopts ":p:o:" x; do
@@ -75,6 +80,7 @@ if [ "${o}" == "u" ]
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+		-e HOST_IP_ADDR=$ip \
 		--add-host db_host:${db_host_ip} \
 		${os}
 	docker exec ${servername} service apache2 restart
@@ -97,10 +103,19 @@ else
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+		-e HOST_IP_ADDR=$ip \
 		--add-host db_host:${db_host_ip} \
 		${os}
+	docker exec ${servername} systemctl start crond
 	docker exec ${servername} systemctl restart httpd
 	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
+fi
+
+# write the ip address of host to a file 'ip.txt' inside the 'multihost-help' VHOST
+if [ -d $www_path/multihost-help ]
+	then
+	echo $ip > $www_path/multihost-help/ip.txt
+	chmod 755 $www_path/multihost-help/ip.txt
 fi
 
 echo now running ${servername}

@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 MAINTAINER Matthias Opitz (m.opitz@qmul.ac.uk)
-# v.1.0 - 2017-10-16
+# v.1.1 - 2017-11-27
 
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
@@ -20,6 +20,7 @@ RUN apt-get -y install php5.6 php7.0 php7.0-mysqli php7.0-xdebug php7.0-xml
 RUN apt-get -y --allow-unauthenticated install php7.0-mcrypt php7.0-curl php7.0-zip php7.0-gd php7.0-mbstring
 RUN apt-get -y --allow-unauthenticated install php7.0-xmlrpc php7.0-soap php7.0-intl
 #RUN apt-get -y --allow-unauthenticated install php5.6-mcrypt php5.6-xml php5.6-curl php5.6-zip php5.6-gd php5.6-mbstring php5.6-xmlrpc php5.6-soap php5.6-intl
+RUN apt-get install -y cron
 
 RUN a2dismod php5.6
 RUN a2enmod php7.0
@@ -44,6 +45,17 @@ RUN echo "zend_extension=xdebug.so" >> /etc/php/7.0/apache2/php.ini && \
 RUN mkdir /var/moodledata
 RUN chmod -R 777 /var/moodledata
 
+# set PHP max execution time
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed "s/^;date.timezone =$/date.timezone = Europe\/London /" $phpini; \
+	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
+	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
+
+# set PHP memory limit
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
+
+RUN service cron start
 RUN service apache2 start
 
 

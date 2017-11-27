@@ -1,6 +1,6 @@
-FROM centos:7
+FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.0 - 2017-10-15
+# v.1.1 - 2017-11-27
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
 ENV https_proxy https://wwwcache.qmul.ac.uk:8080
@@ -33,6 +33,7 @@ RUN yum install -y \
 	mod_ssl \
 	systemd \
 	openssl \
+	cronie \
 	nano 
 
 RUN yum -y clean all
@@ -64,11 +65,21 @@ RUN echo "zend_extension=xdebug.so" >> /etc/php.d/xdebug.ini && \
 RUN mkdir /var/moodledata && \
 	chmod -R 777 /var/moodledata
 
+# set PHP max execution time
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed "s/^;date.timezone =$/date.timezone = Europe\/London /" $phpini; \
+	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
+	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
+
+# set PHP memory limit
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
+
 # install systemd - the resulting image needs to run with --privileged=true !!
 
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 	systemd-tmpfiles-setup.service ] || rm -f $i; done); \
-	rm -f /lib/systemd/system/multi-user.target.wants/*;\
+	rm -f /lib/systemd/system/multi-user.target.wants/*; \
 	rm -f /etc/systemd/system/*.wants/*;\
 	rm -f /lib/systemd/system/local-fs.target.wants/*; \
 	rm -f /lib/systemd/system/sockets.target.wants/*udev*; \

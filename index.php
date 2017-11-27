@@ -20,6 +20,9 @@
 	The server is currently running with IP address <b><?php echo $_SERVER['SERVER_ADDR']; ?></b>
 </p>
 <p>
+	The server is currently running with IP address <b><?php echo(file_get_contents('ip.txt')); ?></b>
+</p>
+<p>
 	This is the internal 'multihost-help' webpage which currently serves as the default web content.<br>
 	Please see below how to set up your own VHOSTs and how to make one of then the default content served.
 </p>

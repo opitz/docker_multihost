@@ -13,6 +13,17 @@ if [ "$1" == "nodocker" ]
 	then
 	echo "--> Bypassing removing Docker images."
 else
+    echo "This will remove all multihost docker images as well!"
+    echo "(You will be able to recreate them from Dockerfiles but that will take some time.)"
+    read -p "Is this what you want? [y/N]" doit
+    if [ "${doit:0:1}" != "y" ] && [ "${doit:0:1}" != "Y" ]
+        then
+        echo "====> OK, aborting..."
+        echo "You could run this command with the 'nodocker' option to keep the Docker images."
+        echo ' '
+        exit 1
+    fi
+
 # 	remove any exsiting multihost container, running or not
 	docker rm -f multihost_centos7_php7_httpd >/dev/null 2>/dev/null
 	docker rm -f multihost_centos7_php56_httpd >/dev/null 2>/dev/null
@@ -73,7 +84,7 @@ fi
 if [ -f /etc/multihost.conf ]
 	then
 	sudo rm /etc/multihost.conf >/dev/null 2>/dev/null
-	echo "--> Removed an existing '/etc/multihost.conf' file."
+	echo "--> existing '/etc/multihost.conf' file has been removed."
 fi
 
 echo 'All Done!'
