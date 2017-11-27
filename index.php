@@ -16,12 +16,13 @@
 	This is the default homepage of Docker multihost, a web server based on Docker.<br>
 	It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 </p>
-<p>
-	The server is currently running with IP address <b><?php echo $_SERVER['SERVER_ADDR']; ?></b>
-</p>
-<p>
-	The server is currently running with IP address <b><?php echo(file_get_contents('ip.txt')); ?></b>
-</p>
+<?php 
+if(file_exists('ip.txt')) { 
+	echo "<p>
+		<i>The server is currently running on IP address <b>" . file_get_contents('ip.txt') . "</b></i>
+	</p>";
+}
+	?>
 <p>
 	This is the internal 'multihost-help' webpage which currently serves as the default web content.<br>
 	Please see below how to set up your own VHOSTs and how to make one of then the default content served.
@@ -53,7 +54,7 @@
 	<ul>
 		<li>Add a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>
-		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server (<?php echo $_SERVER['SERVER_ADDR']; ?>).</li>
+		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server (<?php echo file_get_contents('ip.txt');?>).</li>
 	</ul>
 	<br>
 	<i>In the above cases replace <i>servername</i> with the actual server name you are about to deploy.</i>
@@ -68,6 +69,7 @@
 	</ul>
 
 </p>
+
 <hr>
-<span class="footer">v.1.1 2017-11-23</span>
+<span class="footer">v.1.2 2017-11-27</span>
 </body>
