@@ -32,7 +32,7 @@ You will need to adopt the settings to these repositories on the <b>host</b> mac
  * sites_enabled_path	: path to the folder 'sites-enabled' that contains the server .config files which will be used by apache2/httpd in the Docker container
  * www_path		: path to the general document root for the apache2/httpd server - it will comtain subdirectories that should match the .config files in sites-enabled
  * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
- * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker comntainers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
+ * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker containers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
 
 After the setting have been changed/confirmed the installation will finish by calling the 'install_commands.sh' command file (see below).
 

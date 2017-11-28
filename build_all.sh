@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-# 2017-11-23
+# 2017-11-28
 
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.3'
+echo 'Docker multihost builder v.1.4'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -25,10 +25,34 @@ check_path() {
 		else
 			if [ "$2" != "no_chmod" ]
 				then
-				echo "--> checking $1"
+				echo "--> checking path $1"
 				sudo chmod 777 -R $1
 			else
-				echo "--> checking (no chmod) $1"	
+				echo "--> checking path (no chmod) $1"	
+			fi
+		fi
+	fi
+}
+
+#-------------------------------------------------------------
+check_file() {
+# check if file $1 exists and touch it otherwise
+	if [ ! $1 ]
+		then
+		echo "no path given to check (mumble mumble) - ignoring"
+	else
+		if [ ! -d $1 ]
+			then
+			echo "--> touching $1"
+			sudo touch $1
+			sudo chmod 777 $1
+		else
+			if [ "$2" != "no_chmod" ]
+				then
+				echo "--> checking file $1"
+				sudo chmod 777 $1
+			else
+				echo "--> checking file (no chmod) $1"	
 			fi
 		fi
 	fi
@@ -85,6 +109,7 @@ check_path '/filedir'
 
 # check if moodledata_path exists and create it otherwise
 check_path $moodledata_path
+check_file $moodledata_path/moodle_crontab
 
 # check if sites_enabled_path exists and create it otherwise
 check_path $sites_enabled_path

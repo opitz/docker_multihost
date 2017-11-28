@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo remove multihost VHOST v.1.1
+echo remove multihost VHOST v.1.2
 echo -------------------------------------
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
@@ -44,8 +44,12 @@ else
 	echo "--> ${moodledata_path}/${servername} has been removed."
 fi
 
-# here we will remove the entry for this server from the /etc/hosts file if it exists
-# later...
+# remove server from moodle_crontab
+if [ -f ${moodledata_path}/moodle_crontab ]
+	then
+	# remove the line(s) that contain "/the_servername/" from ${moodledata_path}/moodle/crontab
+	sed -i "/\/${servername}\//d" ${moodledata_path}/moodle_crontab
+fi
 
 restart_multihost
 

@@ -25,7 +25,8 @@ if(file_exists('ip.txt')) {
 	?>
 <p>
 	This is the internal 'multihost-help' webpage which currently serves as the default web content.<br>
-	Please see below how to set up your own VHOSTs and how to make one of then the default content served.
+	Please see below how to set up your own VHOSTs and how to make one of them the default content served.<br>
+	The default content will be shown when using the IP address or the generic DNS name of the server.
 </p>
 <p>
 	<b>Please note:</b><br>
@@ -50,9 +51,9 @@ if(file_exists('ip.txt')) {
 	<p>
 		<span class="subheader">Deploy new VHOST</span>
 	</p>
-	To deploy a new VHOST do these steps:
+	To deploy a new VHOST do these steps in a terminal:
 	<ul>
-		<li>Add a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
+		<li>Add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>
 		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server (<?php echo file_get_contents('ip.txt');?>).</li>
 	</ul>
@@ -71,5 +72,5 @@ if(file_exists('ip.txt')) {
 </p>
 
 <hr>
-<span class="footer">v.1.2 2017-11-27</span>
+<span class="footer">v.1.3 2017-11-28</span>
 </body>
