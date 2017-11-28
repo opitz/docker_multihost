@@ -55,7 +55,7 @@ if(file_exists('ip.txt')) {
 	<ul>
 		<li>Add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>
-		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server (<?php echo file_get_contents('ip.txt');?>).</li>
+		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server ( <?php echo file_get_contents('ip.txt');?>).</li>
 	</ul>
 	<br>
 	<i>In the above cases replace <i>servername</i> with the actual server name you are about to deploy.</i>

@@ -6,11 +6,14 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'update_all.sh v.1.1'
+echo 'update_all.sh v.1.2'
 echo '--------------------------------------------------------'
 
 # make a backup of the multihost.conf file
-sudo cp /etc/multihost.conf /etc/multihost.conf.bak
+if [ -f /etc/multihost.conf ]
+    then
+    sudo cp /etc/multihost.conf /etc/multihost.conf.bak
+fi
 
 if [ "$1" == "nodocker" ]
 	then
@@ -18,6 +21,11 @@ if [ "$1" == "nodocker" ]
 	sudo ./uninstall_all.sh nodocker 2>/dev/null
 	git pull
 
+    #restore the multihost.conf file
+    if [ -f /etc/multihost.conf.bak ]
+        then
+        sudo cp /etc/multihost.conf.bak /etc/multihost.conf
+    fi
 	sudo ./build_all.sh nodocker
 else
     echo "Removing all multihost docker images and recreating them from the Dockerfiles can take quite some time."
@@ -33,10 +41,12 @@ else
 	sudo ./uninstall_all.sh 2>/dev/null
 	git pull
 
+    #restore the multihost.conf file
+    if [ -f /etc/multihost.conf.bak ]
+        then
+        sudo cp /etc/multihost.conf.bak /etc/multihost.conf
+    fi
 	sudo ./build_all.sh
 fi
-
-#restore the multihost.conf file
-sudo cp /etc/multihost.conf.bak /etc/multihost.conf
 
 
