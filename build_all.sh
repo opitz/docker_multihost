@@ -105,7 +105,7 @@ fi
 # this directory will be used for symlinks inside the moodledata/vhost folder.
 # they look pretty useless from the outside - but inside the docker container the symlinks actually
 # points to a existing /filedir directory which has been mapped there when running the docker container
-check_path '/filedir'
+check_path '/filedir' no_chmod
 
 # check if moodledata_path exists and create it otherwise
 check_path $moodledata_path
