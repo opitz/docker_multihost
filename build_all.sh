@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.4'
+echo 'Docker multihost builder v.1.5'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -21,12 +21,12 @@ check_path() {
 			then
 			echo "--> creating $1"
 			sudo mkdir -p $1
-			sudo chmod 777 -R $1
+			sudo chmod -R 777 $1
 		else
 			if [ "$2" != "no_chmod" ]
 				then
 				echo "--> checking path $1"
-				sudo chmod 777 -R $1
+				sudo chmod -R 777 $1
 			else
 				echo "--> checking path (no chmod) $1"	
 			fi
