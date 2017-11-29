@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'install multihost commands v.1.0'
+echo 'install multihost commands v.1.1'
 echo '--------------------------------------------------------'
 usage() {
 	if [ $1 ]
@@ -60,11 +60,16 @@ install_command() {
 }
 
 install_command run_multihost
-install_command restart_multihost
 install_command deploy_vhost
 install_command remove_vhost
 install_command multihost_default
 install_command purge_moodlecache
+
+# install a dummy restart command only if there isn't one already
+# this will be replaced with the real one depending on which multihost Docker image is running 
+if [ ! -f $command_path/restart_multihost ]
+	then install_command restart_multihost
+fi
 
 echo Done!
 echo ' '

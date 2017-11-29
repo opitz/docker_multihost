@@ -1,4 +1,0 @@
-To build the Docker image run
-
-docker build -t centos7_php7_httpd .
-

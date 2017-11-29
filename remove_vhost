@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo remove multihost VHOST v.1.2
+echo remove multihost VHOST v.1.3
 echo -------------------------------------
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
@@ -48,7 +48,12 @@ fi
 if [ -f ${moodledata_path}/moodle_crontab ]
 	then
 	# remove the line(s) that contain "/the_servername/" from ${moodledata_path}/moodle/crontab
-	sed -i "/\/${servername}\//d" ${moodledata_path}/moodle_crontab
+	if [ "`uname`" == "Darwin" ]
+		then
+		sed -i ' ' "/\/${servername}\//d" ${moodledata_path}/moodle_crontab
+	else
+		sed -i "/\/${servername}\//d" ${moodledata_path}/moodle_crontab
+	fi
 fi
 
 restart_multihost

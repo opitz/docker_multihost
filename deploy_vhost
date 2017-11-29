@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # script to deploy a new VHOST to multihost
-# m.opitz@qmul.ac.uk | 2017-11-28
+# m.opitz@qmul.ac.uk | 2017-11-29
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo "deploy vhost v.1.3"
+echo "deploy vhost v.1.4"
 echo "------------------"
 
 usage() { echo "Usage: $0 <servername> [no_moodle]" 1>&2; exit 1; }
@@ -52,7 +52,14 @@ if [ ! -f ${sites_enabled_path}/default.configuration ]
 fi
 
 cp ${sites_enabled_path}/default.configuration ${sites_enabled_path}/${servername}.conf
-sed -i "s/TheServerName/${servername}/g" ${sites_enabled_path}/${servername}.conf
+
+if [ "`uname`" == "Darwin"  ]
+	then
+	sed -i ' ' "s/TheServerName/${servername}/g" ${sites_enabled_path}/${servername}.conf
+else
+		sed -i "s/TheServerName/${servername}/g" ${sites_enabled_path}/${servername}.conf
+fi
+
 chmod 777 ${sites_enabled_path}/${servername}.conf
 echo "--> ${sites_enabled_path}/${servername}.conf has been placed."
 
