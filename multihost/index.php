@@ -178,7 +178,7 @@ echo "</ul>";
 echo "<b>Available VHOSTs:</b><ul>";
 foreach($vhosts as $vhost)
 {
-	if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..') {
+	if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
 		echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="deploy">'.deploy_button($vhost).'</td></tr></table>';
 	}
 }	
