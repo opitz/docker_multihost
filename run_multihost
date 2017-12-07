@@ -124,11 +124,11 @@ if [ -f ${moodledata_path}/moodle_crontab ]
 	echo "docker exec ${servername} crontab /var/moodledata/moodle_crontab">>${command_path}/restart_multihost
 fi
 
-# write the ip address of host to a file 'ip.txt' inside the 'multihost-help' VHOST
-if [ -d $www_path/multihost-help ]
+# write the ip address of host to a file 'ip.txt' inside the 'multihost' VHOST
+if [ -d $www_path/multihost ]
 	then
-	echo $ip > $www_path/multihost-help/ip.txt
-	chmod 755 $www_path/multihost-help/ip.txt
+	echo $ip > $www_path/multihost/ip.txt
+	chmod 755 $www_path/multihost/ip.txt
 fi
 
 echo now running ${servername}

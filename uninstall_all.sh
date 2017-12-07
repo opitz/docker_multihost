@@ -69,8 +69,8 @@ fi
 # removing the moodledata-help webroot folder and all its content
 if [ -d $www_path/multihost-help ]
 	then
-	sudo rm -r $www_path/multihost-help >/dev/null 2>/dev/null
-	echo "--> '$www_path/multihost-help' directory has been removed."
+	sudo rm -r $www_path/multihost >/dev/null 2>/dev/null
+	echo "--> '$www_path/multihost' directory has been removed."
 fi
 
 # removing the html default webroot if it is a link only

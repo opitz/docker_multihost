@@ -1,6 +1,6 @@
 FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.1 - 2017-11-27
+# v.1.2 - 2017-12-07
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
 ENV https_proxy https://wwwcache.qmul.ac.uk:8080
@@ -34,6 +34,7 @@ RUN yum install -y \
 	systemd \
 	openssl \
 	cronie \
+	sudo \
 	nano 
 
 RUN yum -y clean all
@@ -52,6 +53,9 @@ RUN echo "IncludeOptional sites-enabled/*conf" >> /etc/httpd/conf/httpd.conf
 
 # remove the default ssl configuration
 RUN mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
+
+# setup apache as sudoer - so we can use a web interface to config the server
+RUN echo "apache ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 
 # setup xdebug
 #RUN rm /etc/php.d/15-xdebug.ini && \

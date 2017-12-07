@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-# 2017-11-28
+# 2017-12-07
 
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.5'
+echo 'Docker multihost builder v.1.6'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -77,7 +77,7 @@ if [ -f /etc/multihost.conf ]
 else
 	sudo cp multihost.conf /etc/multihost.conf
 	sudo chmod 777 /etc/multihost.conf
-	echo "A '/etc/multihost.conf' file has been placed and needs to be configured in order to finish the inital setup."
+	echo "A '/etc/multihost.conf' file has been placed and needs to be configured in order to finish the initial setup."
 fi
 
 echo "Please press any key to open that file with an editor, make any necessay changes and save them."
@@ -144,13 +144,22 @@ if [ ! -f $command_path/run_multihost ]
 	echo "FAILURE! The 'run_multihost' command could not be found!"
 	echo "You may want to check your installation."
 else
-	# deploy the multihost-help VHOST
-	check_path $www_path/multihost-help
-	cp ./index.php $www_path/multihost-help/index.php
-	sudo deploy_vhost multihost-help no_moodle
-	sudo multihost_default multihost-help
+	# deploy the multihost VHOST
+	sudo rm -r $www_path/multihost/
+	cp -r ./multihost $www_path/multihost
+	chmod +x $www_path/multihost/scripts/*.sh
+	sudo deploy_vhost multihost no_moodle
+	sudo multihost_default multihost
 
-	echo 'All Done!'
-	echo "You may run 'run_multihost' to start the Docker multihost server now."
+	# deploy the multihost-help VHOST
+#	check_path $www_path/multihost-help
+#	cp ./index.php $www_path/multihost-help/index.php
+#	sudo deploy_vhost multihost-help no_moodle
+#	sudo multihost_default multihost-help
+
+#	echo 'All Done!'
+#	echo "You may run 'run_multihost' to start the Docker multihost server now."
+	sudo run_multihost
+	echo 'The Docker multihost server is now up and running on this host.'
 fi
 echo ' '
