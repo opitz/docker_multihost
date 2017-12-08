@@ -1,5 +1,5 @@
 <?php
-$version = '1.0';
+$version = '1.1';
 $date = '2017-12-08';
 
 #------------------------------------------------------------------------------
@@ -128,8 +128,10 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .button { width:100px; }
 .is_default { width:100px; font-weight: bold; }
 .column { width:240px; }
-.default { text-align:center; font-weight:bold; }
-.disable { text-align:center; }
+.default_button { text-align:center; font-weight:bold; }
+.enable_button { text-align:center; }
+.disable_button { text-align:center; }
+.cache_button { text-align:center; }
 .top_table {  }
 .left_column { width:60%; vertical-align:top; }
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
@@ -206,9 +208,9 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td>'.cache_button($vhost).'</td>';
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class"cache_button">'.cache_button($vhost).'</td>';
 						} else {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td></td>';
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
 					} 
@@ -230,7 +232,7 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 			foreach($vhosts as $vhost)
 			{
 				if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
-					echo '<tr><td class="column"><li>'.$vhost.'</li></td><td class="enable">'.enable_button($vhost).'</td></tr>';
+					echo '<tr><td class="column"><li>'.$vhost.'</li></td><td class="enable_button">'.enable_button($vhost).'</td></tr>';
 				}
 			}	
 	?>
