@@ -75,6 +75,7 @@ function default_button($vhost = false) {
 function disable_button($vhost = false) {
 	if(!$vhost) return false;
 	if($vhost == 'multihost') return 'mandatory';
+	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '';
 
 	return '<form method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
