@@ -61,11 +61,11 @@ install_command() {
 	fi
 }
 
-install_command run_multihost
-install_command deploy_vhost
-install_command remove_vhost
+install_command disable_vhost
+install_command enable_vhost
 install_command multihost_default
 install_command purge_moodlecache
+install_command run_multihost
 
 # install a dummy restart command only if there isn't one already
 # this will be replaced with the real one depending on which multihost Docker image is running 

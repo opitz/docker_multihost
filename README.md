@@ -43,8 +43,8 @@ install_commands.sh
 This script will install/update the following multihost CLI commands (please see descriptions of these commands further below):
  * run_multihost - run or restart a multihost instance
  * restart_multihost - restart the Apache2/httpd server inside the Docker container to allow changes in configuration
- * deploy_vhost - this command allows to ad a new VHOST to the multihost server
- * remove_vhost - this command will remove the settings for a given VHOST from the web server - but will NOT remove the web root data.
+ * enable_vhost - this command allows to enable a VHOST on the Docker multihost server
+ * disable_vhost - this command will disable the settings for a given VHOST on the server - but will NOT remove the web data.
  * multihost_default - this command will make one of the existing VHOSTs teh default VHOST that is served when using the default server name or IP address. 
  * purge_moodlecache - this command removes all cached files for a given moodle VHOST.
 
@@ -70,11 +70,11 @@ restart_multihost
 
 This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
 
-deploy_vhost <i>servername</i>
+enable_vhost <i>servername</i>
 ------------------------------
 <i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
 
-With this command a new VHOST with the name <i>servername</i> will be added to the multihost server.
+With this command a new VHOST with the name <i>servername</i> will be eanbled for the multihost server.
 
 The servername must be unique and in the webroot of the multihost server needs to be a folder with the same name.
 When the VHOST has been deployed the Apache2/httpd service will be restarted to activate the new VHOST. 
@@ -107,17 +107,17 @@ multihost.conf
 
 This file contains all user defined settings for the multihost. It contains the settings that were edited or confirmed when running the build_all.sh script and is needed by the commands 'run_multihost' and 'deploy_vhost' to work properly.
 
-remove_vhost <i>servername</i>
+disable_vhost <i>servername</i>
 ------------------------------
 <i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
 
-This command will remove all settings of a given VHOST - but not the web data itself!
+This command will disable a given VHOST and will remove all related settings - but not the web data itself!
 
 uninstall_all.sh [nodocker]
 ---------------------------
 <i>needs to run as superuser</i>
 
-This will remove the complete multihost docker installation from the machine - but NOT the web data nor any configuration files.
+This will remove the complete multihost docker installation from the machine - but NOT any web data nor any configuration files.
 
 Use the 'nodocker' option to keep existing Docker images.
 
@@ -138,4 +138,4 @@ Use this script to easily update all installed scripts and commands. It will pre
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.3
+v.1.4

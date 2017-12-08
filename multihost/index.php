@@ -175,8 +175,8 @@ echo "</ul>";
 	<ul>
 		<li><b>run_multihost</b> - (Re-)start the multihost server. By default it will run with Centos7 and PHP7.</li> 
 		<li><b>restart_multihost</b> - Restart the web server inside the Docker container to reload new config.<br>This will automatically be issued when enabling or removing VHOSTs.</li> 
-		<li><b>deploy_vhost <i>servername</i></b> - Enable a VHOST (see below).</li> 
-		<li><b>remove_vhost <i>servername</i></b> - Disable an existing VHOST and all it's settings - but <b>NOT</b> removing the web data.</li> 
+		<li><b>enable_vhost <i>servername</i></b> - Enable a VHOST (see below).</li> 
+		<li><b>disable_vhost <i>servername</i></b> - Disable an existing VHOST and all it's settings - but <b>NOT</b> removing the web data.</li> 
 		<li><b>multihost_default <i>servername</i></b> - Promoting one of the existing(!) VHOSTs to default web server.</li> 
 		<li><b>purge_moodlecache <i>servername</i></b> - Removing any cached moodledata for the given servername.</li> 
 	</ul>
@@ -184,10 +184,10 @@ echo "</ul>";
 <p>
 	<span class="subheader">Enable VHOST</span>
 	<br>
-	To enable a new VHOST using the CLI do these steps in a terminal:
+	To enable a VHOST using the CLI do these steps in a terminal:
 	<ul>
-		<li>Add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
-		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>
+		<li>If not already present: add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
+		<li>Issue 'sudo enable_vhost <i>servername</i>'</li>
 		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server ( <?php echo file_get_contents('ip.txt');?>).</li>
 	</ul>
 </p>

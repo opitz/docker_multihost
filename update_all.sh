@@ -18,14 +18,16 @@ fi
 if [ "$1" == "nodocker" ]
 	then
 	echo "--> Bypassing Docker images."
-	sudo ./uninstall_all.sh nodocker 2>/dev/null
+	
+    # uninstall everything but the docker images
+    sudo ./uninstall_all.sh nodocker 2>/dev/null
 	git pull
-
     #restore the multihost.conf file
     if [ -f /etc/multihost.conf.bak ]
         then
         sudo cp /etc/multihost.conf.bak /etc/multihost.conf
     fi
+    # install everything but the docker images
 	sudo ./build_all.sh nodocker
 else
     echo "Removing all multihost docker images and recreating them from the Dockerfiles can take quite some time."
@@ -37,15 +39,15 @@ else
         echo ' '
         exit 1
     fi
-
+    # uninstall everything
 	sudo ./uninstall_all.sh 2>/dev/null
 	git pull
-
     #restore the multihost.conf file
     if [ -f /etc/multihost.conf.bak ]
         then
         sudo cp /etc/multihost.conf.bak /etc/multihost.conf
     fi
+    # install everything
 	sudo ./build_all.sh
 fi
 

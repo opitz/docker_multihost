@@ -52,10 +52,10 @@ remove_command() {
 
 remove_command run_multihost
 remove_command restart_multihost
-remove_command deploy_vhost
-remove_command remove_vhost
-remove_command multihost_default
 remove_command purge_moodlecache
+remove_command multihost_default
+remove_command enable_vhost
+remove_command disable_vhost
 
 echo "--> Done!"
 echo ' '
