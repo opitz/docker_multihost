@@ -67,7 +67,7 @@ if [ -d $moodledata_path ]
 fi
 
 # removing the moodledata-help webroot folder and all its content
-if [ -d $www_path/multihost-help ]
+if [ -d $www_path/multihost ]
 	then
 	sudo rm -r $www_path/multihost >/dev/null 2>/dev/null
 	echo "--> '$www_path/multihost' directory has been removed."

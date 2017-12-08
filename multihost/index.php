@@ -194,7 +194,7 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 					echo'<table><tr><td class="column">';
 					if(file_exists('/var/moodledata/'.$vhost)) {
 						if(realpath('/var/www/html') == '/var/www/'.$vhost){
-							echo '<li><b>'.$vhost.'</b></li></td><td class="is_default">>>is default<<</td><td class="disable"></td><td>'.cache_button($vhost);
+							echo '<li><b><a href="'.$vhost.'" target=new>'.$vhost.'</a></b></li></td><td class="is_default">>>is default<<</td><td class="disable"></td><td>'.cache_button($vhost);
 						} else {
 							echo '<li>'.$vhost.'</li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td>'.cache_button($vhost);
 						}
