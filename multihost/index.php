@@ -9,9 +9,9 @@ function enable_vhost($vhost = false){
 	}
 
 	if(array_key_exists('no_moodle',$_POST)){
-	  	$cmd = "scripts/enable_vhost.sh $vhost no_moodle";
+	  	$cmd = "cli/enable_vhost.sh $vhost no_moodle";
 	} else {
-		$cmd = "scripts/enable_vhost.sh $vhost";
+		$cmd = "cli/enable_vhost.sh $vhost";
 	}
 	
 	shell_exec($cmd);
@@ -23,7 +23,7 @@ function disable_vhost($vhost = false){
 		return false;
 	}
 
-	$cmd = "scripts/disable_vhost.sh $vhost";
+	$cmd = "cli/disable_vhost.sh $vhost";
 	shell_exec($cmd);
 }
 
@@ -33,7 +33,7 @@ function make_default($vhost = false){
 		return false;
 	}
 
-	$cmd = "sudo scripts/make_default.sh $vhost";
+	$cmd = "sudo cli/make_default.sh $vhost";
 	shell_exec($cmd);
 }
 
