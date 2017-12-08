@@ -148,7 +148,7 @@ else
 	sudo rm -r $www_path/multihost/
 	cp -r ./multihost $www_path/multihost
 	chmod +x $www_path/multihost/cli/*.sh
-	sudo deploy_vhost multihost no_moodle
+	sudo enable_vhost multihost no_moodle
 	sudo multihost_default multihost
 
 	# deploy the multihost-help VHOST
