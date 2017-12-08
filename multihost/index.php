@@ -152,7 +152,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 			This is Docker <span class="multi">multi</span>host, a web server based on Docker and optimized for Moodle instances.<br>
 			It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 			<p>
-			This is the internal 'multihost' webpage which on a new installation serves as the default web content as well.<br>
+			This is the internal 'multihost' webpage which on a new installation serves as the default web content.<br>
 			Please see below how to set up your own VHOSTs and how to make one of them the default content served.<br>
 			The default content will be shown when using the IP address or the generic DNS name of the server.
 			<p>
