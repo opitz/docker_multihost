@@ -11,6 +11,7 @@ moodledata_path='/var/moodledata'
 servername=$1
 
 if [ -d ${moodledata_path}/${servername} ]
+	then
 	sudo rm -r ${moodledata_path}/${servername}/cache >/dev/null 2>/dev/null
 	sudo rm -r ${moodledata_path}/${servername}/filter >/dev/null 2>/dev/null
 	sudo rm -r ${moodledata_path}/${servername}/localcache >/dev/null 2>/dev/null
