@@ -1,39 +1,29 @@
 <?php
-$version = '0.6';
-$date = '2017-12-07';
+$version = '0.7';
+$date = '2017-12-08';
 
-function deploy_vhost($vhost = false){
+function enable_vhost($vhost = false){
 	if(!$vhost) {
 		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
 		return false;
 	}
 
 	if(array_key_exists('no_moodle',$_POST)){
-	  	$cmd = "scripts/deploy_vhost.sh $vhost no_moodle";
+	  	$cmd = "scripts/enable_vhost.sh $vhost no_moodle";
 	} else {
-		$cmd = "scripts/deploy_vhost.sh $vhost";
+		$cmd = "scripts/enable_vhost.sh $vhost";
 	}
 	
 	shell_exec($cmd);
 }
 
-function deploy_vhost0($vhost = false){
+function disable_vhost($vhost = false){
 	if(!$vhost) {
 		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
 		return false;
 	}
 
-	$cmd = "scripts/deploy_vhost.sh $vhost";
-	shell_exec($cmd);
-}
-
-function remove_vhost($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-
-	$cmd = "scripts/remove_vhost.sh $vhost";
+	$cmd = "scripts/disable_vhost.sh $vhost";
 	shell_exec($cmd);
 }
 
@@ -47,23 +37,13 @@ function make_default($vhost = false){
 	shell_exec($cmd);
 }
 
-function deploy_button($vhost = false) {
+function enable_button($vhost = false) {
 	if(!$vhost) return false;
 
 	return '<form method="post">
 	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
 	no moodle<input type = "checkbox" name = "no_moodle" value = "1" />
-    <input class="button" type="submit" name="deploy" id="'.$vhost.'" value="Deploy" /><br/>
-</form>
-';
-}
-
-function deploy_button0($vhost = false) {
-	if(!$vhost) return false;
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="deploy" id="'.$vhost.'" value="Deploy" /><br/>
+    <input class="button" type="submit" name="enable" id="'.$vhost.'" value="Enable" /><br/>
 </form>
 ';
 }
@@ -78,28 +58,28 @@ function default_button($vhost = false) {
 ';
 }
 
-function remove_button($vhost = false) {
+function disable_button($vhost = false) {
 	if(!$vhost) return false;
 
 	if($vhost == 'multihost') return '<center>mandatory</center>';
 
 	return '<form method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="remove" id="'.$vhost.'" value="Remove" /><br/>
+    <input class="button" type="submit" name="disable" id="'.$vhost.'" value="Disable" /><br/>
 </form>
 ';
 }
 
-if(array_key_exists('deploy',$_POST)){
-   deploy_vhost($_POST['vhost']);
+if(array_key_exists('enable',$_POST)){
+   enable_vhost($_POST['vhost']);
 }
 
 if(array_key_exists('default',$_POST)){
    make_default($_POST['vhost']);
 }
 
-if(array_key_exists('remove',$_POST)){
-   remove_vhost($_POST['vhost']);
+if(array_key_exists('disable',$_POST)){
+   disable_vhost($_POST['vhost']);
 }
 ?>
 <!DOCTYPE html>
@@ -114,7 +94,7 @@ if(array_key_exists('remove',$_POST)){
 .button { width:100px; }
 .is_default { width:100px; font-weight: bold; }
 .column { width:240px; }
-.remove { text-align:center; }
+.disable { text-align:center; }
 </style>
 
 <title>Docker multihost</title>
@@ -147,27 +127,26 @@ if(file_exists('ip.txt')) {
 <hr>
 <p><span class="subheader">Manage VHOSTs</span></p>
 <p>
-Here you will be able to deploy or remove any existing directory under '/var/www' with the click of a button.<br>
-To make it accessible using it's name you will have to change your local '/etc/hosts' file and connect the name to the IP address of this server (see above).
+Here you will be able to enable or disable any existing web server directory under '/var/www' with the click of a button.<br>
+To access it using it's name you will have to change your local '/etc/hosts' file and connect the name to the IP address of this server (see above).
 </p>
 <p>
-When you check the 'no moodle' box before you are deploying a VHOST it will have no folder for moodledata and no crontab entry for moodle maintenance.
+When you check the 'no moodle' box before enabling a VHOST it will have no folder for moodledata and no crontab entry for moodle maintenance which are both only useful for Moodle instances.
 </p>
 <p>
 <table><tr>
 	<td valign="top">
 <?php
-echo "<b>Deployed VHOSTs:</b><ul>";
+echo "<b>Enabled VHOSTs:</b><ul>";
 $vhosts = scandir('/var/www');
 
 foreach($vhosts as $vhost)
 {
 	if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 		if(realpath('/var/www/html') == '/var/www/'.$vhost){
-//			echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="is_default">>>is default<<</td><td class="remove">'.remove_button($vhost).'</td></tr></table>';
-			echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="is_default">>>is default<<</td><td class="remove"></td></tr></table>';
+			echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="is_default">>>is default<<</td><td class="disable"></td></tr></table>';
 		} else {
-			echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="default">'.default_button($vhost).'</td><td class="remove">'.remove_button($vhost).'</td></tr></table>';
+			echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td></tr></table>';
 		}
 	} 
 }	
@@ -175,11 +154,11 @@ echo "</ul>";
 ?>
 </td><td width=20></td><td valign="top">
 <?php
-echo "<b>Available VHOSTs:</b><ul>";
+echo "<b>Disabled VHOSTs:</b><ul>";
 foreach($vhosts as $vhost)
 {
 	if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
-		echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="deploy">'.deploy_button($vhost).'</td></tr></table>';
+		echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="enable">'.enable_button($vhost).'</td></tr></table>';
 	}
 }	
 echo "</ul>";
@@ -195,17 +174,17 @@ echo "</ul>";
 	During the setup of the multihost server you installed several multihost CLI commands that need to run as superuser:
 	<ul>
 		<li><b>run_multihost</b> - (Re-)start the multihost server. By default it will run with Centos7 and PHP7.</li> 
-		<li><b>restart_multihost</b> - Restart the web server inside the Docker container to reload new config.<br>This will automatically be issued when deploying or removing VHOSTs.</li> 
-		<li><b>deploy_vhost <i>servername</i></b> - Deploy a new VHOST (see below).</li> 
-		<li><b>remove_vhost <i>servername</i></b> - Remove an existing VHOST and all it's settings - but <b>NOT</b> the web data.</li> 
+		<li><b>restart_multihost</b> - Restart the web server inside the Docker container to reload new config.<br>This will automatically be issued when enabling or removing VHOSTs.</li> 
+		<li><b>deploy_vhost <i>servername</i></b> - Enable a VHOST (see below).</li> 
+		<li><b>remove_vhost <i>servername</i></b> - Disable an existing VHOST and all it's settings - but <b>NOT</b> removing the web data.</li> 
 		<li><b>multihost_default <i>servername</i></b> - Promoting one of the existing(!) VHOSTs to default web server.</li> 
 		<li><b>purge_moodlecache <i>servername</i></b> - Removing any cached moodledata for the given servername.</li> 
 	</ul>
 </p>
 <p>
-	<span class="subheader">Deploy new VHOST</span>
+	<span class="subheader">Enable VHOST</span>
 	<br>
-	To deploy a new VHOST using the CLI do these steps in a terminal:
+	To enable a new VHOST using the CLI do these steps in a terminal:
 	<ul>
 		<li>Add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo deploy_vhost <i>servername</i>'</li>

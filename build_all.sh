@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-# 2017-12-07
+# 2017-12-08
 
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.6'
+echo 'Docker multihost builder v.1.7'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -144,7 +144,7 @@ if [ ! -f $command_path/run_multihost ]
 	echo "FAILURE! The 'run_multihost' command could not be found!"
 	echo "You may want to check your installation."
 else
-	# deploy the multihost VHOST
+	# enable the multihost VHOST
 	sudo rm -r $www_path/multihost/
 	cp -r ./multihost $www_path/multihost
 	chmod +x $www_path/multihost/scripts/*.sh

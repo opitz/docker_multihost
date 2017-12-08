@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'install multihost commands v.1.1'
+echo 'install multihost commands v.1.2'
 echo '--------------------------------------------------------'
 usage() {
 	if [ $1 ]
@@ -26,18 +26,20 @@ usage() {
 	. /etc/multihost.conf
 
 install_command() {
-
-
 	if [ ! $1 ]
 		then
-		usage 'no command given - aborting!'
+		usage 'no command given to install - aborting!'
 	fi
     if [ $2 ] 
             then 
             command_path=$2
+            if [ ! -d $command_path ]
+            	then
+            	usage 'installation path not found - aborting!'
+            fi
     fi
 
-	if [ ! -f $1 ]
+	if [ ! -f cli/$1 ]
         	then
 		echo "Could not find command file '$1' - skipping!"
 	else
@@ -48,7 +50,7 @@ install_command() {
 			update=0
 		fi
 
-    	sudo cp $1 $command_path/$1
+    	sudo cp cli/$1 $command_path/$1
     	sudo chmod  777 $command_path/$1
 		if [ $update -eq 1 ]
 			then
@@ -71,6 +73,6 @@ if [ ! -f $command_path/restart_multihost ]
 	then install_command restart_multihost
 fi
 
-echo Done!
+echo "--> Done!"
 echo ' '
 

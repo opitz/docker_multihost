@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'remove multihost commands v.1.0'
+echo 'remove multihost commands v.1.1'
 echo '--------------------------------------------------------'
 usage() {
 	if [ $1 ]
@@ -35,6 +35,10 @@ remove_command() {
     if [ $2 ] 
             then 
             command_path=$2
+            if [ ! -d $command_path ]
+            	then
+            	usage 'installation path not found - aborting!'
+            fi
     fi
 
 	if [ ! -f $command_path/$1 ]
@@ -53,6 +57,6 @@ remove_command remove_vhost
 remove_command multihost_default
 remove_command purge_moodlecache
 
-echo Done!
+echo "--> Done!"
 echo ' '
 
