@@ -1,5 +1,5 @@
 <?php
-$version = '0.x';
+$version = '1.0';
 $date = '2017-12-08';
 
 #------------------------------------------------------------------------------
@@ -62,6 +62,7 @@ function enable_button($vhost = false) {
 #------------------------------------------------------------------------------
 function default_button($vhost = false) {
 	if(!$vhost) return false;
+	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '>> default <<';
 
 	return '<form method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
@@ -85,7 +86,7 @@ function disable_button($vhost = false) {
 #------------------------------------------------------------------------------
 function cache_button($vhost = false) {
 	if(!$vhost) return false;
-	if(!file_exists('/var/moodledata/'.$vhost.'/cache')) return "cache purged";
+	if(!file_exists('/var/moodledata/'.$vhost.'/sessions')) return "cache purged";
 
 	return '<form method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
@@ -119,31 +120,33 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 <head>
 
 <style>
-.header { font-size:28px; color:#F60; }
+.header { font-size:28px; color:#3456A3; }
 .subheader { font-size:18px; font-weight: bold; color:#3456A3;}
 .footer { font-size:12px; font-style: italic; }
 .alert { color:red; }
 .button { width:100px; }
 .is_default { width:100px; font-weight: bold; }
 .column { width:240px; }
+.default { text-align:center; font-weight:bold; }
 .disable { text-align:center; }
 .top_table {  }
 .left_column { width:60%; vertical-align:top; }
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
+.multi { color:#F60; font-weight:bold; }
 </style>
 
 <title>Docker multihost</title>
 </head>
 
 <body>
-<span class="header">Docker <b>multi</b>host</span>
+<span class="header">Docker <span class="multi">multi</span>host</span>
 <hr>
 <table class="top_table">
 	<tr>
 		<td class="left_column">
-			This is Docker <b>multi</b>host, a web server based on Docker and optimized for Moodle instances.<br>
+			This is Docker <span class="multi">multi</span>host, a web server based on Docker and optimized for Moodle instances.<br>
 			It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 			<p>
 			This is the internal 'multihost' webpage which on a new installation serves as the default web content as well.<br>
@@ -183,48 +186,58 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 <span class="note">Please note:</span> When you check the 'no moodle' box before enabling a VHOST it will have no folder for moodledata and no crontab entry for moodle maintenance which are both only useful for Moodle instances.
 </p>
 <p>
-<table><tr>
-	<td valign="top">
-		<b>Enabled VHOSTs:</b><ul>
-<?php
-			$vhosts = scandir('/var/www');
+<table>
+	<tr>
+		<td valign="top">
+			<b>Enabled VHOSTs:</b>
+			<table>
+				<tr>
+					<td class="column"></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<ul>
+	<?php
+				$vhosts = scandir('/var/www');
+				foreach($vhosts as $vhost)
+				{
+					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
+						echo'<tr><td><li>';
+						if(file_exists('/var/moodledata/'.$vhost)) {
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td>'.cache_button($vhost).'</td>';
+						} else {
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td></td>';
+						}
+						echo '</tr>';
+					} 
+				}	
+	?>
+				</ul>
+			</table>
+		</td>
+		<td width=20></td>
+		<td valign="top">
+			<b>Disabled VHOSTs:</b><ul>
+			<table>
+				<tr>
+					<td class="column"></td>
+					<td></td>
+				</tr>
+				<ul>
+	<?php
 			foreach($vhosts as $vhost)
 			{
-				if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
-					echo'<table><tr><td class="column">';
-					if(file_exists('/var/moodledata/'.$vhost)) {
-						if(realpath('/var/www/html') == '/var/www/'.$vhost){
-							echo '<li><b><a href="'.$vhost.'" target=new>'.$vhost.'</a></b></li></td><td class="is_default">>>is default<<</td><td class="disable"></td><td>'.cache_button($vhost);
-						} else {
-							echo '<li>'.$vhost.'</li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td>'.cache_button($vhost);
-						}
-					} else {
-						if(realpath('/var/www/html') == '/var/www/'.$vhost){
-							echo '<li><b>'.$vhost.'</b></li></td><td class="is_default">>>is default<<</td><td class="disable"></td><td>';
-						} else {
-							echo '<li>'.$vhost.'</li></td><td class="default">'.default_button($vhost).'</td><td class="disable">'.disable_button($vhost).'</td><td>';
-						}
-					}
-					echo '</td></tr></table>';
-				} 
+				if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
+					echo '<tr><td class="column"><li>'.$vhost.'</li></td><td class="enable">'.enable_button($vhost).'</td></tr>';
+				}
 			}	
-?>
-		</ul>
-	</td>
-	<td width=20></td>
-	<td valign="top">
-		<b>Disabled VHOSTs:</b><ul>
-<?php
-		foreach($vhosts as $vhost)
-		{
-			if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
-				echo '<table><tr><td class="column"><li>'.$vhost.'</li></td><td class="enable">'.enable_button($vhost).'</td></tr></table>';
-			}
-		}	
-?>
-		</ul>
-	</td>
-</tr></table>
+	?>
+				</ul>
+			</table>
+		</td>
+	</tr>
+</table>
 </p>
 <hr>
 <p>
