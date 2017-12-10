@@ -66,8 +66,8 @@ if [ "$1" == "nodocker" ]
 else
 	docker build -t centos7_php7_httpd centos7_php7_httpd 
 	docker build -t centos7_php56_httpd centos7_php56_httpd
-	docker build -t ubuntu_php7_apache2 ubuntu_php7_apache2
-	docker build -t ubuntu_php56_apache2 ubuntu_php56_apache2
+#	docker build -t ubuntu_php7_apache2 ubuntu_php7_apache2
+#	docker build -t ubuntu_php56_apache2 ubuntu_php56_apache2
 fi
 
 # insatlling/updating the configuration file
