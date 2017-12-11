@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2017-11-27
+# m.opitz@qmul.ac.uk | 2017-12-11
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
-echo v.1.5
+echo v.1.6
 # v.0.1 - added hostmane to container
 # v.0.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.0.3 - now using setup details  to make changes easier
@@ -20,6 +20,8 @@ echo v.1.5
 # v.1.3 - installing crontab from ${moodledata_path}/moodle_crontab if present , checking for superuser rights
 # v.1.4 - checking the IP address the Mac way where needed
 # v.1.5 - now running Docker container with --restart always option
+# v.1.6 - starting a 2nd server with the other php version on Centos7
+
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
 # check for the config file and get the settings
@@ -63,12 +65,18 @@ shift $((OPTIND-1))
 if [ "${p}" == "5" ]
 	then
 	php_v=56
+	php_v2=7
 	port=80
 	ssl_port=443
+	port2=8080
+	ssl_port2=8443
 else
 	php_v=7
+	php_v2=56
 	port=80
 	ssl_port=443
+	port2=8080
+	ssl_port2=8443
 fi
 
 # remove any exsiting multihost container, running or not
@@ -102,11 +110,13 @@ if [ "${o}" == "u" ]
 	docker exec ${servername} service apache2 restart
 	echo "docker exec ${servername} service apache2 restart">${command_path}/restart_multihost
 else
-	os=centos7_php${php_v}_httpd
 	conf_path=/etc/httpd/sites-enabled
+	os=centos7_php${php_v}_httpd
+	os2=centos7_php${php_v2}_httpd
 	servername=multihost_${os}
+	servername2=multihost_${os2}
 
-#	docker rm -f ${servername} >/dev/null 2>/dev/null
+#	run the 1st server
 	docker run -itd \
 		--privileged=true \
 		--name ${servername} \
@@ -122,24 +132,46 @@ else
 		-e HOST_IP_ADDR=$ip \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
-		${os}
+		${os} >/dev/null
 	docker exec ${servername} systemctl start crond
 	docker exec ${servername} systemctl restart httpd
 	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
+	echo "now running ${servername} with PHP${php_v} on ports ${port} / ${ssl_port}."
+
+#	run the 2nd server
+	docker run -itd \
+		--privileged=true \
+		--name ${servername2} \
+		-h ${servername2} \
+		-p ${port2}:80 \
+		-p ${ssl_port2}:443 \
+		-v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+		-v ${sites_enabled_path}:${conf_path} \
+		-v ${www_path}:/var/www \
+		-v ${moodledata_path}:/var/moodledata \
+		-v ${filedir_path}:/filedir \
+		-v ${xchange_path}:/xchange \
+		-e HOST_IP_ADDR=$ip \
+		--add-host db_host:${db_host_ip} \
+		--restart always \
+		${os2} >/dev/null
+#	docker exec ${servername} systemctl start crond - no 2nd cron job here, the 1st server takes care already
+	docker exec ${servername2} systemctl restart httpd
+	echo "docker exec ${servername2} systemctl restart httpd">>${command_path}/restart_multihost
+	echo "now running ${servername2} with PHP${php_v2} on ports ${port2} / ${ssl_port2}."
 fi
 
-# install the crontab
+# install the crontab (on the 1st server only)
 if [ -f ${moodledata_path}/moodle_crontab ]
 	then
 	docker exec ${servername} crontab /var/moodledata/moodle_crontab
 	echo "docker exec ${servername} crontab /var/moodledata/moodle_crontab">>${command_path}/restart_multihost
 fi
 
-# write the ip address of host to a file 'ip.txt' inside the 'multihost' VHOST
+# write the ip address of host to a file 'ip.txt' inside the 'multihost' VHOST so it can be displayed from a web server that runs inside the docker container
 if [ -d $www_path/multihost ]
 	then
 	echo $ip > $www_path/multihost/ip.txt
 	chmod 755 $www_path/multihost/ip.txt
 fi
 
-echo "now running ${servername}"

@@ -65,13 +65,10 @@ run_multihost
 -------------
 <i>located at: /usr/bin/</i>
 
-To run a Docker container a script is provided. It should ideally be placed in your PATH (e.g. /usr/bin/run_multihost) and needs to be executable.
-
-You can run a Docker container  with one of the following options:
- * run_multihost 		= centos7_php7_httpd (default)
- * run_multihost -ou 		= ubuntu_php7_apache2
- * run_multihost -p5 		= centos7_php56_httpd
- * run_multihost -ou -p5 	= ubuntu_php56_apache2 
+This will run TWO almost identical web servers - the only difference will be the PHP version (5.6 vs 7.1).
+The first server will run on ports 80 and 443 while the second runs on ports 8080 and 8443.
+Without any options 'sudo run_multihost' will run the first server woth PHP 7.1 and the second with PHP 5.6.
+To reverse that order issue the command with an option like so 'sudo run_multihost -p5'
 
 This script will also create/update the /usr/local/bin/restart_multihost command (see below) according to the selected container
 
@@ -79,7 +76,7 @@ restart_multihost
 ----------------
 <i>located at: /usr/bin</i>
 
-This command allows to restart the Apache2/httpd server inside the Docker container so to reload changes in config files.
+This command allows to restart both Apache2/httpd servers inside the Docker containers so to reload changes in the - shared - config files.
 
 enable_vhost <i>servername</i>
 ------------------------------
