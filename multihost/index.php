@@ -131,7 +131,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
-.multi { color:#F60; font-weight:bold; }
+.multi { color:#999; font-weight:bold; }
 </style>
 
 <title>Docker multihost</title>
@@ -180,7 +180,8 @@ Here you will be able to enable or disable any existing web server directory und
 To access it using it's name you will have to change your local '/etc/hosts' file and connect the name to the IP address of this server (see above).
 </p>
 <p>
-<span class="note">Please note:</span> When enabling a VHOST it will detect if it is a Moodle instance and will create a folder for moodledata and a crontab entry for moodle maintenance automatically. For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.
+<span class="note">Please note:</span> When enabling a VHOST it will detect if it is a Moodle instance and will create a folder for moodledata and a crontab entry for moodle maintenance automatically.<br>
+For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.
 </p>
 <p>
 <table>
