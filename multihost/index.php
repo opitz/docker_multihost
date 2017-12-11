@@ -131,7 +131,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
-.multi { color:#999; font-weight:bold; }
+.multi { color:#999; font-style:italic; font-weight:bold; }
 </style>
 
 <title>Docker multihost</title>
@@ -143,8 +143,8 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 <table class="top_table">
 	<tr>
 		<td class="left_column">
-			This is Docker <span class="multi">multi</span>host, a web server based on Docker and optimized for Moodle instances.<br>
-			It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
+			This is Docker <span class="multi">multi</span>host, a web server based on Docker and optimized for - but not limited to - Moodle instances.
+			<br>It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 			<p>
 			This is the internal 'multihost' webpage which on a new installation serves as the default web content.<br>
 			Please see below how to set up your own VHOSTs and how to make one of them the default content served.<br>
@@ -203,7 +203,7 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
 							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
