@@ -148,16 +148,10 @@ else
 	sudo rm -r $www_path/multihost/
 	cp -r ./multihost $www_path/multihost
 	chmod +x $www_path/multihost/cli/*.sh
-	sudo enable_vhost multihost no_moodle
+	sudo enable_vhost multihost
 	sudo multihost_default multihost
 
-	# deploy the multihost-help VHOST
-#	check_path $www_path/multihost-help
-#	cp ./index.php $www_path/multihost-help/index.php
-#	sudo deploy_vhost multihost-help no_moodle
-#	sudo multihost_default multihost-help
-
-#	echo 'All Done!'
+	echo 'All Done!'
 #	echo "You may run 'run_multihost' to start the Docker multihost server now."
 	sudo run_multihost
 	echo 'The Docker multihost server is now up and running on this host.'

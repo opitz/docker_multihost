@@ -1,6 +1,6 @@
 <?php
-$version = '1.1';
-$date = '2017-12-08';
+$version = '1.2';
+$date = '2017-12-11';
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
@@ -8,12 +8,7 @@ function enable_vhost($vhost = false){
 		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
 		return false;
 	}
-
-	if(array_key_exists('no_moodle',$_POST)){
-	  	$cmd = "cli/enable_vhost.sh $vhost no_moodle";
-	} else {
-		$cmd = "cli/enable_vhost.sh $vhost";
-	}
+	$cmd = "cli/enable_vhost.sh $vhost";
 	shell_exec($cmd);
 }
 
@@ -53,7 +48,6 @@ function enable_button($vhost = false) {
 
 	return '<form method="post">
 	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
-	no moodle<input type = "checkbox" name = "no_moodle" value = "1" />
     <input class="button" type="submit" name="enable" id="'.$vhost.'" value="Enable" /><br/>
 </form>
 ';
@@ -186,7 +180,7 @@ Here you will be able to enable or disable any existing web server directory und
 To access it using it's name you will have to change your local '/etc/hosts' file and connect the name to the IP address of this server (see above).
 </p>
 <p>
-<span class="note">Please note:</span> When you check the 'no moodle' box before enabling a VHOST it will have no folder for moodledata and no crontab entry for moodle maintenance which are both only useful for Moodle instances.
+<span class="note">Please note:</span> When enabling a VHOST it will detect if it is a Moodle instance and will create a folder for moodledata and a crontab entry for moodle maintenance automatically. For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.
 </p>
 <p>
 <table>
@@ -208,7 +202,7 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class"cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
 							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}

@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
 # script to enable a VHOST in Docker multihost
-# m.opitz@qmul.ac.uk | 2017-12-08
+# m.opitz@qmul.ac.uk | 2017-12-11
 sites_enabled_path="/etc/httpd/sites-enabled"
 moodledata_path="/var/moodledata"
+www_path="/var/www"
 servername=$1
 
-if [ "$2" == "no_moodle" ]
+if [ ! $1 ]
 	then
-	no_moodle=1
+	exit 1
 fi
 
 if [ ! -f ${sites_enabled_path}/default.configuration ]
@@ -28,8 +29,9 @@ fi
 
 chmod 777 ${sites_enabled_path}/${servername}.conf
 
-if [ ! $no_moodle ]
+if [ -f $www_path/$servername/blocks/moodleblock.class.php ]
 	then
+	# this is a Moodle instance - so prepare moodledata and cron job
 	if [ -d ${moodledata_path}/${servername} ]
 		then
 		sudo rm -r ${moodledata_path}/${servername}

@@ -1,8 +1,19 @@
-Dockerfiles
------------
+Docker multihost
+----------------
 All you need to build and run an Apache2/httpd multihost server with as many VHOSTs as needed.
 For this all served data and all config files are kept outside the Docker container and are forwarded into the running Docker container.
 
+The multihost web interface
+---------------------------
+After a sucessful build of the server (see below) it will by default serve the administation web interface that will show technical details and allows configuration of the VHOSTs served. For this it will list all the potential VHOSTs - that is all the directories found in the web root of the server (e.g. /var/www) - which can be enabled with the click of a button. Once enabled a VHOST may be contacted by using it's name -  but this will require changing the local /etc/hosts file accordingly and relate the name of the VHOST to the IP address the server is actually running on.
+
+The contents of the default VHOST will be shown whenever the generic DNS name or the IP address of the server is used as an URL. You can declare any of the enabled VHOSTs as the default one - but remember to declare a 'multihost' entry in your /etc/hosts file before switching the default VHOST so you are able to return to the admin interface easily by using "http://multihost" in your browser.
+
+You may disable any VHOST with the click of a button  - but not the current default VHOST and not "multihost" as this containes the web interface.
+
+
+Dockerfiles
+-----------
 This repository contains the Dockerfiles to create the following Docker images
  * centos7_php7_httpd
  * centos7_php56_httpd
@@ -10,11 +21,11 @@ This repository contains the Dockerfiles to create the following Docker images
  * ubuntu_php56_apache2
 
 For every VHOST served the following files are needed on Dockerhost
- * a directory inside /var/www/ that contains the data served
+ * a directory inside the webroot folder /var/www/ that contains the data served
  * a .config file inside /var/sites-enabled that will define a named VHOST
  * a WRITABLE directory inside /var/moodledata/ to provide a separate space for every Moodle instance served (not needed for any non-Moodle VHOST)
 
-There is a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
+There is a web interface and a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
 
 build_all.sh [nodocker]
 -----------------------
@@ -34,7 +45,7 @@ You will need to adopt the settings to these repositories on the <b>host</b> mac
  * moodledata_path	: path to the general moodledata folder - it will contain a subrirectory for every (Moodle-)server configured. It should contain a symlink to /filedir to access moodledata files. This way the cache is retained even between server restarts.
  * filedir_path		: path to a moodledata/filedir. This repository which will be available as /filedir in running Docker containers and from there can be mapped multiple times via symlink into the moodledata used by the VHOSTs in the Docker container.
 
-After the setting have been changed/confirmed the installation will finish by calling the 'install_commands.sh' command file (see below).
+After the setting have been changed/confirmed the installation will finish by calling the 'install_commands.sh' command file (see below) and finally will start the Docker multihost server.
 
 install_commands.sh
 -------------------
@@ -138,4 +149,4 @@ Use this script to easily update all installed scripts and commands. It will pre
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.4
+v.1.5

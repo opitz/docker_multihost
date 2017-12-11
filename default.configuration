@@ -3,8 +3,8 @@
     DocumentRoot /var/www/TheServerName
     ServerAlias TheServerName
     RewriteEngine On
-#    ErrorLog /var/www/TheServerName/error.log
-#    CustomLog /var/www/TheServerName/requests.log combined
+#	ErrorLog /var/www/TheServerName/error.log
+#	CustomLog /var/www/TheServerName/requests.log combined
 </VirtualHost>
 
 <IfModule mod_ssl.c>
@@ -12,10 +12,8 @@
 		ServerName TheServerName
 		ServerAdmin webmaster@localhost
 		DocumentRoot /var/www/TheServerName
-
 #		ErrorLog /var/www/TheServerName/error.log
 #		CustomLog /var/www/TheServerName/requests.log combined
-
 		SSLProxyEngine on
 		SSLEngine on
 		SSLCertificateFile	/etc/ssl/certs/apache.crt
