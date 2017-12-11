@@ -247,6 +247,17 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 	</tr>
 </table>
 </p>
+<p>
+	<span class="subheader">Enable VHOST using this web interface</span>
+	<br>
+	To enable a VHOST using the web interface do these steps:
+	<ul>
+		<li>If not already present: add or git clone a webroot folder with the name of the new server into the basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
+		<li>Refresh this page</i>'</li>
+		<li>Click the 'Enable' button next to the server name you just added.</li>
+		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server ( <?php echo file_get_contents('ip.txt');?>).</li>
+	</ul>
+</p>
 <hr>
 <p>
 	<span class="subheader">New multihost command line commands</span>
@@ -262,11 +273,11 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 	</ul>
 </p>
 <p>
-	<span class="subheader">Enable VHOST</span>
+	<span class="subheader">Enable VHOST using the CLI</span>
 	<br>
 	To enable a VHOST using the CLI do these steps in a terminal:
 	<ul>
-		<li>If not already present: add or git clone a webroot folder with the name of the new server into your basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
+		<li>If not already present: add or git clone a webroot folder with the name of the new server into the basic webroot folder (e.g. /var/www/<i>servername</i>)</li>
 		<li>Issue 'sudo enable_vhost <i>servername</i>'</li>
 		<li>Add an entry for <i>servername</i> into your local(!) /etc/hosts and link it to the IP address of this server ( <?php echo file_get_contents('ip.txt');?>).</li>
 	</ul>
