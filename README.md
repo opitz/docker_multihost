@@ -67,10 +67,10 @@ run_multihost
 
 This will run TWO almost identical web servers - the only difference will be the PHP version (5.6 vs 7.1).
 The first server will run on ports 80 and 443 while the second runs on ports 8080 and 8443.
-Without any options 'sudo run_multihost' will run the first server woth PHP 7.1 and the second with PHP 5.6.
+Without any options 'sudo run_multihost' will run the first server with PHP 7.1 and the second with PHP 5.6.
 To reverse that order issue the command with an option like so 'sudo run_multihost -p5'
 
-This script will also create/update the /usr/local/bin/restart_multihost command (see below) according to the selected container
+This script will also create/update the /usr/local/bin/restart_multihost command (see below) accordingly.
 
 restart_multihost
 ----------------

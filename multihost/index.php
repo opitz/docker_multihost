@@ -127,7 +127,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .disable_button { text-align:center; }
 .cache_button { text-align:center; }
 .top_table {  }
-.left_column { width:60%; vertical-align:top; }
+.left_column { width:50%; vertical-align:top; }
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
@@ -143,16 +143,26 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 <table class="top_table">
 	<tr>
 		<td class="left_column">
-			This is Docker <span class="multi">multi</span>host, a web server based on Docker and optimized for - but not limited to - Moodle instances.
+			This is Docker <span class="multi">multi</span>host, a double(!) web server based on Docker and optimized for - but not limited to - Moodle instances.
 			<br>It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
 			<p>
 			This is the internal 'multihost' webpage which on a new installation serves as the default web content.<br>
 			Please see below how to set up your own VHOSTs and how to make one of them the default content served.<br>
 			The default content will be shown when using the IP address or the generic DNS name of the server.
 			<p>
+			<span class="subheader">Double Server</span>
+			<p>
+			Two almost identical servers run on this host - the only difference being the PHP version and ports used:<ul>
+				<li>Centos7, PHP 7.1 - ports 80 / 443</li>
+				<li>Centos7, PHP 5.6 - ports 8080 / 8443</li>
+			</ul>
+			Both servers will use identical config files and serve the very same content.<br>
+			To see a web page with the other PHP version simply add/remove the port number to/from the URL used in the browser.
+
+			<p>
 			<span class="note">Please note:</span><br>
 			If you want to access this help page after you made another VHOST the default one please add 'multihost'<br>
-			to your local /etc/hosts/ file and connect it to the IP address of the machine this server is running on.
+			to your local /etc/hosts/ file and connect it to the IP address of the machine this server is running on (see right).
 		</td>
 		<td class="gap"></td>
 		<td class="right_column">

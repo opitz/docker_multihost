@@ -9,17 +9,17 @@ fi
 
 echo v.1.6
 # v.0.1 - added hostmane to container
-# v.0.2 - now removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
-# v.0.3 - now using setup details  to make changes easier
-# v.0.4 - now reading setup details from /etc/multihost.conf and creating reboot_multihost command script
+# v.0.2 - removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
+# v.0.3 - using setup details  to make changes easier
+# v.0.4 - reading setup details from /etc/multihost.conf and creating reboot_multihost command script
 # v.0.5 - renamed reboot_multihost to restart_multihost
 # v.0.6 - installing scripts into /usr/local/bin instead of /usr/sbin
 # v.1.0 - working release
 # v.1.1 - using $command_path from multihost.conf now
-# v.1.2 - now using/starting cron , using IP of host as environment variable inside the docker containers
+# v.1.2 - using/starting cron , using IP of host as environment variable inside the docker containers
 # v.1.3 - installing crontab from ${moodledata_path}/moodle_crontab if present , checking for superuser rights
 # v.1.4 - checking the IP address the Mac way where needed
-# v.1.5 - now running Docker container with --restart always option
+# v.1.5 - running Docker container with --restart always option
 # v.1.6 - starting a 2nd server with the other php version on Centos7
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
@@ -88,11 +88,13 @@ docker rm -f multihost_ubuntu_php56_apache2 >/dev/null 2>/dev/null
 # check if an option is set to use Ubuntu as OS otherwise use Centos by default
 if [ "${o}" == "u" ]
 	then
-	os=ubuntu_php${php_v}_apache2
 	conf_path=/etc/apache2/sites-enabled
+	os=ubuntu_php${php_v}_apache2
+	os2=ubuntu_php${php_v2}_apache2
 	servername=multihost_${os}
+	servername2=multihost_${os2}
 
-#	docker rm -f ${servername} >/dev/null 2>/dev/null
+#	run the 1st Ubuntu server
 	docker run -itd \
 		--name ${servername} \
 		-h ${servername} \
@@ -106,9 +108,27 @@ if [ "${o}" == "u" ]
 		-e HOST_IP_ADDR=$ip \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
-		${os}
+		${os} >/dev/null
 	docker exec ${servername} service apache2 restart
 	echo "docker exec ${servername} service apache2 restart">${command_path}/restart_multihost
+
+#	run the 2nd Ubuntu server
+	docker run -itd \
+		--name ${servername2} \
+		-h ${servername2} \
+		-p ${port2}:80 \
+		-p ${ssl_port2}:443 \
+		-v ${sites_enabled_path}:${conf_path} \
+		-v ${www_path}:/var/www \
+		-v ${moodledata_path}:/var/moodledata \
+		-v ${filedir_path}:/filedir \
+		-v ${xchange_path}:/xchange \
+		-e HOST_IP_ADDR=$ip \
+		--add-host db_host:${db_host_ip} \
+		--restart always \
+		${os2} >/dev/null
+	docker exec ${servername2} service apache2 restart
+	echo "docker exec ${servername2} service apache2 restart">>${command_path}/restart_multihost
 else
 	conf_path=/etc/httpd/sites-enabled
 	os=centos7_php${php_v}_httpd
@@ -116,7 +136,7 @@ else
 	servername=multihost_${os}
 	servername2=multihost_${os2}
 
-#	run the 1st server
+#	run the 1st Centos server
 	docker run -itd \
 		--privileged=true \
 		--name ${servername} \
@@ -136,9 +156,8 @@ else
 	docker exec ${servername} systemctl start crond
 	docker exec ${servername} systemctl restart httpd
 	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
-	echo "now running ${servername} with PHP${php_v} on ports ${port} / ${ssl_port}."
 
-#	run the 2nd server
+#	run the 2nd Centos server
 	docker run -itd \
 		--privileged=true \
 		--name ${servername2} \
@@ -158,8 +177,10 @@ else
 #	docker exec ${servername} systemctl start crond - no 2nd cron job here, the 1st server takes care already
 	docker exec ${servername2} systemctl restart httpd
 	echo "docker exec ${servername2} systemctl restart httpd">>${command_path}/restart_multihost
-	echo "now running ${servername2} with PHP${php_v2} on ports ${port2} / ${ssl_port2}."
 fi
+
+echo "Server 1 running ${servername} with PHP${php_v} on ports ${port} / ${ssl_port}."
+echo "Server 2 running ${servername2} with PHP${php_v2} on ports ${port2} / ${ssl_port2}."
 
 # install the crontab (on the 1st server only)
 if [ -f ${moodledata_path}/moodle_crontab ]
