@@ -1,6 +1,6 @@
 <?php
-$version = '1.2';
-$date = '2017-12-11';
+$version = '1.5';
+$date = '2017-12-12';
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
@@ -131,7 +131,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
-.multi { color:#999; font-style:italic; font-weight:bold; }
+.multi { color:#3456A3; font-weight:bold; }
 </style>
 
 <title>Docker multihost</title>
