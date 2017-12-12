@@ -3,6 +3,14 @@ Docker multihost
 All you need to build and run an Apache2/httpd multihost server with as many VHOSTs as needed.
 For this all served data and all config files are kept outside the Docker container and are forwarded into the running Docker container.
 
+Quickstart
+----------
+* make sure no other processes are using ports 80 or 443 on the dedicated host
+* git clone this repository to the dedicated host
+* cd into the resulting directory (e.g. docker_moodle)
+* build and start the server by running 'sudo ./build_all.sh'. During installation you will be asked to edit/confirm the configuration of paths used. Directores will be created where they are not already present.
+* point your browser to the IP address of the server
+
 The multihost web interface
 ---------------------------
 After a sucessful build of the server (see below) it will by default serve the administation web interface that will show technical details and allows configuration of the VHOSTs served. For this it will list all the potential VHOSTs - that is all the directories found in the web root of the server (e.g. /var/www) - which can be enabled with the click of a button. Once enabled a VHOST may be contacted by using it's name -  but this will require changing the local /etc/hosts file accordingly and relate the name of the VHOST to the IP address the server is actually running on.
@@ -10,7 +18,6 @@ After a sucessful build of the server (see below) it will by default serve the a
 The contents of the default VHOST will be shown whenever the generic DNS name or the IP address of the server is used as an URL. You can declare any of the enabled VHOSTs as the default one - but remember to declare a 'multihost' entry in your /etc/hosts file before switching the default VHOST so you are able to return to the admin interface easily by using "http://multihost" in your browser.
 
 You may disable any VHOST with the click of a button  - but not the current default VHOST and not "multihost" as this containes the web interface.
-
 
 Dockerfiles
 -----------
@@ -146,4 +153,4 @@ Use this script to easily update all installed scripts and commands. It will pre
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.5
+v.1.6
