@@ -189,10 +189,14 @@ if [ -f ${moodledata_path}/moodle_crontab ]
 	echo "docker exec ${servername} crontab /var/moodledata/moodle_crontab">>${command_path}/restart_multihost
 fi
 
-# write the ip address of host to a file 'ip.txt' inside the 'multihost' VHOST so it can be displayed from a web server that runs inside the docker container
+# write the ip address of host to a file 'ip.txt' and the creation date to a file "created.txt" inside the 'multihost' VHOST so it can be displayed from a web server that runs inside the docker container
 if [ -d $www_path/multihost ]
 	then
 	echo $ip > $www_path/multihost/ip.txt
-	chmod 755 $www_path/multihost/ip.txt
+	docker images $os --format "{{.CreatedAt}}" > $www_path/multihost/created$port.txt
+	docker images $os --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port.txt
+	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$port2.txt
+	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port2.txt
+	chmod 755 $www_path/multihost/*.txt 2>/dev/null
 fi
 

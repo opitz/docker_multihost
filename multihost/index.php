@@ -1,5 +1,5 @@
 <?php
-$version = '1.5';
+$version = '1.6';
 $date = '2017-12-12';
 
 #------------------------------------------------------------------------------
@@ -144,9 +144,9 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 	<tr>
 		<td class="left_column">
 			This is Docker <span class="multi">multi</span>host, a double(!) web server based on Docker and optimized for - but not limited to - Moodle instances.
-			<br>It is targeted at serving multiple virtual hosts (VHOSTs) with a single web server instance.
+			<br>It is targeted at serving multiple virtual hosts (VHOSTs) with one server setup.
 			<p>
-			This is the internal 'multihost' webpage which on a new installation serves as the default web content.<br>
+			This is the internal 'multihost' web page which on new installations serves as the default web content.<br>
 			Please see below how to set up your own VHOSTs and how to make one of them the default content served.<br>
 			The default content will be shown when using the IP address or the generic DNS name of the server.
 			<p>
@@ -169,7 +169,11 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 			<span class="subheader">Server details</span>
 			<p>
 			<?php 
-			echo "Docker container: <b>".php_uname('n')."</b><p>";
+			echo "Docker container: <b>".php_uname('n')."</b>";
+			if(file_exists('created'.$_SERVER['SERVER_PORT'].'.txt')) { 
+				echo "<br> &nbsp;&nbsp;&nbsp;(Image created: " . file_get_contents('created'.$_SERVER['SERVER_PORT'].'.txt') . ")";
+			}
+			echo "<p>";
 			echo "PHP version: <b>".phpversion()."</b><p>";
 			if(file_exists('ip.txt')) { 
 				echo "IP address: <b>" . file_get_contents('ip.txt') . "</b><p>";
@@ -213,9 +217,9 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="https://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
-							echo '<a href="https://'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
+							echo '<a href="https://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
 					} 
