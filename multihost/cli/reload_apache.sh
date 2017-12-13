@@ -5,6 +5,6 @@
 moodledata_path="/var/moodledata"
 
 # (re-)load the crontab
-sudo crontab ${moodledata_path}/moodle_crontab
+#sudo crontab ${moodledata_path}/moodle_crontab
 #reload web server config
 sudo systemctl reload httpd

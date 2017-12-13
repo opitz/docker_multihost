@@ -203,7 +203,7 @@ if(array_key_exists('reload_apache',$_POST)){
 			echo "PHP version: <b>".phpversion()."</b>";
 			echo "<p>";
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
-			echo "If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically relaoaded. In case you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue.";
+			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically relaoaded. In case you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue.";
 			echo reload_button();
 			echo "<p>";
 			?>
@@ -242,13 +242,13 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="'.$_SERVER['REQUEST_SCHEME'].'://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
-							echo '<a href="'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
+							echo '<a href="'.$_SERVER['REQUEST_SCHEME'].'://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
 					} 
-				}	
+				}
 	?>
 				</ul>
 			</table>
