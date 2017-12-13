@@ -1,6 +1,6 @@
 <?php
-$version = '1.6';
-$date = '2017-12-12';
+$version = '1.7';
+$date = '2017-12-13';
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
@@ -39,6 +39,12 @@ function purge_moodlecache($vhost = false){
 		return false;
 	}
 	$cmd = "sudo cli/purge_moodlecache.sh $vhost";
+	shell_exec($cmd);
+}
+
+#------------------------------------------------------------------------------
+function reload_apache(){
+	$cmd = "sudo cli/reload_apache.sh";
 	shell_exec($cmd);
 }
 
@@ -91,6 +97,14 @@ function cache_button($vhost = false) {
 }
 
 #------------------------------------------------------------------------------
+function reload_button() {
+	return '<form method="post">
+    <input class="button large" type="submit" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" /><br/>
+</form>
+';
+}
+
+#------------------------------------------------------------------------------
 if(array_key_exists('enable',$_POST)){
    enable_vhost($_POST['vhost']);
 }
@@ -106,6 +120,11 @@ if(array_key_exists('disable',$_POST)){
 if(array_key_exists('purge_moodlecache',$_POST)){
    purge_moodlecache($_POST['vhost']);
 }
+
+if(array_key_exists('reload_apache',$_POST)){
+   reload_apache();
+}
+
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 ?>
@@ -120,6 +139,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .footer { font-size:12px; font-style: italic; }
 .alert { color:red; }
 .button { width:100px; }
+.large { width:200px; }
 .is_default { width:100px; font-weight: bold; }
 .column { width:240px; }
 .default_button { text-align:center; font-weight:bold; }
@@ -128,7 +148,7 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 .cache_button { text-align:center; }
 .top_table {  }
 .left_column { width:50%; vertical-align:top; }
-.right_column { vertical-align:top; background-color: #EEE; text-indent: 10px; padding-top: 10px; }
+.right_column { vertical-align:top; background-color: #EEE; padding-top: 10px; padding-left: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
 .multi { color:#3456A3; font-weight:bold; }
@@ -174,13 +194,18 @@ if(array_key_exists('purge_moodlecache',$_POST)){
 				echo "<br> &nbsp;&nbsp;&nbsp;(Image created: " . file_get_contents('created'.$_SERVER['SERVER_PORT'].'.txt') . ")";
 			}
 			echo "<p>";
-			echo "PHP version: <b>".phpversion()."</b><p>";
 			if(file_exists('ip.txt')) { 
-				echo "IP address: <b>" . file_get_contents('ip.txt') . "</b><p>";
+				echo "IP address: <b>" . file_get_contents('ip.txt').': '.$_SERVER['SERVER_PORT'] . "</b>";
 			} else {
 				echo "<span class='alert'>No IP address found - this is weird...!</span>";
 			}
+			echo "<p>";
+			echo "PHP version: <b>".phpversion()."</b>";
+			echo "<p>";
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
+			echo "If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically relaoaded. In case you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue.";
+			echo reload_button();
+			echo "<p>";
 			?>
 		</td>
 	</tr>
@@ -217,9 +242,9 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="https://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
-							echo '<a href="https://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
+							echo '<a href="'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
 					} 

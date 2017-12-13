@@ -5,6 +5,7 @@
     RewriteEngine On
 #	ErrorLog /var/www/TheServerName/error.log
 #	CustomLog /var/www/TheServerName/requests.log combined
+	Redirect / https://TheServerName
 </VirtualHost>
 
 <IfModule mod_ssl.c>
