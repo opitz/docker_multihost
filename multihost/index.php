@@ -1,6 +1,6 @@
 <?php
-$version = '1.7';
-$date = '2017-12-13';
+$version = '1.7.1';
+$date = '2017-12-14';
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
@@ -203,7 +203,7 @@ if(array_key_exists('reload_apache',$_POST)){
 			echo "PHP version: <b>".phpversion()."</b>";
 			echo "<p>";
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
-			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. In case as a consequence you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue wth the button below.";
+			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. If you as a consequence landed on this page instead on the page of your selected VHOST please reload the Apache configuration with the button below to address this issue.";
 			echo reload_button();
 			echo "<p>";
 			?>
