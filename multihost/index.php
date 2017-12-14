@@ -203,7 +203,7 @@ if(array_key_exists('reload_apache',$_POST)){
 			echo "PHP version: <b>".phpversion()."</b>";
 			echo "<p>";
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
-			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. If you as a consequence landed on this page instead on the page of your selected VHOST please reload the Apache configuration with the button below to address this issue.";
+			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. If - as a consequence - you landed on this page instead on the page of your selected VHOST please reload the Apache configuration with the button below to address this issue.";
 			echo reload_button();
 			echo "<p>";
 			?>
