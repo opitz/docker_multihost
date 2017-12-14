@@ -2,8 +2,8 @@ FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 # v.1.2.1 - 2017-12-10
 ENV container docker
-#ENV http_proxy http://wwwcache.qmul.ac.uk:8080
-#ENV https_proxy https://wwwcache.qmul.ac.uk:8080
+ENV http_proxy http://wwwcache.qmul.ac.uk:8080
+ENV https_proxy https://wwwcache.qmul.ac.uk:8080
 
 # install repositories
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
