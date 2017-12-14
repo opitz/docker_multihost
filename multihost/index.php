@@ -173,8 +173,8 @@ if(array_key_exists('reload_apache',$_POST)){
 			<span class="subheader">Double Server</span>
 			<p>
 			Two almost identical servers run on this host - the only difference being the PHP version and ports used:<ul>
-				<li>Centos7, PHP 7.1 - ports 80 / 443</li>
-				<li>Centos7, PHP 5.6 - ports 8080 / 8443</li>
+				<li>Centos7, PHP 7.1 - ports <?php echo file_get_contents('port.txt').'/ '.file_get_contents('ssl_port.txt');?></li>
+				<li>Centos7, PHP 5.6 - ports <?php echo file_get_contents('port2.txt').'/ '.file_get_contents('ssl_port2.txt');?></li>
 			</ul>
 			Both servers will use identical config files and serve the very same content.<br>
 			To see a web page with the other PHP version simply add/remove the port number to/from the URL used in the browser.
@@ -203,7 +203,7 @@ if(array_key_exists('reload_apache',$_POST)){
 			echo "PHP version: <b>".phpversion()."</b>";
 			echo "<p>";
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
-			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically relaoaded. In case you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue.";
+			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. In case as a consequence you land on this page instead on the page of your selected VHOST please reload the Apache configuration to address this issue wth the button below.";
 			echo reload_button();
 			echo "<p>";
 			?>

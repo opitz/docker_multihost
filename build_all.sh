@@ -145,15 +145,14 @@ if [ ! -f $command_path/run_multihost ]
 	echo "You may want to check your installation."
 else
 	# enable the multihost VHOST
-	sudo rm -r $www_path/multihost/
+	sudo rm -r $www_path/multihost/>/dev/null 2>/dev/null
 	cp -r ./multihost $www_path/multihost
 	chmod +x $www_path/multihost/cli/*.sh
-	sudo enable_vhost multihost
-	sudo multihost_default multihost
+	sudo enable_vhost multihost>/dev/null
+	sudo multihost_default multihost>/dev/null
 
-	echo 'All Done!'
 #	echo "You may run 'run_multihost' to start the Docker multihost server now."
 	sudo run_multihost
-	echo 'The Docker multihost server is now up and running on this host.'
+	echo '--> The Docker multihost server is now up and running on this host.'
 fi
 echo ' '

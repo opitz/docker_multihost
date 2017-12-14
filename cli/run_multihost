@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-echo v.1.6
+#echo v.1.7
 # v.0.1 - added hostmane to container
 # v.0.2 - removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.0.3 - using setup details  to make changes easier
@@ -21,6 +21,7 @@ echo v.1.6
 # v.1.4 - checking the IP address the Mac way where needed
 # v.1.5 - running Docker container with --restart always option
 # v.1.6 - starting a 2nd server with the other php version on Centos7
+# v.1.7 - now reading port setting from config.php
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -31,6 +32,15 @@ if [ ! -f /etc/multihost.conf ]
         exit 1
 fi
 . /etc/multihost.conf
+
+# if no ports have been declared in multihost.conf use default values
+if [ "$ssl_port" == "" ]
+	then
+	port=80
+	ssl_port=443
+	port2=8080
+	ssl_port2=8443
+fi
 
 # get ip address of machine the docker containers are running on
 if [ "`uname`" == "Darwin" ]
@@ -66,17 +76,9 @@ if [ "${p}" == "5" ]
 	then
 	php_v=56
 	php_v2=7
-	port=80
-	ssl_port=443
-	port2=8080
-	ssl_port2=8443
 else
 	php_v=7
 	php_v2=56
-	port=80
-	ssl_port=443
-	port2=8080
-	ssl_port2=8443
 fi
 
 # remove any exsiting multihost container, running or not
@@ -156,6 +158,7 @@ else
 	docker exec ${servername} systemctl start crond
 	docker exec ${servername} systemctl restart httpd
 	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
+	echo "echo '--> Apache server on ${servername} has been restarted'">>${command_path}/restart_multihost
 
 #	run the 2nd Centos server
 	docker run -itd \
@@ -177,10 +180,11 @@ else
 #	docker exec ${servername} systemctl start crond - no 2nd cron job here, the 1st server takes care already
 	docker exec ${servername2} systemctl restart httpd
 	echo "docker exec ${servername2} systemctl restart httpd">>${command_path}/restart_multihost
+	echo "echo '--> Apache server on ${servername2} has been restarted'">>${command_path}/restart_multihost
 fi
 
-echo "Server 1 running ${servername} with PHP${php_v} on ports ${port} / ${ssl_port}."
-echo "Server 2 running ${servername2} with PHP${php_v2} on ports ${port2} / ${ssl_port2}."
+echo "--> server 1 running ${servername} with PHP${php_v} on ports ${port} / ${ssl_port}."
+echo "--> server 2 running ${servername2} with PHP${php_v2} on ports ${port2} / ${ssl_port2}."
 
 # install the crontab (on the 1st server only)
 if [ -f ${moodledata_path}/moodle_crontab ]
@@ -197,6 +201,12 @@ if [ -d $www_path/multihost ]
 	docker images $os --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port.txt
 	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$port2.txt
 	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port2.txt
+
+	echo $port > $www_path/multihost/port.txt
+	echo $ssl_port > $www_path/multihost/ssl_port.txt
+	echo $port2 > $www_path/multihost/port2.txt
+	echo $ssl_port2 > $www_path/multihost/ssl_port2.txt
+
 	chmod 755 $www_path/multihost/*.txt 2>/dev/null
 fi
 
