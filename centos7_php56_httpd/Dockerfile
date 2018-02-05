@@ -12,6 +12,9 @@ rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 # Update the system
 RUN yum -y update; yum clean all
 
+# install deltarpm
+RUN yum -y install deltarpm
+
 # install Apache2 with PHP 7.1 and all the needed trimmings for Moodle development
 RUN yum install -y \
 	httpd \
