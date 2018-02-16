@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # script to enable a new VHOST to multihost
-# m.opitz@qmul.ac.uk | 2017-12-11
+# m.opitz@qmul.ac.uk | 2018-02-16
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo "Docker multihost enable VHOST v.1.6"
+echo "Docker multihost enable VHOST v.1.7"
 echo "-----------------------------------"
 
 usage() { echo "Usage: $0 <servername> [no_moodle]" 1>&2; exit 1; }
@@ -57,6 +57,9 @@ fi
 
 chmod 777 ${sites_enabled_path}/${servername}.conf
 echo "--> ${sites_enabled_path}/${servername}.conf has been placed."
+
+# make a symlink into the default multihost webserver to allow alternative access through subdirectory in URL
+ln -s ${www_path}/${servername} ${www_path}/html/${servername}
 
 if [ -f $www_path/$servername/blocks/moodleblock.class.php ]
 	then

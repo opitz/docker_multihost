@@ -20,7 +20,7 @@ fi
 
 cp ${sites_enabled_path}/default.configuration ${sites_enabled_path}/${servername}.conf
 
-if [ "`uname`" == "Darwin"  ]
+if [ "`uname`" == "Darwin"  ] # this is most likely a Mac - they need some extra care...
 	then
 	sed -i ' ' "s/TheServerName/${servername}/g" ${sites_enabled_path}/${servername}.conf
 else
@@ -28,6 +28,9 @@ else
 fi
 
 chmod 777 ${sites_enabled_path}/${servername}.conf
+
+# make a symlink into the default multihost webserver to allow alternative access through subdirectory in URL
+sudo ln -s ${www_path}/${servername} ${www_path}/html/${servername}
 
 if [ -f $www_path/$servername/blocks/moodleblock.class.php ]
 	then

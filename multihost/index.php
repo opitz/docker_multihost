@@ -1,6 +1,6 @@
 <?php
-$version = '1.7.1';
-$date = '2017-12-14';
+$version = '2.0';
+$date = '2018-02-16';
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
@@ -179,10 +179,6 @@ if(array_key_exists('reload_apache',$_POST)){
 			Both servers will use identical config files and serve the very same content.<br>
 			To see a web page with the other PHP version simply add/remove the port number to/from the URL used in the browser.
 
-			<p>
-			<span class="note">Please note:</span><br>
-			If you want to access this help page after you made another VHOST the default one please add 'multihost'<br>
-			to your local /etc/hosts/ file and connect it to the IP address of the machine this server is running on (see right).
 		</td>
 		<td class="gap"></td>
 		<td class="right_column">
@@ -242,9 +238,9 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 					if(is_dir('/var/www/'.$vhost) && file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf')) {
 						echo'<tr><td><li>';
 						if(file_exists('/var/moodledata/'.$vhost)) {
-							echo '<a href="'.$_SERVER['REQUEST_SCHEME'].'://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
+							echo '<a href="'.$vhost.'" target=new>'.$vhost.'</a> (Moodle)</li></td><td class="disable_button">'.disable_button($vhost).'</td><td class="cache_button">'.cache_button($vhost).'</td>';
 						} else {
-							echo '<a href="'.$_SERVER['REQUEST_SCHEME'].'://'.$vhost.':'.$_SERVER['SERVER_PORT'].'" target=new>'.$vhost.'</a></li></td><td class="default_button">'.default_button($vhost).'</td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
+							echo '<a href="'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
 					} 

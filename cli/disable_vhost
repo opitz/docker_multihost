@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # script to disable a VHOST on Dcoker multihost
-# m.opitz@qmul.ac.uk | 2017-12-08
+# m.opitz@qmul.ac.uk | 2018-02-16
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo "Docker multihost disable VHOST v.1.4"
+echo "Docker multihost disable VHOST v.1.5"
 echo "-------------------------------------"
 
 usage() { echo "Usage: $0 <servername>" 1>&2; exit 1; }
@@ -43,6 +43,9 @@ else
 	sudo rm -r ${moodledata_path}/${servername} >/dev/null 2>/dev/null
 	echo "--> ${moodledata_path}/${servername} has been removed."
 fi
+
+# remove symlink from within the base webserver
+rm -rf ${www_path}/html/${servername}
 
 # remove server from moodle_crontab
 if [ -f ${moodledata_path}/moodle_crontab ]

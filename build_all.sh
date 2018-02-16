@@ -125,12 +125,12 @@ sudo chmod 777 ${sites_enabled_path}/default.configuration
 check_path $www_path no_chmod
 
 # check if default html webroot exists and create it otherwise with a simple message
-if [ ! -d ${www_path}/html ]
-	then
-	sudo mkdir ${www_path}/html
-	echo "${www_path}/html is the default webroot directory for multihost. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
-	sudo chmod 777 -R ${www_path}/html
-fi
+#if [ ! -d ${www_path}/html ]
+#	then#
+#	sudo mkdir ${www_path}/html
+#	echo "${www_path}/html is the default webroot directory for multihost. You may want to replace this with a symlink to one of the VHOSTS provided by this server." > ${www_path}/html/index.html
+#	sudo chmod 777 -R ${www_path}/html
+#fi
 
 # check if filedir directory exists and create it otherwise
 check_path $filedir_path no_chmod
@@ -144,14 +144,14 @@ if [ ! -f $command_path/run_multihost ]
 	echo "FAILURE! The 'run_multihost' command could not be found!"
 	echo "You may want to check your installation."
 else
-	# enable the multihost VHOST
+	# make multihost the default server
 	sudo rm -r $www_path/multihost/>/dev/null 2>/dev/null
-	cp -r ./multihost $www_path/multihost
-	chmod +x $www_path/multihost/cli/*.sh
-	sudo enable_vhost multihost>/dev/null
-	sudo multihost_default multihost>/dev/null
+	sudo rm -rf $www_path/html/>/dev/null 2>/dev/null
+	sudo rm -f $www_path/html>/dev/null 2>/dev/null
+	cp -r ./multihost $www_path/html
+	chmod +x $www_path/html/cli/*.sh
+#	sudo enable_vhost multihost>/dev/null
 
-#	echo "You may run 'run_multihost' to start the Docker multihost server now."
 	sudo run_multihost
 	echo '--> The Docker multihost server is now up and running on this host.'
 fi

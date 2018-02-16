@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-#echo v.1.7
+#echo v.1.8
 # v.0.1 - added hostmane to container
 # v.0.2 - removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.0.3 - using setup details  to make changes easier
@@ -22,6 +22,7 @@ fi
 # v.1.5 - running Docker container with --restart always option
 # v.1.6 - starting a 2nd server with the other php version on Centos7
 # v.1.7 - now reading port setting from config.php
+# v.1.8 - install symlink for each enabled VHOST inside $www_path/html to allow access via subdirectory in URL
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -194,19 +195,29 @@ if [ -f ${moodledata_path}/moodle_crontab ]
 fi
 
 # write the ip address of host to a file 'ip.txt' and the creation date to a file "created.txt" inside the 'multihost' VHOST so it can be displayed from a web server that runs inside the docker container
-if [ -d $www_path/multihost ]
+if [ -d $www_path/html ]
 	then
-	echo $ip > $www_path/multihost/ip.txt
-	docker images $os --format "{{.CreatedAt}}" > $www_path/multihost/created$port.txt
-	docker images $os --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port.txt
-	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$port2.txt
-	docker images $os2 --format "{{.CreatedAt}}" > $www_path/multihost/created$ssl_port2.txt
+	echo $ip > $www_path/html/ip.txt
+	docker images $os --format "{{.CreatedAt}}" > $www_path/html/created$port.txt
+	docker images $os --format "{{.CreatedAt}}" > $www_path/html/created$ssl_port.txt
+	docker images $os2 --format "{{.CreatedAt}}" > $www_path/html/created$port2.txt
+	docker images $os2 --format "{{.CreatedAt}}" > $www_path/html/created$ssl_port2.txt
 
-	echo $port > $www_path/multihost/port.txt
-	echo $ssl_port > $www_path/multihost/ssl_port.txt
-	echo $port2 > $www_path/multihost/port2.txt
-	echo $ssl_port2 > $www_path/multihost/ssl_port2.txt
+	echo $port > $www_path/html/port.txt
+	echo $ssl_port > $www_path/html/ssl_port.txt
+	echo $port2 > $www_path/html/port2.txt
+	echo $ssl_port2 > $www_path/html/ssl_port2.txt
 
-	chmod 755 $www_path/multihost/*.txt 2>/dev/null
+	chmod 755 $www_path/html/*.txt 2>/dev/null
 fi
+echo "placing symlinks"
+# finally check for all enabled VHOSTs and create a symlink for each one insde the default html instance
+for D in `find ${www_path} -mindepth 1 -maxdepth 1 -type d`
+do
+	DD=$(basename $D)
+	if [ -f ${sites_enabled_path}/${DD}.conf ]
+		then
+		ln -s $D ${www_path}/html/$DD
+	fi
+done
 
