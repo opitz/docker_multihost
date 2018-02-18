@@ -1,108 +1,8 @@
 <?php
-$version = '2.0';
-$date = '2018-02-16';
+$version = '2.1';
+$date = '2018-02-18';
 
-#------------------------------------------------------------------------------
-function enable_vhost($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "cli/enable_vhost.sh $vhost";
-	shell_exec($cmd);
-}
-
-#------------------------------------------------------------------------------
-function disable_vhost($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "cli/disable_vhost.sh $vhost";
-	shell_exec($cmd);
-}
-
-#------------------------------------------------------------------------------
-function make_default($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "sudo cli/make_default.sh $vhost";
-	shell_exec($cmd);
-}
-
-#------------------------------------------------------------------------------
-function purge_moodlecache($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "sudo cli/purge_moodlecache.sh $vhost";
-	shell_exec($cmd);
-}
-
-#------------------------------------------------------------------------------
-function reload_apache(){
-	$cmd = "sudo cli/reload_apache.sh";
-	shell_exec($cmd);
-}
-
-#------------------------------------------------------------------------------
-function enable_button($vhost = false) {
-	if(!$vhost) return false;
-
-	return '<form method="post">
-	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="enable" id="'.$vhost.'" value="Enable" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function default_button($vhost = false) {
-	if(!$vhost) return false;
-	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '>> default <<';
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function disable_button($vhost = false) {
-	if(!$vhost) return false;
-	if($vhost == 'multihost') return 'mandatory';
-	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '';
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="disable" id="'.$vhost.'" value="Disable" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function cache_button($vhost = false) {
-	if(!$vhost) return false;
-	if(!file_exists('/var/moodledata/'.$vhost.'/sessions')) return "cache purged";
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="purge_moodlecache" id="'.$vhost.'" value="Purge Cache" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function reload_button() {
-	return '<form method="post">
-    <input class="button large" type="submit" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" /><br/>
-</form>
-';
-}
+include('functions.php');
 
 #------------------------------------------------------------------------------
 if(array_key_exists('enable',$_POST)){
@@ -133,33 +33,19 @@ if(array_key_exists('reload_apache',$_POST)){
 <html lang="en-GB">
 <head>
 
-<style>
-.header { font-size:28px; color:#3456A3; }
-.subheader { font-size:18px; font-weight: bold; color:#3456A3;}
-.footer { font-size:12px; font-style: italic; }
-.alert { color:red; }
-.button { width:100px; }
-.large { width:200px; }
-.is_default { width:100px; font-weight: bold; }
-.column { width:240px; }
-.default_button { text-align:center; font-weight:bold; }
-.enable_button { text-align:center; }
-.disable_button { text-align:center; }
-.cache_button { text-align:center; }
-.top_table {  }
-.left_column { width:50%; vertical-align:top; }
-.right_column { vertical-align:top; background-color: #EEE; padding-top: 10px; padding-left: 10px; }
-.gap { width:20px; }
-.note { color:#FF6600; font-weight:bold; }
-.multi { color:#3456A3; font-weight:bold; }
-</style>
+	<meta charset="utf-8" />
+	<title>Docker MultiHost</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js"></script>
 
-<title>Docker multihost</title>
+	<link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-<span class="header">Docker <span class="multi">multi</span>host</span>
+<span class="header">Docker <span class="multi">Multi</span>Host</span>
 <hr>
+
 <table class="top_table">
 	<tr>
 		<td class="left_column">
@@ -184,13 +70,13 @@ if(array_key_exists('reload_apache',$_POST)){
 		<td class="right_column">
 			<span class="subheader">Server details</span>
 			<p>
-			<?php 
+			<?php
 			echo "Docker container: <b>".php_uname('n')."</b>";
-			if(file_exists('created'.$_SERVER['SERVER_PORT'].'.txt')) { 
+			if(file_exists('created'.$_SERVER['SERVER_PORT'].'.txt')) {
 				echo "<br> &nbsp;&nbsp;&nbsp;(Image created: " . file_get_contents('created'.$_SERVER['SERVER_PORT'].'.txt') . ")";
 			}
 			echo "<p>";
-			if(file_exists('ip.txt')) { 
+			if(file_exists('ip.txt')) {
 				echo "IP address: <b>" . file_get_contents('ip.txt').': '.$_SERVER['SERVER_PORT'] . "</b>";
 			} else {
 				echo "<span class='alert'>No IP address found - this is weird...!</span>";
@@ -201,7 +87,7 @@ if(array_key_exists('reload_apache',$_POST)){
 			if($xdebug=phpversion('xdebug')) echo"<b>xdebug $xdebug</b> is installed<p>";
 			echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. If - as a consequence - you landed on this page instead on the page of your selected VHOST please reload the Apache configuration with the button below to address this issue.";
 			echo reload_button();
-			echo "<p>";
+			echo "<p><p>";
 			?>
 		</td>
 	</tr>
@@ -219,11 +105,11 @@ To access it using it's name you will have to change your local '/etc/hosts' fil
 For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.
 </p>
 <p>
-<table>
+<table border="1">
 	<tr>
 		<td valign="top">
 			<b>Enabled VHOSTs:</b>
-			<table>
+			<table border="1">
 				<tr>
 					<td class="column"></td>
 					<td></td>
@@ -243,7 +129,7 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 							echo '<a href="'.$vhost.'" target=new>'.$vhost.'</a></li></td><td class="disable_button">'.disable_button($vhost).'</td><td></td>';
 						}
 						echo '</tr>';
-					} 
+					}
 				}
 	?>
 				</ul>
@@ -252,7 +138,7 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 		<td width=20></td>
 		<td valign="top">
 			<b>Disabled VHOSTs:</b><ul>
-			<table>
+			<table border="1">
 				<tr>
 					<td class="column"></td>
 					<td></td>
@@ -262,9 +148,9 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 			foreach($vhosts as $vhost)
 			{
 				if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {
-					echo '<tr><td class="column"><li>'.$vhost.'</li></td><td class="enable_button">'.enable_button($vhost).'</td></tr>';
+					echo '<tr><td class="column"><li>'.$vhost.'</li></td><td class="enable_button" id="'.$vhost.'">'.enable_button($vhost).'</td></tr>';
 				}
-			}	
+			}
 	?>
 				</ul>
 			</table>
@@ -289,12 +175,12 @@ For enabled Moolde VHOSTs you can purge the Moodle cache by pressing the "Purge 
 	<br>
 	During the setup of the multihost server several multihost CLI commands were installed that need to run as superuser (sudo <i>command</i>):
 	<ul>
-		<li><b>run_multihost</b> - (Re-)start the multihost server. By default it will run with Centos7 and PHP7.</li> 
-		<li><b>restart_multihost</b> - Restart the web server inside the Docker container to reload new config.<br>This will automatically be issued when enabling or disabling VHOSTs.</li> 
-		<li><b>enable_vhost <i>servername</i></b> - Enable a VHOST (see below).</li> 
-		<li><b>disable_vhost <i>servername</i></b> - Disable an existing VHOST and all it's settings - but <b>NOT</b> removing the web data.</li> 
-		<li><b>multihost_default <i>servername</i></b> - Promoting one of the existing(!) VHOSTs to default web server.</li> 
-		<li><b>purge_moodlecache <i>servername</i></b> - Removing any cached moodledata for the given servername.</li> 
+		<li><b>run_multihost</b> - (Re-)start the multihost server. By default it will run with Centos7 and PHP7.</li>
+		<li><b>restart_multihost</b> - Restart the web server inside the Docker container to reload new config.<br>This will automatically be issued when enabling or disabling VHOSTs.</li>
+		<li><b>enable_vhost <i>servername</i></b> - Enable a VHOST (see below).</li>
+		<li><b>disable_vhost <i>servername</i></b> - Disable an existing VHOST and all it's settings - but <b>NOT</b> removing the web data.</li>
+		<li><b>multihost_default <i>servername</i></b> - Promoting one of the existing(!) VHOSTs to default web server.</li>
+		<li><b>purge_moodlecache <i>servername</i></b> - Removing any cached moodledata for the given servername.</li>
 	</ul>
 </p>
 <p>
@@ -324,3 +210,16 @@ echo "<span class='footer'>v.$version | $date</span>";
 ?>
 
 </body>
+
+<script>
+	$(document).ready(function(){
+	    $(".test_button").click(function(){
+	        $("p").toggle();
+	    });
+
+			$(".enable_button").click(function(){
+//					alert('here = ' + $(this).closest( ".enable_button" ).attr("id"));
+					$("#" + $(this).closest( ".button" ).attr("id")).submit();
+			});
+	});
+</script>
