@@ -51,8 +51,8 @@ function enable_button($vhost = false) {
 
 	return '<form id = "'.$vhost.'" method="post">
 	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
-	<input type="hidden" name="enable" id="'.$vhost.'" value="Enable" /><br/>
-	<button class="ui button enable_button" id="'.$vhost.'">Enable</button>
+	<input type="hidden" name="enable" id="'.$vhost.'" value="Enable" />
+	<button class="ui mini button enable_button" id="'.$vhost.'">Enable</button>
 	</form>
 ';
 }
@@ -75,7 +75,7 @@ function default_button($vhost = false) {
 
 	return '<form id = "'.$vhost.'" method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" /><br/>
+    <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" />
 </form>
 ';
 }
@@ -88,9 +88,9 @@ function disable_button($vhost = false) {
 
 	return '<form id = "'.$vhost.'" method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-  <input type="hidden" name="disable" id="'.$vhost.'" value="Disable" /><br/>
-	<button class="ui button disable_button" id="'.$vhost.'">Disable</button>
-	</form>
+  	<input type="hidden" name="disable" id="'.$vhost.'" value="Disable" />
+	<button class="ui mini button disable_button" id="'.$vhost.'">Disable</button>
+		</form>
 ';
 }
 
@@ -102,7 +102,7 @@ function disable_button0($vhost = false) {
 
 	return '<form method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="disable" id="'.$vhost.'" value="Disable" /><br/>
+    <input class="button" type="submit" name="disable" id="'.$vhost.'" value="Disable" />
 </form>
 ';
 }
@@ -110,12 +110,12 @@ function disable_button0($vhost = false) {
 #------------------------------------------------------------------------------
 function cache_button($vhost = false) {
 	if(!$vhost) return false;
-	if(!file_exists('/var/moodledata/'.$vhost.'/sessions')) return "<button class='ui mini button cached_button' id='$vhost'>Cache purged</button>";
+	if(!file_exists('/var/moodledata/'.$vhost.'/sessions')) return "<button class='ui mini disabled button cached_button' id='$vhost'>Cache purged</button>";
 
 	return '<form id = "'.$vhost.'" method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-  <input type="hidden" name="purge_moodlecache" id="'.$vhost.'" value="Purge Cache" /><br/>
-	<button class="ui button cache_button" id="'.$vhost.'">Purge Cache</button>
+  	<input type="hidden" name="purge_moodlecache" id="'.$vhost.'" value="Purge Cache" />
+	<button class="ui mini button cache_button" id="'.$vhost.'">Purge Cache</button>
 	</form>
 ';
 }
@@ -136,8 +136,8 @@ function cache_button0($vhost = false) {
 #------------------------------------------------------------------------------
 function reload_button() {
 	return '<form method="post" id="reload">
-  <input type="hidden" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" /><br/>
-	<button class="ui button reload_button" id="'.$vhost.'">Reload</button>
+  <input type="hidden" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" />
+	<button class="ui mini button reload_button" id="'.$vhost.'">Reload</button>
 	</form>
 ';
 }

@@ -2,7 +2,7 @@
 .subheader { font-size:18px; font-weight: bold; color:#3456A3;}
 .footer { font-size:12px; font-style: italic; }
 .alert { color:red; }
-.button0 { width:100px; }
+.button { width:130px; }
 .large { width:200px; }
 .is_default { width:100px; font-weight: bold; }
 .column { width:240px; }
@@ -15,4 +15,4 @@
 .right_column { vertical-align:top; background-color: #EEE; padding-top: 10px; padding-left: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
-.multi { color:#3456A3; font-weight:bold; }
+.multi { colo{visibility: hidden;}:#3456A3; font-weight:bold; }

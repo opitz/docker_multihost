@@ -63,7 +63,7 @@ install_command() {
 
 install_command disable_vhost
 install_command enable_vhost
-install_command multihost_default
+#install_command multihost_default
 install_command purge_moodlecache
 install_command run_multihost
 

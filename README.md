@@ -96,12 +96,6 @@ When the VHOST has been deployed the Apache2/httpd service will be restarted to 
 
 You then will need to change your local /etc/hosts file accordingly to access the VHOST.
 
-multihost_default <i>servername</i>
------------------------------------
-<i>located at: /usr/bin</i>
-
-This command will make the given existing servername the default VHOST which is served when accessing the server by it's original DNS name or it's IP address.
-
 purge_moodlecache <i>servername</i>
 -----------------------------------
 <i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
@@ -153,4 +147,4 @@ Use this script to easily update all installed scripts and commands. It will pre
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.6
+v.1.6.1
