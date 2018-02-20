@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.7'
+echo 'Docker multihost builder v.1.7.1'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -149,7 +149,8 @@ else
 	sudo rm -rf $www_path/html/>/dev/null 2>/dev/null
 	sudo rm -f $www_path/html>/dev/null 2>/dev/null
 	cp -r ./multihost $www_path/html
-	chmod +x $www_path/html/cli/*.sh
+	sudo chmod -R 777 $www_path/html 
+	sudo chmod +x $www_path/html/cli/*.sh
 #	sudo enable_vhost multihost>/dev/null
 
 	sudo run_multihost
