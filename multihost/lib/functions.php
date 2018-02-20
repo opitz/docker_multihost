@@ -58,29 +58,6 @@ function enable_button($vhost = false) {
 }
 
 #------------------------------------------------------------------------------
-function enable_button0($vhost = false) {
-	if(!$vhost) return false;
-
-	return '<form method="post">
-	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="enable" id="'.$vhost.'" value="Enable" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function default_button($vhost = false) {
-	if(!$vhost) return false;
-	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '>> default <<';
-
-	return '<form id = "'.$vhost.'" method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" />
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
 function disable_button($vhost = false) {
 	if(!$vhost) return false;
 	if($vhost == 'multihost') return 'mandatory';
@@ -91,19 +68,6 @@ function disable_button($vhost = false) {
   	<input type="hidden" name="disable" id="'.$vhost.'" value="Disable" />
 	<button class="ui mini button disable_button" id="'.$vhost.'">Disable</button>
 		</form>
-';
-}
-
-#------------------------------------------------------------------------------
-function disable_button0($vhost = false) {
-	if(!$vhost) return false;
-	if($vhost == 'multihost') return 'mandatory';
-	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '';
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-    <input class="button" type="submit" name="disable" id="'.$vhost.'" value="Disable" />
-</form>
 ';
 }
 
@@ -121,19 +85,6 @@ function cache_button($vhost = false) {
 }
 
 #------------------------------------------------------------------------------
-function cache_button0($vhost = false) {
-	if(!$vhost) return false;
-	if(!file_exists('/var/moodledata/'.$vhost.'/sessions')) return "cache purged";
-
-	return '<form method="post">
-	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
-	<span>'.$vhost.'</span>
-    <input class="button" type="submit" name="purge_moodlecache" id="'.$vhost.'" value="Purge Cache" /><br/>
-</form>
-';
-}
-
-#------------------------------------------------------------------------------
 function reload_button() {
 	return '<form method="post" id="reload">
   <input type="hidden" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" />
@@ -143,9 +94,14 @@ function reload_button() {
 }
 
 #------------------------------------------------------------------------------
-function reload_button0() {
-	return '<form method="post">
-    <input class="button large" type="submit" name="reload_apache" id="'.$vhost.'" value="Reload Apache Configuration" /><br/>
+function default_button($vhost = false) {
+	if(!$vhost) return false;
+	if(realpath('/var/www/html') == '/var/www/'.$vhost) return '>> default <<';
+
+	return '<form id = "'.$vhost.'" method="post">
+	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
+    <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" />
 </form>
 ';
 }
+

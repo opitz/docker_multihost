@@ -1,10 +1,10 @@
 <?php
-$version = '2.0.1';
-$date = '2018-02-19';
+$version = '2.0.2';
+$date = '2018-02-20';
 
 include('lib/functions.php');
 
-#------------------------------------------------------------------------------
+# A simple routing table
 if(array_key_exists('enable',$_POST)) enable_vhost($_POST['vhost']);
 if(array_key_exists('disable',$_POST)) disable_vhost($_POST['vhost']);
 if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost']);
@@ -15,7 +15,6 @@ if(array_key_exists('reload_apache',$_POST)) reload_apache();
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-
 	<meta charset="utf-8" />
 	<title>Docker MultiHost</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css"/>
@@ -33,20 +32,22 @@ if(array_key_exists('reload_apache',$_POST)) reload_apache();
 		<hr>	  	
 	  </div>
 	  <div class="eight wide column">
-	  	<?php include('lib/intro.php'); ?>
+	  	<?php include('lib/enabled.php'); ?>
 	  </div>
 	  <div class="eight wide column">
-	  	<?php include('lib/details.php'); ?>
+	  	<?php include('lib/disabled.php'); ?>
 	  </div>
 	  <div class="sixteen wide column">
 	  	<hr>
 	  	<?php include('lib/manage.php'); ?>
 	  </div>
 	  <div class="eight wide column">
-	  	<?php include('lib/enabled.php'); ?>
+		<hr>	  	
+	  	<?php include('lib/intro.php'); ?>
 	  </div>
 	  <div class="eight wide column">
-	  	<?php include('lib/disabled.php'); ?>
+		<hr>	  	
+	  	<?php include('lib/details.php'); ?>
 	  </div>
 	  <div class="sixteen wide column">
 	  	<hr>
@@ -72,13 +73,8 @@ if(array_key_exists('reload_apache',$_POST)) reload_apache();
 
 <script>
 	$(document).ready(function(){
-	    $(".test_button").click(function(){
-	        $("p").toggle();
-	    });
-
-			$(".enable_button").click(function(){
-//					alert('here = ' + $(this).closest( ".enable_button" ).attr("id"));
-					$("#" + $(this).closest( ".button" ).attr("id")).submit();
-			});
+		$(".enable_button").click(function(){
+			$("#" + $(this).closest( ".button" ).attr("id")).submit();
+		});
 	});
 </script>

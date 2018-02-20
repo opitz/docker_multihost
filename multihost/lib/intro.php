@@ -1,4 +1,6 @@
 <span>
+	<span class="subheader">What is this?</span>
+	<p><p>
 	This is Docker <span class="multi">Multi</span>Host, a multi(sic!) web server based on Docker and optimized for - but not limited to - Moodle instances.
 	<br>It is targeted at serving multiple virtual hosts (VHOSTs) with one server setup.
 	<p>
