@@ -7,6 +7,5 @@ To access add the name of the VHOST to the host's URL like so <code>https://host
 Alternatively you might want to access it using it's name. For this you will have to change your local '/etc/hosts' file and connect the name to the IP address of this server (see above). You then will be able to access the server like so: <code>https://servername</code>.
 </p>
 <p>
-<span class="note">Please note:</span>A possible Moodle instance will automatically be detected when enabling a VHOST so a repository for moodledata and a crontab entry for moodle maintenance will be created.<br>
-For enabled Moodle VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.<br>
-For Moodle VHOSTS you may use the following config file as a blueprint: <a href="lib/config.txt" target=new>config.php</a>.
+<span class="note">Please note:</span> A possible Moodle instance will automatically be detected when enabling a VHOST so a repository for moodledata and a crontab entry for moodle maintenance will be created. For enabled Moodle VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.<br>
+For Moodle installations on this server you may want to use the following config file as a blueprint: <a href="lib/config.txt" target=new>config.php</a>.
