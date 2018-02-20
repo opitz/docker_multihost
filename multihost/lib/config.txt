@@ -31,9 +31,11 @@ $moodledata_folder = (isset($subfolder)) ? $subfolder : $server_name;
 
 $CFG->dataroot  = '/var/moodledata/'.$moodledata_folder;
 $CFG->admin     = 'admin';
-$CFG->debug = 32767;
-$CFG->debugdisplay = 1;
 $CFG->directorypermissions = 0777;
+
+# uncomment the next 2 lines to force debug output
+#$CFG->debug = 32767;
+#$CFG->debugdisplay = 1;
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
