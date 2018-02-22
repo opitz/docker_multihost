@@ -52,7 +52,7 @@ function enable_button($vhost = false) {
 	return '<form id = "'.$vhost.'" method="post">
 	<input type = "hidden" name = "vhost" value = "'.$vhost.'" />
 	<input type="hidden" name="enable" id="'.$vhost.'" value="Enable" />
-	<button class="ui mini button enable_button" id="'.$vhost.'">Enable</button>
+	<button class="ui green mini button enable_button" id="'.$vhost.'">Enable</button>
 	</form>
 ';
 }
@@ -66,7 +66,7 @@ function disable_button($vhost = false) {
 	return '<form id = "'.$vhost.'" method="post">
 	<input type ="hidden" name = "vhost" value = "'.$vhost.'" />
   	<input type="hidden" name="disable" id="'.$vhost.'" value="Disable" />
-	<button class="ui mini button disable_button" id="'.$vhost.'">Disable</button>
+	<button class="ui red mini button disable_button" id="'.$vhost.'">Disable</button>
 		</form>
 ';
 }
@@ -103,5 +103,12 @@ function default_button($vhost = false) {
     <input class="button" type="submit" name="default" id="'.$vhost.'" value="Make default" />
 </form>
 ';
+}
+#------------------------------------------------------------------------------
+function server_button($vhost = false, $php_version = false, $port = false) {
+	if(!$vhost) return false;
+	if(!$php_version) return false;
+
+	return '<button class="ui blue mini button server_button" id="'.$vhost.'" value="https://'.$_SERVER['HTTP_HOST'].':'.$port.'/'.$vhost.'">'.$vhost.'</button>';
 }
 

@@ -2,6 +2,7 @@
 <table class="ui table">
 	<tbody>
 		<?php
+		echo "<tr><th>&nbsp;</th><th></th></tr>";
 		foreach($vhosts as $vhost)
 		{
 			if(is_dir('/var/www/'.$vhost) && !file_exists('/etc/httpd/sites-enabled/'.$vhost.'.conf') && $vhost != '.' && $vhost != '..' && $vhost != 'html') {

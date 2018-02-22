@@ -1,7 +1,7 @@
 <span>
 	<span class="subheader">Server details</span>
 	<p><p>
-		This page is currently serverd by:<p>
+		This page is currently served by:<p>
 	<?php
 	echo "<ul>";
 	echo "<li>Docker container: <b>".php_uname('n')."</b></li>";
@@ -18,9 +18,5 @@
 	echo "<li>PHP version: <b>".phpversion()."</b></li>";
 	if($xdebug=phpversion('xdebug')) echo"<li><b>xdebug $xdebug</b> is installed</li><p>";
 	echo "</ul>";
-	echo "<hr>";
-	echo "<span class='note'>Please note:</span><br>If you have enabled a new VHOST through the web interface of one webserver the configuration for the other web server is not automatically reloaded. If - as a consequence - you landed on this page instead on the page of your selected VHOST please reload the Apache configuration with the button below to address this issue.<p>";
-	echo reload_button();
-	echo "<p><p>";
 	?>
 </span>
