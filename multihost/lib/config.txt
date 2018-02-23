@@ -9,7 +9,9 @@ $CFG = new stdClass();
 
 if (php_sapi_name() === 'cli') {
     $server_name = gethostname();
-    $CFG->wwwroot = $server_name;
+#    $CFG->wwwroot = $server_name;
+    $subfolder = explode('/', $_SERVER['SCRIPT_FILENAME'])[3];
+    $CFG->wwwroot = isset($subfolder) ? $subfolder : $server_name;
 } else {
     $scheme = 'https';
     $server_name = filter_var($_SERVER['SERVER_NAME'], FILTER_SANITIZE_URL);
