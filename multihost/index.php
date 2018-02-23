@@ -1,6 +1,6 @@
 <?php
-$version = '2.0.2';
-$date = '2018-02-20';
+$version = '2.0.4';
+$date = '2018-02-22';
 
 include('lib/functions.php');
 
@@ -28,30 +28,24 @@ if(array_key_exists('reload_apache',$_POST)) reload_apache();
 	<div class="ui grid container">
 	  <div class="sixteen wide column">
 	  	<p><p>
-		<span class="header">Docker <span class="multi">multi</span>host</span>
+		<span class="header">Docker <span class="multi"><b>multi</b>host</span></span>
 		<hr>	  	
 	  </div>
-	  <div class="eight wide column">
+	  <div class="ten wide column">
+	  	<?php include('lib/intro.php'); ?>
+	  </div>
+	  <div class="six wide column">
+	  	<?php include('lib/details.php'); ?>
+	  </div>
+	  <div class="ten wide column">
 	  	<?php include('lib/enabled.php'); ?>
 	  </div>
-	  <div class="eight wide column">
+	  <div class="six wide column">
 	  	<?php include('lib/disabled.php'); ?>
 	  </div>
 	  <div class="sixteen wide column">
 	  	<hr>
 	  	<?php include('lib/manage.php'); ?>
-	  </div>
-	  <div class="eight wide column">
-		<hr>	  	
-	  	<?php include('lib/intro.php'); ?>
-	  </div>
-	  <div class="eight wide column">
-		<hr>	  	
-	  	<?php include('lib/details.php'); ?>
-	  </div>
-	  <div class="sixteen wide column">
-	  	<hr>
-	  	<?php include('lib/web_interface.php'); ?>
 	  </div>
 	  <div class="eight wide column">
 	  	<hr>
@@ -75,6 +69,12 @@ if(array_key_exists('reload_apache',$_POST)) reload_apache();
 	$(document).ready(function(){
 		$(".enable_button").click(function(){
 			$("#" + $(this).closest( ".button" ).attr("id")).submit();
+		});
+
+		$(".server_button").click(function(){
+//			alert('test ' + $(this).closest( ".button" ).val());
+			window.open($(this).closest( ".button" ).val());
+			return false;
 		});
 	});
 </script>

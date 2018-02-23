@@ -15,4 +15,5 @@
 .right_column { vertical-align:top; background-color: #EEE; padding-top: 10px; padding-left: 10px; }
 .gap { width:20px; }
 .note { color:#FF6600; font-weight:bold; }
-.multi { colo{visibility: hidden;}:#3456A3; font-weight:bold; }
+.multi { color:#3456A3; }
+.small_text { font-size: 10px; }
