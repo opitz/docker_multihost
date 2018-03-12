@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-#echo v.1.8
+#echo v.1.9
 # v.0.1 - added hostmane to container
 # v.0.2 - removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.0.3 - using setup details  to make changes easier
@@ -207,13 +207,14 @@ if [ -d $www_path/html ]
 
 	chmod 755 $www_path/html/*.txt 2>/dev/null
 fi
-echo "placing symlinks"
+echo "--> placing symlinks for enabled VHOSTs"
 # finally check for all enabled VHOSTs and create a symlink for each one insde the default html instance
 for D in `find ${www_path} -mindepth 1 -maxdepth 1 -type d`
 do
 	DD=$(basename $D)
 	if [ -f ${sites_enabled_path}/${DD}.conf ]
 		then
+		rm -rf ${www_path}/html/$DD >/dev/null 2>/dev/null
 		ln -s $D ${www_path}/html/$DD
 	fi
 done
