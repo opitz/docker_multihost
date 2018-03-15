@@ -1,7 +1,6 @@
 <span>
-	<span class="subheader">Server details</span>
-	<p><p>
-		This page is currently served by:<p>
+	<h2>Server details</h2>
+	This page is currently served by:<p>
 	<?php
 	echo "<ul>";
 	echo "<li>Docker container: <b>".php_uname('n')."</b></li>";
@@ -16,7 +15,8 @@
 		echo "<li><span class='alert'>No IP address found - this is weird...!</span></li>";
 	}
 	echo "<li>PHP version: <b>".phpversion()."</b></li>";
-	if($xdebug=phpversion('xdebug')) echo"<li><b>xdebug $xdebug</b> is installed</li><p>";
+	if($xdebug=phpversion('xdebug')) echo"<li>xdebug version: <b>$xdebug</b></li><p>";
+//	echo "<li><b>xdebug $xdebug</b> is installed</li><p>";
 	echo "</ul>";
 	?>
 </span>

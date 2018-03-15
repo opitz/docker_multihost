@@ -1,10 +1,8 @@
 <span>
-	<span class="subheader">What is this?</span>
-	<p><p>
+	<h2>What is this?</h2>
 	This is Docker <span class="multi"><b>multi</b>host</span>, a multi(sic!) web server based on Docker and optimized for - but not limited to - Moodle instances. It is targeted at serving multiple virtual hosts (VHOSTs) with one server setup.
-	<p>
-	<span class="subheader">Double Server</span>
-	<p>
+	<p></p>
+	<h2>Double Server</h2>
 	Two almost identical web servers run on this host - the only difference being the PHP version and ports used:<ul>
 		<li>Centos7, PHP 7.1 - ports <?php echo file_get_contents('port.txt').'/ '.file_get_contents('ssl_port.txt');?></li>
 		<li>Centos7, PHP 5.6 - ports <?php echo file_get_contents('port2.txt').'/ '.file_get_contents('ssl_port2.txt');?></li>

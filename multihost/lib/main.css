@@ -1,3 +1,6 @@
+h1 { font-size:28px; color:#3456A3; }
+h2 { font-size:18px; font-weight: bold; color:#3456A3;}
+h3 { font-size:12px; font-weight: bold; color:#3456A3;}
 .header { font-size:28px; color:#3456A3; }
 .subheader { font-size:18px; font-weight: bold; color:#3456A3;}
 .footer { font-size:12px; font-style: italic; }
@@ -17,3 +20,41 @@
 .note { color:#FF6600; font-weight:bold; }
 .multi { color:#3456A3; }
 .small_text { font-size: 10px; }
+
+#login_box {
+    position: fixed;
+    border: 1px solid grey;
+    background-color: rgba(200,200,200,0.8);    
+    width: 20%;
+    min-width: 200px;
+    top: 30%;
+    left: 40%;
+    font-weight: bold;
+}
+
+.error_msg {
+	color: red;
+}
+
+#users_box {
+    position: fixed;
+    border: 1px solid grey;
+    background-color: rgba(200,200,200,0.8);    
+    width: 30%;
+    min-width: 300px;
+    top: 30%;
+    left: 35%;
+    font-weight: bold;
+}
+
+.user_box {
+    position: fixed;
+    border: 1px solid grey;
+    background-color: rgba(200,200,200,0.8);    
+    width: 30%;
+    min-width: 300px;
+    top: 30%;
+    left: 35%;
+    font-weight: bold;
+}
+
