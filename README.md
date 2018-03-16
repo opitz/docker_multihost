@@ -13,11 +13,12 @@ Quickstart
 
 The multihost web interface
 ---------------------------
-After a sucessful build of the server (see below) it will by default serve the administation web interface that will show technical details and allows configuration of the VHOSTs served. For this it will list all the potential VHOSTs - that is all the directories found in the web root of the server (e.g. /var/www) - which can be enabled with the click of a button. Once enabled a VHOST may be contacted by using it's name -  but this will require changing the local /etc/hosts file accordingly and relate the name of the VHOST to the IP address the server is actually running on.
+After a sucessful build of the server (see below) you should be able to enter https://<host-IP-or-DNS-name> to see the main console of Docker multihost.
 
-The contents of the default VHOST will be shown whenever the generic DNS name or the IP address of the server is used as an URL. You can declare any of the enabled VHOSTs as the default one - but remember to declare a 'multihost' entry in your /etc/hosts file before switching the default VHOST so you are able to return to the admin interface easily by using "http://multihost" in your browser.
-
-You may disable any VHOST with the click of a button  - but not the current default VHOST and not "multihost" as this containes the web interface.
+To make changes to teh settings (e.g. enabling or disabling VHOSTs running on this server) you will have to log in.
+After a the first installation there is only one user 'admin' with the password 'admin'. You may add new users and change the password for every user using the 'Edit User' button when logged in. As of now there all users are created equal and are able to change everyone's passwords.
+All users and their (hashed) passwords are stored in /etc/multihost.user on the host machine and is bound into each Docker container. To reset the user settings simply remove that file and run the update_all.sh script. This will install a new users file with user 'admin' and password 'admin'.
+When logged in you may anable or disable any VHOST with the click of a button.
 
 Dockerfiles
 -----------

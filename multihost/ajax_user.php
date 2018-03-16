@@ -29,6 +29,41 @@ function logout(){
 }
 
 //----------------------------------------------------------------------------
+function get_user_list($file){
+	$userfile = fopen($file, "r") or die("Unable to open user file $file !");
+	$i=0;
+	$html = "<table class='ui table'>";
+	$html .= "<thead>";
+	$html .= '<tr><td><h2>User List</h2></td></tr>';
+	$html .= "</thead>";
+	$html .= "<tbody>";
+	// Output one line until end-of-file
+	while(!feof($userfile)) {
+	 	$user = explode(',',fgets($userfile));
+	 	if(strlen(trim($user[0])) > 0) {
+		 	$html .= "<tr>
+		 				<td><span id='user_$i' type='text' value='$user[0]'>$user[0]</span></td>
+		 				<td hidden><input id='pass_$i' type='text' value='$user[1]'></td>
+		 				<td><button class='ui mini button edit_user_btn' id='$i'>Edit User</button></td>
+		 				<td><button class='ui mini button delete_user_btn' id='".($i+1000)."'>Delete User</button></td>
+		 			</tr>";
+		 	$i++;
+	 	}
+	}
+	$html .= "<tr><td colspan='3'><hr></td></tr>";
+	$html .= "<tr>
+				<td></td>
+				<td><div class='ui mini button cancel_button' id='cancel_user_btn'>Cancel</div></td>
+				<td><div class='ui mini green button' id='add_user_btn'>Add User</div></td>
+			</tr>";
+	$html .= "<tr><td colspan='3'><div id='users_msg'></div></td></tr>";
+	$html .= "</tbody>";
+	$html .= "</table>";
+	fclose($userfile);
+	return $html;
+}
+
+//----------------------------------------------------------------------------
 function add_user_form(){
 	$html='';
 	$html = "<table class='ui table'>";
@@ -42,7 +77,7 @@ function add_user_form(){
 	$html .= "<tr><td colspan='3'><hr></td></tr>";
 	$html .= "<tr>
 				<td></td>
-				<td><div class='ui mini button' id='cancel_add_user_btn'>Cancel</div></td>
+				<td><div class='ui mini button cancel_button' id='cancel_add_user_btn'>Cancel</div></td>
 				<td><div class='ui mini green button' id='save_add_user_btn'>Add User</div></td>
 			</tr>";
 	$html .= "<tr><td colspan='3'><div class='error_msg' id='user_add_msg'></div></td></tr>";
@@ -68,7 +103,7 @@ function edit_user_form($file, $username){
 	 		$html .= "<tr><td>Username:</td><td id='username'>$username</td></tr>";
 	 		$html .= "<tr><td>New Password:</td><td><input type='password' name='new_password'></td></tr>";
 	 		$html .= "<tr><td>Confirm New Password:</td><td><input type='password' name='confirm_password'></td></tr>";
-	 		$html .= "<tr><td><div class='ui mini button' id='cancel_edit_user_btn'>Cancel</div></td><td><div class='ui mini green button' id='save_edit_user_btn'>Save User</div></td></tr>";
+	 		$html .= "<tr><td><div class='ui mini button cancel_button' id='cancel_edit_user_btn'>Cancel</div></td><td><div class='ui mini green button' id='save_edit_user_btn'>Save User</div></td></tr>";
 			$html .= "<tr><td colspan='2'><div class='error_msg' id='user_edit_msg'></div></td></tr>";
 			$html .= "</tbody>";
 			$html .= "</table>";
@@ -85,11 +120,10 @@ function edit_user_form($file, $username){
 function add_user($file, $username, $password){
 	$html='';
 	$md5password = md5($password);
-	$userfile = fopen($file, "r+") or die("Unable to read user file!");
+	$userfile = fopen($file, "a") or die("Unable to read user file!");
 	fwrite($userfile, "$username, $md5password\n");
 	fclose($userfile);
-	return 'testing';
-	return json_encode(array('username'=>$username, 'password'=>$new_password));
+	return $username;
 }
 
 //----------------------------------------------------------------------------
@@ -136,44 +170,9 @@ function delete_user($file, $username){
 }
 
 //----------------------------------------------------------------------------
-function get_user_list($file){
-	$userfile = fopen($file, "r") or die("Unable to open f..ing user file! $file");
-	$i=0;
-	$html = "<table class='ui table'>";
-	$html .= "<thead>";
-	$html .= '<tr><td><h2>User List</h2></td></tr>';
-	$html .= "</thead>";
-	$html .= "<tbody>";
-	// Output one line until end-of-file
-	while(!feof($userfile)) {
-	 	$user = explode(',',fgets($userfile));
-	 	if(strlen(trim($user[0])) > 0) {
-		 	$html .= "<tr>
-		 				<td><span id='user_$i' type='text' value='$user[0]'>$user[0]</span></td>
-		 				<td hidden><input id='pass_$i' type='text' value='$user[1]'></td>
-		 				<td><button class='ui mini button edit_user_btn' id='$i'>Edit User</button></td>
-		 				<td><button class='ui mini button delete_user_btn' id='".($i+1000)."'>Delete User</button></td>
-		 			</tr>";
-		 	$i++;
-	 	}
-	}
-	$html .= "<tr><td colspan='3'><hr></td></tr>";
-	$html .= "<tr>
-				<td></td>
-				<td><div class='ui mini button' id='cancel_user_btn'>Cancel</div></td>
-				<td><div class='ui mini green button' id='add_user_btn'>Add User</div></td>
-			</tr>";
-	$html .= "<tr><td colspan='3'><div id='users_msg'></div></td></tr>";
-	$html .= "</tbody>";
-	$html .= "</table>";
-	fclose($userfile);
-	return $html;
-}
-
-//----------------------------------------------------------------------------
 function validate_user($file, $username, $password, $confirm_password){
 	$min_length = 5;
-	$result = '';
+	$result = 'ok';
 	if(strlen($username) == 0) return "ERROR: Username cannot be empty!";
 	$userfile = fopen($file, "r") or die("Unable to read user file!");
 	while(!feof($userfile)) {
@@ -201,7 +200,7 @@ function validate_password($password, $confirm_password){
 
 //============================================================================
 $file = "users"; // path to the file where the user data is stored
-//$file = "/multihost.user"; // path to the file where the user data is stored
+$file = "/etc/multihost.user"; // path to the file where the user data is stored
 $html = '';
 if(!isset($_GET['action'])){
 	echo $html;

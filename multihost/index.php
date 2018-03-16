@@ -36,6 +36,7 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 </head>
 
 <body>
+	<div id="grey_mask" style="display: none;"></div>
 	<?php
 //		if($_SESSION['logged_in'] != ''){
 		if(isset($_SESSION['logged_in'])) {
@@ -83,12 +84,12 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 	</div>
 
 <!--  the login box  -->
-	<div id="login_box" style="display: none;">
+	<div class="user_box" id="login_box" style="display: none;">
 		<table class="ui table">
 			<tbody>
 				<tr><td>Username: </td><td><input type="text" name="username"></td></tr>
 				<tr><td>Password: </td><td><input type="password" name="password"></td></tr>
-				<tr><td><div class="ui mini button" id="login_cancel_btn">Cancel</div></td><td><div class="ui mini orange button" id="login_submit_btn">Login</div></td></tr>
+				<tr><td><div class="ui mini button cancel_button" id="cancel_login_btn">Cancel</div></td><td><div class="ui mini orange button" id="login_submit_btn">Login</div></td></tr>
 				<tr><td colspan="2"><div class="error_msg" id="login_msg"></div></td></tr>
 			</tbody>			
 		</table>
@@ -105,170 +106,4 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 
 </body>
 
-<script type="text/javascript" src="multihost.js"></script>
-<script>
-
-//==========================================================================
-$(document).ready(function(){
-
-	$('.button0').click(function(){
-		alert('clicked...' + $(this).attr('id'));
-	});
-
-
-//--------------------------------------------------------------------------
-	$(document).on('click',"#add_user_btn",function(){
-		$.ajax({
-			url: 'ajax_user.php',
-			data: {action: 'add_user_form'},
-			type: 'get',
-			success: function(result) {
-				console.log(result);
-				$('#user_add_box').html('').append(result);
-				$('#user_add_box').show();
-				$('#users_box').hide();
-			},
-			error: function(error){
-				console.log('Error:');
-				console.log(error);
-			}
-		});
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click','#save_add_user_btn', function(){
-		new_username = $('input[name="new_username"]').val();
-		new_password = $('input[name="new_password"]').val();
-		confirm_password = $('input[name="confirm_password"]').val();
-		$.ajax({
-			url: 'ajax_user.php',
-			data: {action: 'validate_user', username: new_username, password: new_password, confirm_password: confirm_password},
-			type: 'get',
-			success: function(result) {
-				if(result === 'ok') {
-					$.ajax({
-						url: 'ajax_user.php',
-						data: {action: 'add_user', username: new_username, password: new_password},
-						type: 'get',
-						success: function(result) {
-							console.log(result);
-						},
-						error: function(error){
-							console.log('Error:');
-							console.log(error);
-						}
-					});
-					$('#user_add_msg').html('');
-					$('#user_add_box').hide();
-				} else {
-					console.log('==> ' + result);
-					$('#user_add_msg').html(result);
-				}
-
-			},
-			error: function(error){
-				console.log('Error:');
-				console.log(error);
-			}
-		});
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click',".edit_user_btn", function(){
-		user_id = $(this).attr('id');
-		username = $('#user_'+user_id).html();
-		$.ajax({
-			url: 'ajax_user.php',
-			data: {action: 'edit_user_form', username: username},
-			type: 'get',
-			success: function(result) {
-				$('#user_edit_box').html('').append(result);
-				$('#user_edit_box').show();
-				$('#users_box').hide();
-			},
-			error: function(error){
-				console.log('Error:');
-				console.log(error);
-				$('#user_edit_msg').html('Saving user data failed!');
-			}
-		});
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click','#save_edit_user_btn', function(){
-		username = $('#username').html();
-		new_password = $('input[name="new_password"]').val();
-		confirm_password = $('input[name="confirm_password"]').val();
-		$.ajax({
-			url: 'ajax_user.php',
-			data: {action: 'validate_password', password: new_password, confirm_password: confirm_password},
-			type: 'get',
-			success: function(result) {
-				if(result === 'ok') {
-					$.ajax({
-						url: 'ajax_user.php',
-						data: {action: 'save_user', username: username, password: new_password},
-						type: 'get',
-						success: function(result) {
-							console.log('success: ' + result);
-						},
-						error: function(error){
-							console.log('Error:');
-							console.log(error);
-						}
-					});
-					$('#user_edit_msg').html('');
-					$('#user_edit_box').hide();
-				} else {
-					console.log('==> ' + result);
-					$('#user_edit_msg').html(result);
-				}
-
-			},
-			error: function(error){
-				console.log('Error:');
-				console.log(error);
-			}
-		});
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click',".delete_user_btn",function(){
-		user_id = ($(this).attr('id')-1000);
-		username = $('#user_'+user_id).html();
-		if(username === 'admin')
-			alert("User 'admin' cannot be deleted!");
-		else	
-			if(confirm('Do you really want to delete user ' + username + '?')) {
-				$.ajax({
-					url: 'ajax_user.php',
-					data: {action: 'delete_user', username: username},
-					type: 'get',
-					success: function(result) {
-				$('#users_box').hide();
-						console.log(result);
-						console.log('User ' + username + ' has been deleted');
-					},
-					error: function(error){
-						console.log('Error:');
-						console.log(error);
-					}
-				});
-			}
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click','#cancel_add_user_btn', function(){
-		$('#user_add_msg').html('');
-		$('#user_add_box').hide();
-	});
-
-//--------------------------------------------------------------------------
-	$(document).on('click','#cancel_edit_user_btn', function(){
-		$('#user_edit_msg').html('');
-		$('#user_edit_box').hide();
-	});
-
-});
-	
-</script>
+<script type="text/javascript" src="lib/multihost.js"></script>
