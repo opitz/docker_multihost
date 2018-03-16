@@ -95,7 +95,7 @@ fi
 
 # check for a users file for the web frontend and (re-)install the default setup if missing
 # the default setting is user 'admin' with password 'admin'
-if [ ! -f /etc/multihost.users ]
+if [ ! -f /etc/multihost.user ]
 	then
 	sudo cp ./multihost.user /etc/multihost.user
 	sudo chmod 777 /etc/multihost.user
