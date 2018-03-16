@@ -33,19 +33,16 @@ function admin_mode(status){
 //--------------------------------------------------------------------------
 function login (username, password){
 	$.ajax({
-		url: 'login.php',
-		data: {username: username, password: password},
-		datatype: 'json',
-		type: 'post',
+		url: 'ajax_user.php',
+		data: {action: 'login', username: username, password: password},
 		success: function(result) {
-//				alert('this worked..?! : ' + data);
 			if(result === ''){
 				$('#login_msg').html('Login failed!');
 			} else {
 				admin_mode(1);
 				$('#loginbtn').html("Logout " + result);
 				$('#login_box').hide();
-				console.log('--> logged in.');
+				console.log('--> logged in as ' + result);
 				console.log(result);
 			}
 		},
@@ -60,10 +57,11 @@ function login (username, password){
 //--------------------------------------------------------------------------
 function logout (){
 	$.ajax({
-		url: 'logout.php',
+		url: 'ajax_user.php',
+		data: {action: 'logout'},
 		success: function(result) {
 			if(result === ''){
-				console.log('--> logout failed?!');
+				console.log('--> logout failed?! wtf');
 			} else {
 				$('.user_box').hide();
 				admin_mode(0);
@@ -121,7 +119,8 @@ $(document).ready(function(){
 //--------------------------------------------------------------------------
 	$(document).on('click',"#editusersbtn", function(){
 		$.ajax({
-			url: 'get_users.php',
+			url: 'ajax_user.php',
+			data: {action: 'get_user_list'},
 			type: 'get',
 			success: function(result) {
 				$('#users_box').html('').append(result);

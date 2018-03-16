@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
+# 2018-03-16
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo 'Docker multihost uninstaller v.1.2'
+echo 'Docker multihost uninstaller v.1.2.1'
 echo '--------------------------------------------------------'
 
 if [ "$1" == "nodocker" ]
@@ -78,6 +79,13 @@ if [ -L $www_path/html ]
 	then
 	sudo rm -r $www_path/html >/dev/null 2>/dev/null
 	echo "--> '$www_path/html' symlink has been removed."
+fi
+
+# removing the web interface user file
+if [ -f /etc/multihost.user ]
+	then
+	sudo rm /etc/multihost.user >/dev/null 2>/dev/null
+	echo "--> existing '/etc/multihost.user' file has been removed."
 fi
 
 # removing the configuration file
