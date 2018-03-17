@@ -86,6 +86,9 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 <!--  the login box  -->
 	<div class="user_box" id="login_box" style="display: none;">
 		<table class="ui table">
+			<thead>
+				$html .= "<tr><td colspan='2'><h2>Login</h2></td></tr>";
+			</thead>
 			<tbody>
 				<tr><td>Username: </td><td><input type="text" name="username"></td></tr>
 				<tr><td>Password: </td><td><input type="password" name="password"></td></tr>

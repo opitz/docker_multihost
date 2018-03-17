@@ -3,14 +3,14 @@
 # it will save the config and users files before perdorming a complete uninstall of the current installation
 # followed by a complete rebuild using the version in this directory
 # the 'docker' option will force the removal and rebuild of the Docker images as well
-# 2018-03-16
+# 2018-03-17
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
 echo ' '
-echo 'update_all.sh v.1.5'
+echo 'update_all.sh v.1.6'
 echo '--------------------------------------------------------'
 
 # make a backup of the multihost.conf and multihost.user files and of the currently enabled VHOSTs
@@ -46,6 +46,7 @@ if [ "$1" == "docker" ]
     if [ -f /etc/multihost.user.bak ]
         then
         sudo cp /etc/multihost.user.bak /etc/multihost.user
+        sudo chmod 777 /etc/multihost.user
     fi
     # apply updates where applicable
     if [ -f updates.sh ]
@@ -68,6 +69,7 @@ else
     if [ -f /etc/multihost.user.bak ]
         then
         sudo cp /etc/multihost.user.bak /etc/multihost.user
+        sudo chmod 777 /etc/multihost.user
     fi
     # apply updates where applicable
     if [ -f updates.sh ]
@@ -79,14 +81,14 @@ else
 fi
 
 # re-enable all previously enabled VHOSTs
-for vhost in $enabled_vhosts
-do
-    if [[ ! "${vhost}" == *"default"* && "${vhost%.*}" != "multihost" ]]
-        then
-        sudo enable_vhost ${vhost%.*} >/dev/null
-        echo "--> ${vhost%.*} has been re-enabled"
-    fi
-done
+#for vhost in $enabled_vhosts
+#do
+#    if [[ ! "${vhost}" == *"default"* && "${vhost%.*}" != "multihost" ]]
+#        then
+#        sudo enable_vhost ${vhost%.*} >/dev/null
+#        echo "--> ${vhost%.*} has been re-enabled"
+#    fi
+#done
 echo " "
 echo "Update complete!"
 echo " "

@@ -5,8 +5,8 @@
 		$vhosts = scandir('/var/www');
 		$php_version1 = '7.1';
 		$php_version2 = '5.6';
-		$port1 = 443;
-		$port2 = 8443;
+		$port1 = file_get_contents('ssl_port.txt');
+		$port2 = file_get_contents('ssl_port2.txt');
 		echo "<tr><th align=center>PHP $php_version1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th align=center>PHP $php_version2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th></th><th></th></tr>";
 		foreach($vhosts as $vhost)
 		{

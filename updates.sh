@@ -16,8 +16,17 @@ if [ "$ssl_port" == "" ]
 	then
 	echo "--> updating /etc/mutihost.conf with ports"
 	sudo echo "# set ports" >> /etc/multihost.conf
-	sudo echo "port=80" >> /etc/multihost.conf
-	sudo echo "ssl_port=443" >> /etc/multihost.conf
-	sudo echo "port2=8080" >> /etc/multihost.conf
-	sudo echo "ssl_port2=8443" >> /etc/multihost.conf
+	sudo echo "export port=80" >> /etc/multihost.conf
+	sudo echo "export ssl_port=443" >> /etc/multihost.conf
+	sudo echo "export port2=8080" >> /etc/multihost.conf
+	sudo echo "export ssl_port2=8443" >> /etc/multihost.conf
+fi
+
+# 2018-03-16: adding userfile_path
+if [ "$userfile_path" == "" ]
+	then
+	echo "--> updating /etc/mutihost.conf with userfile_path"
+	sudo echo " " >> /etc/multihost.conf
+	sudo echo "# where the web interface user file will be found" >> /etc/multihost.conf
+	sudo echo "export userfile_path=/etc/multihost.user" >> /etc/multihost.conf
 fi

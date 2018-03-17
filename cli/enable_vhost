@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to enable a new VHOST to multihost
-# m.opitz@qmul.ac.uk | 2018-02-16
+# m.opitz@qmul.ac.uk | 2018-03-17
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
@@ -58,8 +58,9 @@ fi
 chmod 777 ${sites_enabled_path}/${servername}.conf
 echo "--> ${sites_enabled_path}/${servername}.conf has been placed."
 
-# make a symlink into the default multihost webserver to allow alternative access through subdirectory in URL
-ln -s ${www_path}/${servername} ${www_path}/html/${servername}
+# make a symlink - that is recognised INSIDE the Docker container! -  
+# into the default multihost webserver to allow alternative access through subdirectory in URL
+ln -s /var/www/${servername} ${www_path}/html/${servername}
 
 if [ -f $www_path/$servername/blocks/moodleblock.class.php ]
 	then

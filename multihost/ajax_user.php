@@ -34,7 +34,7 @@ function get_user_list($file){
 	$i=0;
 	$html = "<table class='ui table'>";
 	$html .= "<thead>";
-	$html .= '<tr><td><h2>User List</h2></td></tr>';
+	$html .= "<tr><td colspan='3'><h2>User List</h2></td></tr>";
 	$html .= "</thead>";
 	$html .= "<tbody>";
 	// Output one line until end-of-file
@@ -68,19 +68,18 @@ function add_user_form(){
 	$html='';
 	$html = "<table class='ui table'>";
 	$html .= "<thead>";
-	$html .= '<tr><td><h2>Add new User</h2></td></tr>';
+	$html .= "<tr><td colspan='2'><h2>Add new User</h2></td></tr>";
 	$html .= "</thead>";
 	$html .= "<tbody>";
 	$html .= "<tr><td>New Username:</td><td><input type='text' name='new_username'></td></tr>";
 	$html .= "<tr><td>New Password:</td><td><input type='password' name='new_password'></td></tr>";
 	$html .= "<tr><td>Confirm New Password:</td><td><input type='password' name='confirm_password'></td></tr>";
-	$html .= "<tr><td colspan='3'><hr></td></tr>";
+	$html .= "<tr><td colspan='2'><hr></td></tr>";
 	$html .= "<tr>
-				<td></td>
 				<td><div class='ui mini button cancel_button' id='cancel_add_user_btn'>Cancel</div></td>
 				<td><div class='ui mini green button' id='save_add_user_btn'>Add User</div></td>
 			</tr>";
-	$html .= "<tr><td colspan='3'><div class='error_msg' id='user_add_msg'></div></td></tr>";
+	$html .= "<tr><td colspan='2'><div class='error_msg' id='user_add_msg'></div></td></tr>";
 	$html .= "</tbody>";
 	$html .= "</table>";
 	return $html;
@@ -97,7 +96,7 @@ function edit_user_form($file, $username){
 			$html .= "<form id='edit_user_form' method='post'>";
 			$html .= "<table class='ui table'>";
 			$html .= "<thead>";
-			$html .= '<tr><td><h2>Edit User</h2></td></tr>';
+			$html .= "<tr><td colspan='2'><h2>Edit User</h2></td></tr>";
 			$html .= "</thead>";
 			$html .= "<tbody>";
 	 		$html .= "<tr><td>Username:</td><td id='username'>$username</td></tr>";
