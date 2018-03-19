@@ -1,6 +1,6 @@
 <?php
-$version = '2.2';
-$date = '2018-03-13';
+$version = '2.5';
+$date = '2018-03-18';
 
 include('lib/functions.php');
 
@@ -87,12 +87,16 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 	<div class="user_box" id="login_box" style="display: none;">
 		<table class="ui table">
 			<thead>
-				$html .= "<tr><td colspan='2'><h2>Login</h2></td></tr>";
+				<tr><td colspan='2'><h2>Login</h2><hr></td></tr>
 			</thead>
 			<tbody>
 				<tr><td>Username: </td><td><input type="text" name="username"></td></tr>
 				<tr><td>Password: </td><td><input type="password" name="password"></td></tr>
-				<tr><td><div class="ui mini button cancel_button" id="cancel_login_btn">Cancel</div></td><td><div class="ui mini orange button" id="login_submit_btn">Login</div></td></tr>
+				<tr><td colspan='2'><hr></td></tr>
+				<tr>
+					<td><div class="ui mini button cancel_button" id="cancel_login_btn">Cancel</div></td>
+					<td><div class="ui mini orange button" id="login_submit_btn">Login</div></td>
+				</tr>
 				<tr><td colspan="2"><div class="error_msg" id="login_msg"></div></td></tr>
 			</tbody>			
 		</table>

@@ -22,11 +22,13 @@ if [ "$ssl_port" == "" ]
 	sudo echo "export ssl_port2=8443" >> /etc/multihost.conf
 fi
 
-# 2018-03-16: adding userfile_path
-if [ "$userfile_path" == "" ]
+# 2018-03-18: adding setup_path
+if [ "$setup_path" == "" ]
 	then
-	echo "--> updating /etc/mutihost.conf with userfile_path"
+
+
+	echo "--> updating /etc/mutihost.conf with setup_path"
 	sudo echo " " >> /etc/multihost.conf
-	sudo echo "# where the web interface user file will be found" >> /etc/multihost.conf
-	sudo echo "export userfile_path=/etc/multihost.user" >> /etc/multihost.conf
+	sudo echo "# where the configuration file and web interface user file will be found on the Docker host" >> /etc/multihost.conf
+	sudo echo "export setup_path=/etc" >> /etc/multihost.conf
 fi

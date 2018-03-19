@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2018-03-17
+# m.opitz@qmul.ac.uk | 2018-03-18
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
@@ -111,7 +111,8 @@ if [ "${o}" == "u" ]
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
-                -v ${userfile_path}:/etc/multihost.user \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os} >/dev/null
@@ -129,7 +130,8 @@ if [ "${o}" == "u" ]
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
-                -v ${userfile_path}:/etc/multihost.user \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os2} >/dev/null
@@ -155,7 +157,8 @@ else
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
-                -v ${userfile_path}:/etc/multihost.user \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os} >/dev/null
@@ -177,7 +180,8 @@ else
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
-                -v ${userfile_path}:/etc/multihost.user \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os2} >/dev/null

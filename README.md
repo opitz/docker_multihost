@@ -9,7 +9,8 @@ Quickstart
 * git clone this repository to the dedicated host
 * cd into the resulting directory (e.g. docker_moodle)
 * build and start the server by running 'sudo ./build_all.sh'. During installation you will be asked to edit/confirm the configuration of paths used. Directores will be created where they are not already present.
-* point your browser to the IP address of the server
+* to update an existing installation cd in to this directory, run 'git pull' followed by 'sudo ./update_all.sh'.
+* point your browser to the IP address of the server (if Docker multihost is running locally you may just use 'localhost').
 
 The multihost web interface
 ---------------------------
@@ -33,7 +34,10 @@ For every VHOST served the following files are needed on Dockerhost
  * a .config file inside /var/sites-enabled that will define a named VHOST
  * a WRITABLE directory inside /var/moodledata/ to provide a separate space for every Moodle instance served (not needed for any non-Moodle VHOST)
 
-There is a web interface and a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
+Apart from the web interface there is a CLI tool 'deploy_vhost' that will do most of the work - all you need is to provide a matching directory in the webroot folder.
+
+PLEASE NOTE: In the current version the Dockerfiles for the Ubuntu images are not built as they are not used. To build them please uncomment the corresponding lines in the build_all.sh script (see below) and run build_all.sh (again).
+
 
 build_all.sh [nodocker]
 -----------------------
