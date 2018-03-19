@@ -33,7 +33,7 @@ function admin_mode(status){
 //--------------------------------------------------------------------------
 function login (username, password){
 	$.ajax({
-		url: 'ajax_user.php',
+		url: 'lib/ajax_user.php',
 		data: {action: 'login', username: username, password: password},
 		success: function(result) {
 			if(result === ''){
@@ -42,12 +42,11 @@ function login (username, password){
 				admin_mode(1);
 				$('#loginbtn').html("Logout " + result);
 				$('#login_box').hide();
-				console.log('--> logged in as ' + result);
+				console.log('--> logging in user ' + result);
 			}
 		},
 		error: function(error){
-			console.log('Error:');
-			console.log(error);
+			console.log('Error:' + error);
 			$('#login_msg').html('Login failed!');
 		}
 	});
@@ -56,16 +55,70 @@ function login (username, password){
 //--------------------------------------------------------------------------
 function logout (){
 	$.ajax({
-		url: 'ajax_user.php',
+		url: 'lib/ajax_user.php',
 		data: {action: 'logout'},
 		success: function(result) {
 			if(result === ''){
-				console.log('--> logout failed?! wtf');
+				console.log('--> logout failed?! wtf...');
 			} else {
+				user = $('#logged_in').html();
 				$('.user_box').hide();
 				admin_mode(0);
-				console.log('--> logging out...');
+				console.log('--> logging out user ' + user);
 			}
+		}
+	});
+}
+
+//--------------------------------------------------------------------------
+function reload_vhosts(){
+	$.ajax({
+		url: 'lib/enabled.php',
+		success: function(result) {
+			$('#enabled_section').html('').append(result);
+			$.ajax({
+				url: 'lib/disabled.php',
+				success: function(result) {
+					$('#disabled_section').html('').append(result);
+					if($('#logged_in').length) {
+						admin_mode(2);
+					}
+				}
+			});
+		}
+	});
+}
+
+//--------------------------------------------------------------------------
+function enable_vhost(vhost){
+	$.ajax({
+		url: 'lib/ajax_vhosts.php',
+		data: {action: 'enable_vhost', vhost: vhost},
+		success: function(result) {
+			reload_vhosts();
+		}
+	});
+}
+
+//--------------------------------------------------------------------------
+function disable_vhost(vhost){
+	$.ajax({
+		url: 'lib/ajax_vhosts.php',
+		data: {action: 'disable_vhost', vhost: vhost},
+		success: function(result) {
+			reload_vhosts();
+		}
+	});
+}
+
+//--------------------------------------------------------------------------
+function purge_moodlecache(vhost){
+	$.ajax({
+		url: 'lib/ajax_vhosts.php',
+		data: {action: 'purge_moodlecache', vhost: vhost},
+		success: function(result) {
+			console.log(result);
+			reload_vhosts();
 		}
 	});
 }
@@ -73,9 +126,8 @@ function logout (){
 //=========================================================================
 $(document).ready(function(){
 
-	if($('#logged_in').length) {
-		admin_mode(2);
-	}
+	reload_vhosts();
+
 
 //--------------------------------------------------------------------------
 	$(document).on('keydown', '.user_box', function(e){
@@ -95,7 +147,17 @@ $(document).ready(function(){
 
 //--------------------------------------------------------------------------
 	$(document).on('click', ".enable_button", function(){
-		$("#" + $(this).closest( ".button" ).attr("id")).submit();
+		enable_vhost($(this).attr('id'));
+	});
+
+//--------------------------------------------------------------------------
+	$(document).on('click', ".disable_button", function(){
+		disable_vhost($(this).attr('id'));
+	});
+
+//--------------------------------------------------------------------------
+	$(document).on('click', ".cache_button", function(){
+		purge_moodlecache($(this).attr('id'));
 	});
 
 //--------------------------------------------------------------------------
@@ -121,15 +183,9 @@ $(document).ready(function(){
 	});
 
 //--------------------------------------------------------------------------
-	$(document).on('click', "#cancel_login_btn", function(){
-		$('#login_msg').html('');
-		$('#login_box').hide();
-	});
-
-//--------------------------------------------------------------------------
 	$(document).on('click',"#editusersbtn", function(){
 		$.ajax({
-			url: 'ajax_user.php',
+			url: 'lib/ajax_user.php',
 			data: {action: 'get_user_list'},
 			type: 'get',
 			success: function(result) {
@@ -137,22 +193,16 @@ $(document).ready(function(){
 				$('#users_box').show();
 			},
 			error: function(error){
-				console.log('Error:');
-				console.log(error);
+				console.log('Error:' + error);
 				$('#login_msg').html('Login failed!');
 			}
 		});
 	});
 
 //--------------------------------------------------------------------------
-	$(document).on('click','#cancel_user_btn', function(){
-		$('#users_box').hide();
-	});
-
-//--------------------------------------------------------------------------
 	$(document).on('click',"#add_user_btn",function(){
 		$.ajax({
-			url: 'ajax_user.php',
+			url: 'lib/ajax_user.php',
 			data: {action: 'add_user_form'},
 			type: 'get',
 			success: function(result) {
@@ -163,8 +213,7 @@ $(document).ready(function(){
 				$('#users_box').hide();
 			},
 			error: function(error){
-				console.log('Error:');
-				console.log(error);
+				console.log('Error:' + error);
 			}
 		});
 	});
@@ -175,21 +224,20 @@ $(document).ready(function(){
 		new_password = $('input[name="new_password"]').val();
 		confirm_password = $('input[name="confirm_password"]').val();
 		$.ajax({
-			url: 'ajax_user.php',
+			url: 'lib/ajax_user.php',
 			data: {action: 'validate_user', username: new_username, password: new_password, confirm_password: confirm_password},
 			type: 'get',
 			success: function(result) {
 				if(result === 'ok') {
 					$.ajax({
-						url: 'ajax_user.php',
+						url: 'lib/ajax_user.php',
 						data: {action: 'add_user', username: new_username, password: new_password},
 						type: 'get',
 						success: function(result) {
 							console.log('--> added user ' + result);
 						},
 						error: function(error){
-							console.log('Error:');
-							console.log(error);
+							console.log('Error:' + error);
 						}
 					});
 					$('#user_add_msg').html('');
@@ -198,11 +246,9 @@ $(document).ready(function(){
 					console.log('==> ' + result);
 					$('#user_add_msg').html(result);
 				}
-
 			},
 			error: function(error){
-				console.log('Error:');
-				console.log(error);
+				console.log('Error:' + error);
 			}
 		});
 	});
@@ -212,7 +258,7 @@ $(document).ready(function(){
 		user_id = $(this).attr('id');
 		username = $('#user_'+user_id).html();
 		$.ajax({
-			url: 'ajax_user.php',
+			url: 'lib/ajax_user.php',
 			data: {action: 'edit_user_form', username: username},
 			type: 'get',
 			success: function(result) {
@@ -222,9 +268,8 @@ $(document).ready(function(){
 				$('#users_box').hide();
 			},
 			error: function(error){
-				console.log('Error:');
-				console.log(error);
-				$('#user_edit_msg').html('Saving user data failed!');
+				console.log('Error:' + error);
+				$('#user_edit_msg').html('Saving user data failed!<br>ERROR: ' + error);
 			}
 		});
 	});
@@ -235,21 +280,20 @@ $(document).ready(function(){
 		new_password = $('input[name="new_password"]').val();
 		confirm_password = $('input[name="confirm_password"]').val();
 		$.ajax({
-			url: 'ajax_user.php',
+			url: 'lib/ajax_user.php',
 			data: {action: 'validate_password', password: new_password, confirm_password: confirm_password},
 			type: 'get',
 			success: function(result) {
 				if(result === 'ok') {
 					$.ajax({
-						url: 'ajax_user.php',
+						url: 'lib/ajax_user.php',
 						data: {action: 'save_user', username: username, password: new_password},
 						type: 'get',
 						success: function(result) {
 							console.log('success: ' + result);
 						},
 						error: function(error){
-							console.log('Error:');
-							console.log(error);
+							console.log('Error:' + error);
 						}
 					});
 					$('#user_edit_msg').html('');
@@ -261,8 +305,7 @@ $(document).ready(function(){
 
 			},
 			error: function(error){
-				console.log('Error:');
-				console.log(error);
+				console.log('Error:' + error);
 			}
 		});
 	});
@@ -276,7 +319,7 @@ $(document).ready(function(){
 		else	
 			if(confirm('Do you really want to delete user ' + username + '?')) {
 				$.ajax({
-					url: 'ajax_user.php',
+					url: 'lib/ajax_user.php',
 					data: {action: 'delete_user', username: username},
 					type: 'get',
 					success: function(result) {
@@ -285,11 +328,21 @@ $(document).ready(function(){
 						console.log('User ' + username + ' has been deleted');
 					},
 					error: function(error){
-						console.log('Error:');
-						console.log(error);
+						console.log('Error:' + error);
 					}
 				});
 			}
+	});
+
+//--------------------------------------------------------------------------
+	$(document).on('click', "#cancel_login_btn", function(){
+		$('#login_msg').html('');
+		$('#login_box').hide();
+	});
+
+//--------------------------------------------------------------------------
+	$(document).on('click','#cancel_user_btn', function(){
+		$('#users_box').hide();
 	});
 
 //--------------------------------------------------------------------------

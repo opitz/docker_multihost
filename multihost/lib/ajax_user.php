@@ -1,4 +1,8 @@
 <?php
+#
+#	This file contains all ajax user functions called by jQuery in multihost.js
+#	using the argument 'action' a switch will determine what to do.
+#
 
 //----------------------------------------------------------------------------
 function login($file, $username, $password){
@@ -202,8 +206,7 @@ function validate_password($password, $confirm_password){
 }
 
 //============================================================================
-$file = "users"; // path to the file where the user data is stored
-$file = "/etc/multihost.user"; // path to the file where the user data is stored
+$file = "/etc/multihost.user"; // path INSIDE the Docker container to the file where the user data is stored
 $html = '';
 if(!isset($_GET['action'])){
 	echo $html;
@@ -216,7 +219,6 @@ if(!isset($_GET['username'])){
 $action = $_GET['action'];
 $username = $_GET['username'];
 $password = $_GET['password'];
-//$new_password = md5($_GET['new_password']);
 $confirm_password = $_GET['confirm_password'];
 
 

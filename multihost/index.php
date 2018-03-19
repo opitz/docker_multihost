@@ -1,8 +1,6 @@
 <?php
 $version = '2.5';
-$date = '2018-03-18';
-
-include('lib/functions.php');
+$date = '2018-03-19';
 
 session_start();
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
@@ -38,7 +36,6 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 <body>
 	<div id="grey_mask" style="display: none;"></div>
 	<?php
-//		if($_SESSION['logged_in'] != ''){
 		if(isset($_SESSION['logged_in'])) {
 			echo "<div hidden id='logged_in'>".$_SESSION['logged_in']."</div>";
 		}
@@ -51,18 +48,16 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 		<span><button style="display: none;" class="ui right floated mini button edit_users_button" id="editusersbtn">Edit Users</button></span>
 		<hr>	  	
 	  </div>
-	  <div class="ten wide column">
+	  <div id="ontro_section" class="ten wide column">
 	  	<?php include('lib/intro.php'); ?>
 	  </div>
-	  <div class="six wide column">
+	  <div id="details_section" class="six wide column">
 	  	<?php include('lib/details.php'); ?>
 	  </div>
-	  <div class="ten wide column">
-	  	<?php include('lib/enabled.php'); ?>
-	  </div>
-	  <div style="display: none;" class="admin six wide column" id="disabled_section">
-	  	<?php include('lib/disabled.php'); ?>
-	  </div>
+
+	  <div id="enabled_section" class="ten wide column"></div>
+	  <div style="display: none;" class="admin six wide column" id="disabled_section"></div>
+	  
 	  <div style="display: none;" class="sixteen wide column" id="manage_section">
 	  	<hr>
 	  	<?php include('lib/manage.php'); ?>
