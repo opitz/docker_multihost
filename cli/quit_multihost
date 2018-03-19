@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# script to quit and remove any Docker multihost container thereby effectively stopping all services
+# m.opitz@qmul.ac.uk | 2018-03-18
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
+
+version=v.1.0
+# v.1.0 - initial build
+
+usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
+
+echo ' '
+echo quit multihost $version
+echo -------------------------------------
+
+read -p "Really stop and remove all Docker multihost container? [y/N]" doit
+if [ "${doit:0:1}" != "y" ] && [ "${doit:0:1}" != "Y" ]
+    then
+    echo "====> OK, aborting..."
+    echo ' '
+    exit 1
+fi
+# remove any exsiting multihost container, running or not
+docker rm -f multihost_centos7_php7_httpd >/dev/null 2>/dev/null
+docker rm -f multihost_centos7_php56_httpd >/dev/null 2>/dev/null
+docker rm -f multihost_ubuntu_php7_apache2 >/dev/null 2>/dev/null
+docker rm -f multihost_ubuntu_php56_apache2 >/dev/null 2>/dev/null
+
+
+echo " "
+echo "===> All Docker multihost containers stopped and removed!"
+echo " "
