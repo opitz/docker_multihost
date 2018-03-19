@@ -21,7 +21,17 @@ function disable_button($vhost = false) {
 	if(!$vhost) return false;
 	if(realpath('/var/www/html') == '/var/www/'.$vhost) 
 		return '';
-	return '<dev style="display: none;" class="admin ui red mini button disable_button" id="'.$vhost.'">Disable</dev>';
+	session_start();
+	if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+	    // last request was more than 30 minutes ago
+	    session_unset();     // unset $_SESSION variable for the run-time 
+	    session_destroy();   // destroy session data in storage
+	}
+	$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+	if(isset($_SESSION['logged_in'])) 
+		return '<dev style="display: show;" class="admin ui red mini button disable_button" id="'.$vhost.'">Disable</dev>';
+	else
+		return '<dev style="display: none;" class="admin ui red mini button disable_button" id="'.$vhost.'">Disable</dev>';
 }
 
 #==============================================================================

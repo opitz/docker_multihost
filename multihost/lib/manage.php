@@ -7,6 +7,5 @@ Alternatively you might want to access it using it's name. For this you will hav
 </p>
 <p></p>
 <p><span class="subheader">Moodle VHOSTs</span></p>
-A possible <a href="http://www.moodle.org" target="new">Moodle</a> instance will automatically be detected when enabling a VHOST. This will create a repository for moodledata and a crontab entry for moodle maintenance. For enabled Moodle VHOSTs you can purge the Moodle cache by pressing the "Purge Cache" button next to it.
-<p></p>
-For Moodle installations on this server you may want to use the following config file as a blueprint: <a href="lib/config.txt" target=new>config.php</a>.
+A possible <a href="http://www.moodle.org" target="new">Moodle</a> instance will automatically be detected when enabling a VHOST. This will create a repository for moodledata and a crontab entry for moodle maintenance.<br>
+For Moodle installations on this server you may want to use the following config file as a blueprint: <b><a href="lib/config.txt" target=new>config.php</a></b>.

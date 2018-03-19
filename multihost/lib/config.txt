@@ -1,7 +1,12 @@
 <?php  // Moodle configuration file
 
-# You will have to identify the database here:
+# You will have to identify the database and credentials here:
 $db_name = 'mo_qmplus34_180206';
+$db_user = 'moodle_user';
+$db_pass = 'moodle';
+
+# normally you do not need to make any changes below
+#
 
 unset($CFG);
 global $CFG;
@@ -43,8 +48,8 @@ $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'db_host';
 $CFG->dbname    = $db_name;
-$CFG->dbuser    = 'moodle_user';
-$CFG->dbpass    = 'moodle';
+$CFG->dbuser    = $db_user;
+$CFG->dbpass    = $db_pass;
 $CFG->prefix    = 'mdl_';
 $CFG->dboptions = array(
     'dbpersist' => 0,
