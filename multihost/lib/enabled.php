@@ -38,8 +38,8 @@ function disable_button($vhost = false) {
 $vhosts = scandir('/var/www');
 $php_version1 = '7.1';
 $php_version2 = '5.6';
-$port1 = file_get_contents('ssl_port.txt');
-$port2 = file_get_contents('ssl_port2.txt');
+$port1 = file_get_contents('../ssl_port.txt');
+$port2 = file_get_contents('../ssl_port2.txt');
 $html = '';
 
 $html .= "<b>Enabled VHOSTs:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='small_text'>(Clicking a button will open the website in a new window/tab)</span>";
