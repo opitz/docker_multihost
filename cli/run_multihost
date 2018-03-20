@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2018-03-12
+# m.opitz@qmul.ac.uk | 2018-03-18
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
 fi
 
-#echo v.1.9
+#echo v.2.1
 # v.0.1 - added hostmane to container
 # v.0.2 - removing all other multihost container when starting a new one and serving php5.6 over 80 / 443
 # v.0.3 - using setup details  to make changes easier
@@ -24,6 +24,8 @@ fi
 # v.1.7 - now reading port setting from config.php
 # v.1.8 - install symlink for each enabled VHOST inside $www_path/html to allow access via subdirectory in URL
 # v.1.9 - removed HOST_IP_ADDR settings due to incompatibility issues with ipv6
+# v.2.0 - now supporting /etc/multihost.user file on host machine for web user management
+# v.2.1 - allowing to set path to userfile in config file, fixed faulty symlink when restoring enabled VHOSTs
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -109,6 +111,8 @@ if [ "${o}" == "u" ]
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os} >/dev/null
@@ -126,6 +130,8 @@ if [ "${o}" == "u" ]
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os2} >/dev/null
@@ -151,6 +157,8 @@ else
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os} >/dev/null
@@ -172,6 +180,8 @@ else
 		-v ${moodledata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
+        -v ${setup_path}/multihost.conf:/etc/multihost.conf \
+        -v ${setup_path}/multihost.user:/etc/multihost.user \
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os2} >/dev/null
@@ -215,7 +225,7 @@ do
 	if [ -f ${sites_enabled_path}/${DD}.conf ]
 		then
 		rm -rf ${www_path}/html/$DD >/dev/null 2>/dev/null
-		ln -s $D ${www_path}/html/$DD
+		ln -s /var/www/$DD ${www_path}/html/$DD
 	fi
 done
 

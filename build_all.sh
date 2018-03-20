@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-# 2017-12-08
+# 2018-03-16
 
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'Docker multihost builder v.1.7.1'
+echo 'Docker multihost builder v.1.7.2'
 echo '--------------------------------------------------------'
 
 check_path() {
@@ -92,6 +92,14 @@ if [ ! -f /etc/multihost.conf ]
 	exit 1
 fi
 . /etc/multihost.conf
+
+# check for a users file for the web frontend and (re-)install the default setup if missing
+# the default setting is user 'admin' with password 'admin'
+if [ ! -f /etc/multihost.user ]
+	then
+	sudo cp ./multihost.user /etc/multihost.user
+	sudo chmod 777 /etc/multihost.user
+fi
 
 # install the multihost cli commands
 if [ ! -f install_commands.sh ]

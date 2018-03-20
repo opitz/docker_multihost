@@ -2,6 +2,9 @@
 
 # script to enable a VHOST in Docker multihost
 # m.opitz@qmul.ac.uk | 2017-12-11
+
+# this script will run INSIDE the Docker container so all paths need to be related to that server.
+
 sites_enabled_path="/etc/httpd/sites-enabled"
 moodledata_path="/var/moodledata"
 www_path="/var/www"

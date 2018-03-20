@@ -16,8 +16,19 @@ if [ "$ssl_port" == "" ]
 	then
 	echo "--> updating /etc/mutihost.conf with ports"
 	sudo echo "# set ports" >> /etc/multihost.conf
-	sudo echo "port=80" >> /etc/multihost.conf
-	sudo echo "ssl_port=443" >> /etc/multihost.conf
-	sudo echo "port2=8080" >> /etc/multihost.conf
-	sudo echo "ssl_port2=8443" >> /etc/multihost.conf
+	sudo echo "export port=80" >> /etc/multihost.conf
+	sudo echo "export ssl_port=443" >> /etc/multihost.conf
+	sudo echo "export port2=8080" >> /etc/multihost.conf
+	sudo echo "export ssl_port2=8443" >> /etc/multihost.conf
+fi
+
+# 2018-03-18: adding setup_path
+if [ "$setup_path" == "" ]
+	then
+
+
+	echo "--> updating /etc/mutihost.conf with setup_path"
+	sudo echo " " >> /etc/multihost.conf
+	sudo echo "# where the configuration file and web interface user file will be found on the Docker host" >> /etc/multihost.conf
+	sudo echo "export setup_path=/etc" >> /etc/multihost.conf
 fi
