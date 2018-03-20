@@ -6,33 +6,24 @@
 
 #------------------------------------------------------------------------------
 function enable_vhost($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "../cli/enable_vhost.sh $vhost";
-	shell_exec($cmd);
+	shell_exec("../cli/enable_vhost.sh $vhost");
 }
 
 #------------------------------------------------------------------------------
 function disable_vhost($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "../cli/disable_vhost.sh $vhost";
-	shell_exec($cmd);
+	shell_exec("../cli/disable_vhost.sh $vhost");
+}
+
+#------------------------------------------------------------------------------
+function check_moodlecache($vhost = false){
+	if(!$vhost) return false;
+	return file_exists("var/moodlecache/$vhost");
 }
 
 #------------------------------------------------------------------------------
 function purge_moodlecache($vhost = false){
-	if(!$vhost) {
-		echo "<dev class='alert'>No vhost given - please investigate!</dev>";
-		return false;
-	}
-	$cmd = "sudo ../cli/purge_moodlecache.sh $vhost";
-	shell_exec($cmd);
-	echo "==> purged moodlecache for $vhost";
+	shell_exec("sudo ../cli/purge_moodlecache.sh $vhost");
+	return "==> purged moodlecache for $vhost";
 }
 
 //============================================================================
@@ -48,6 +39,10 @@ if(!isset($_GET['username'])){
 
 $action = $_GET['action'];
 $vhost = $_GET['vhost'];
+if(!$vhost) {
+	echo "<dev class='alert'>No vhost given - please investigate!</dev>";
+	return false;
+}
 
 switch($action) {
 	case "enable_vhost" :
@@ -55,6 +50,9 @@ switch($action) {
 		break;
 	case "disable_vhost" :
 		echo disable_vhost($vhost);
+		break;
+	case "check_moodlecache" :
+		echo check_moodlecache($vhost);
 		break;
 	case "purge_moodlecache" :
 		echo purge_moodlecache($vhost);

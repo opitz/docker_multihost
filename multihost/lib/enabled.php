@@ -64,3 +64,19 @@ $html .= "</tbody></table>";
 
 echo $html;
 ?>
+<script>
+	function check_moodlecache(vhost) {
+		$.ajax({
+			url: 'lib/ajax_vhosts.php',
+			data: {action: 'check_moodlecache', vhost: vhost},
+			success: function(result) {
+				reload_vhosts();
+			}
+		});
+	}
+
+	$(document).ready(function(){
+//		alert('boo');
+//		setInterval(reload_vhosts(), 10000000000000);
+	});
+</script>

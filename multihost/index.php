@@ -1,6 +1,6 @@
 <?php
 $version = '2.5';
-$date = '2018-03-19';
+$date = '2018-03-20';
 
 session_start();
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
@@ -35,47 +35,35 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 
 <body>
 	<div id="grey_mask" style="display: none;"></div>
+<p id="demo"></p>
 	<?php
 		if(isset($_SESSION['logged_in'])) {
 			echo "<div hidden id='logged_in'>".$_SESSION['logged_in']."</div>";
 		}
 	?>
 	<div class="ui grid container">
-	  <div class="sixteen wide column">
-	  	<p><p>
-		<span class="header">Docker <span class="multi"><b>multi</b>host</span></span>
-		<span><button class="ui right floated orange mini button login_button" id="loginbtn">Login</button></span>
-		<span><button style="display: none;" class="ui right floated mini button edit_users_button" id="editusersbtn">Edit Users</button></span>
-		<hr>	  	
-	  </div>
-	  <div id="ontro_section" class="ten wide column">
-	  	<?php include('lib/intro.php'); ?>
-	  </div>
-	  <div id="details_section" class="six wide column">
-	  	<?php include('lib/details.php'); ?>
-	  </div>
-
-	  <div id="enabled_section" class="ten wide column"></div>
-	  <div style="display: none;" class="admin six wide column" id="disabled_section"></div>
-	  
-	  <div style="display: none;" class="sixteen wide column" id="manage_section">
-	  	<hr>
-	  	<?php include('lib/manage.php'); ?>
-	  </div>
-	  <div style="display: none;" class="eight wide column" id="cli_section">
-	  	<hr>
-	  	<?php include('lib/cli.php'); ?>
-	  </div>
-	  <div style="display: none;" class="eight wide column" id="cli_enable_section">
-	  	<hr>
-	  	<?php include('lib/cli_enable.php'); ?>
-	  </div>
-	  <div class="sixteen wide column">
-		<hr>
-		<?php
-		echo "<span class='footer'>v.$version | $date</span>";
-		?>
-	  </div>
+		<div class="sixteen wide column">
+		  	<p><p>
+			<span class="header">Docker <span class="multi"><b>multi</b>host</span></span>
+			<span><button class="ui right floated orange mini button login_button" id="loginbtn">Login</button></span>
+			<span><button style="display: none;" class="ui right floated mini button edit_users_button" id="editusersbtn">Edit Users</button></span>
+			<hr>	  	
+		</div>
+		<div id="intro_section" class="ten wide column"></div>
+  		<div id="details_section" class="six wide column"></div>
+		<div id="enabled_section" class="ten wide column"></div>
+		<div id="disabled_section" class="admin six wide column" style="display: none;"></div>  
+		<div id="manage_section" class="sixteen wide column" style="display: none;"></div>
+		<div style="display: none;" class="eight wide column" id="cli_section"></div>
+		<div style="display: none;" class="eight wide column" id="cli_enable_section"></div>
+  		<div class="sixteen wide column">
+			<hr>
+			<?php
+			echo "<span class='footer'>v.$version | $date</span>";
+			?>
+ 		</div>
+		<!--  test area  -->
+		<div id="test_area" class="test_area" style="display: none;"></div>
 	</div>
 
 <!--  the login box  -->
@@ -109,3 +97,12 @@ if(array_key_exists('purge_moodlecache',$_POST)) purge_moodlecache($_POST['vhost
 </body>
 
 <script type="text/javascript" src="lib/multihost.js"></script>
+<script>
+
+function myTimer() {
+    var d = new Date();
+    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+    reload_vhosts();
+//    console.log('now intervalling correctly...!');
+}
+</script>

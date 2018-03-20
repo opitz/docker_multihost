@@ -71,6 +71,25 @@ function logout (){
 }
 
 //--------------------------------------------------------------------------
+function append_html(file, section){
+	$.ajax({
+		url: file,
+		success: function(result) {
+			$(section).html('').append(result);
+		}
+	});
+}
+
+//--------------------------------------------------------------------------
+function load_static_content(){
+	append_html('lib/intro.php', '#intro_section');
+	append_html('lib/details.php', '#details_section');
+	append_html('lib/manage.php', '#manage_section');
+	append_html('lib/cli.php', '#cli_section');
+	append_html('lib/cli_enable.php', '#cli_enable_section');
+}
+
+//--------------------------------------------------------------------------
 function reload_vhosts(){
 	$.ajax({
 		url: 'lib/enabled.php',
@@ -126,8 +145,10 @@ function purge_moodlecache(vhost){
 //=========================================================================
 $(document).ready(function(){
 
+	load_static_content();
 	reload_vhosts();
 
+	var myVar = setInterval(reload_vhosts, 30000); // reload the vhosts part every 30 seconds to reflect cache changes
 
 //--------------------------------------------------------------------------
 	$(document).on('keydown', '.user_box', function(e){
