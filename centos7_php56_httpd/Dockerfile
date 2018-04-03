@@ -1,6 +1,6 @@
 FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.2.1 - 2017-12-10
+# v.1.4 - 2018-04-03
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
 ENV https_proxy https://wwwcache.qmul.ac.uk:8080
@@ -23,6 +23,7 @@ RUN yum install -y \
 	php56w-dom \
 	php56w-gd \
 	php56w-intl \
+	php56w-ldap \
 	php56w-mbstring \
 	php56w-mcrypt \
 	php56w-mysqli \

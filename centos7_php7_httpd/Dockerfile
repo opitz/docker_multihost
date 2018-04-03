@@ -1,6 +1,6 @@
 FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.2.1 - 2017-12-10
+# v.1.4 - 2018-04-03
 ENV container docker
 ENV http_proxy http://wwwcache.qmul.ac.uk:8080
 ENV https_proxy https://wwwcache.qmul.ac.uk:8080
@@ -23,6 +23,7 @@ RUN yum install -y \
 	php71w-dom \
 	php71w-gd \
 	php71w-intl \
+	php71w-ldap \
 	php71w-mbstring \
 	php71w-mcrypt \
 	php71w-mysqli \

@@ -35,50 +35,35 @@ if [ "$1" == "docker" ]
         echo ' '
         exit 1
     fi
-    # uninstall everything
+    # ok, you mean it - so uninstall everything
     sudo ./uninstall_all.sh 2>/dev/null
-#    git pull
-    #restore the multihost.conf and multihost.user files
-    if [ -f /etc/multihost.conf.bak ]
-        then
-        sudo cp /etc/multihost.conf.bak /etc/multihost.conf
-    fi
-    if [ -f /etc/multihost.user.bak ]
-        then
-        sudo cp /etc/multihost.user.bak /etc/multihost.user
-        sudo chmod 777 /etc/multihost.user
-    fi
-    # apply updates where applicable
-    if [ -f updates.sh ]
-        then
-        sudo ./updates.sh
-    fi
-    # install everything
-    sudo ./build_all.sh
 else
-    echo "--> Keeping Docker images. Run with 'docker' option to force rebuild Docker images too."
-    
+    echo "--> Keeping Docker images. Run with 'docker' option to force rebuild Docker images too."    
     # uninstall everything but the docker images
     sudo ./uninstall_all.sh nodocker 2>/dev/null
-#    git pull
-    #restore the multihost.conf file
-    if [ -f /etc/multihost.conf.bak ]
-        then
-        sudo cp /etc/multihost.conf.bak /etc/multihost.conf
-    fi
-    if [ -f /etc/multihost.user.bak ]
-        then
-        sudo cp /etc/multihost.user.bak /etc/multihost.user
-        sudo chmod 777 /etc/multihost.user
-    fi
-    # apply updates where applicable
-    if [ -f updates.sh ]
-        then
-        sudo ./updates.sh
-    fi
-    # install everything but the docker images
-    sudo ./build_all.sh nodocker
 fi
+
+#    git pull
+
+#restore the multihost.conf file
+if [ -f /etc/multihost.conf.bak ]
+    then
+    sudo cp /etc/multihost.conf.bak /etc/multihost.conf
+fi
+#restore the multihost.user file
+if [ -f /etc/multihost.user.bak ]
+    then
+    sudo cp /etc/multihost.user.bak /etc/multihost.user
+    sudo chmod 777 /etc/multihost.user
+fi
+# apply updates where applicable
+if [ -f updates.sh ]
+    then
+    sudo ./updates.sh
+fi
+# install everything
+sudo ./build_all.sh
+
 
 # re-enable all previously enabled VHOSTs
 #for vhost in $enabled_vhosts

@@ -1,9 +1,9 @@
 <?php  // Moodle configuration file
 
 # You will have to identify the database and credentials here:
-$db_name = 'mo_qmplus34_180206';
+$db_name = 'moodle_db';
 $db_user = 'moodle_user';
-$db_pass = 'moodle';
+$db_pass = 'moodle_pass';
 
 # normally you do not need to make any changes below
 #

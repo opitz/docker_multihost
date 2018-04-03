@@ -70,7 +70,7 @@ else
 #	docker build -t ubuntu_php56_apache2 ubuntu_php56_apache2
 fi
 
-# insatlling/updating the configuration file
+# installing/updating the configuration file
 if [ -f /etc/multihost.conf ]
 	then
 	echo "Found an existing '/etc/multihost.conf' file!."
