@@ -1,9 +1,10 @@
 FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.4 - 2018-04-03
+# v.1.4.1 - 2018-04-04
 ENV container docker
-ENV http_proxy http://wwwcache.qmul.ac.uk:8080
-ENV https_proxy https://wwwcache.qmul.ac.uk:8080
+# uncomment the next 2 lines when running inside a network that requires proxy for access
+#ENV http_proxy http://wwwcache.qmul.ac.uk:8080
+#ENV https_proxy https://wwwcache.qmul.ac.uk:8080
 
 # install repositories
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
