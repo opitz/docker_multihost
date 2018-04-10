@@ -40,7 +40,8 @@ RUN yum install -y \
 	openssl \
 	cronie \
 	sudo \
-	nano 
+	nano \
+        vim-enhanced  
 
 RUN yum -y clean all
 
@@ -68,7 +69,8 @@ RUN echo "zend_extension=xdebug.so" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini
+	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini \
+        sed -i '2s/^/;/' /etc/php.d/xdebug.ini    
 
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
