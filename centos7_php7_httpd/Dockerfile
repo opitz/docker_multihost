@@ -88,7 +88,7 @@ RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
 
 # compile locale definitions to australian english required for unit testing
-RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
+#RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
 
 # install systemd - the resulting image needs to run with --privileged=true !!
 
