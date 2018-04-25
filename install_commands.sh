@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'install multihost commands v.1.3'
+echo 'install multihost commands v.1.4'
 echo '--------------------------------------------------------'
 usage() {
 	if [ $1 ]
@@ -65,6 +65,7 @@ install_command disable_vhost
 install_command enable_vhost
 install_command purge_moodlecache
 install_command run_multihost
+install_command show_multihost_db
 install_command quit_multihost
 
 # install a dummy restart command only if there isn't one already

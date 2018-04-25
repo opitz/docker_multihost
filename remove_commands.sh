@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo ' '
-echo 'remove multihost commands v.1.2'
+echo 'remove multihost commands v.1.4'
 echo '--------------------------------------------------------'
 usage() {
 	if [ $1 ]
@@ -51,6 +51,7 @@ remove_command() {
 }
 
 remove_command quit_multihost
+remove_command show_multihost_db
 remove_command run_multihost
 remove_command restart_multihost
 remove_command purge_moodlecache

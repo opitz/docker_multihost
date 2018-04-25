@@ -1,0 +1,23 @@
+#!/bin/bash
+# check for the multihost config file and read the settings 
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo "No configuration file found at /etc/multihost.conf - aborting!"
+	exit 1
+fi
+. /etc/multihost.conf
+
+
+echo ' '
+echo "listing databases used by moodle instances on this server"
+echo "---------------------------------------------------------"
+
+for i in $(ls -d $www_path/*/)
+do
+	if [ -f $i/config.php ]
+	then
+		echo "$i: " $(cat $i/config.php | grep 'db_name =')
+	fi
+done
+echo ' '
+
