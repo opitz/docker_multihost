@@ -16,7 +16,7 @@ for i in $(ls -d $www_path/*/)
 do
 	if [ -f $i/config.php ]
 	then
-		echo "$i: " $(cat $i/config.php | grep 'db_name =')
+		echo -e "$i: \t " $(cat $i/config.php | grep 'db_name =')
 	fi
 done
 echo ' '
