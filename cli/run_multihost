@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2018-03-18
+# m.opitz@qmul.ac.uk | 2018-04-16
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
@@ -162,6 +162,8 @@ else
 		--add-host db_host:${db_host_ip} \
 		--restart always \
 		${os} >/dev/null
+	docker exec ${servername} systemctl enable httpd > /dev/null 2> /dev/null
+	docker exec ${servername} systemctl enable crond > /dev/null 2> /dev/null
 	docker exec ${servername} systemctl start crond
 	docker exec ${servername} systemctl restart httpd
 	echo "docker exec ${servername} systemctl restart httpd">${command_path}/restart_multihost
@@ -186,6 +188,7 @@ else
 		--restart always \
 		${os2} >/dev/null
 #	docker exec ${servername} systemctl start crond - no 2nd cron job here, the 1st server takes care already
+	docker exec ${servername2} systemctl enable httpd > /dev/null 2> /dev/null
 	docker exec ${servername2} systemctl restart httpd
 	echo "docker exec ${servername2} systemctl restart httpd">>${command_path}/restart_multihost
 	echo "echo '--> Apache server on ${servername2} has been restarted'">>${command_path}/restart_multihost

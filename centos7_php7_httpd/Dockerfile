@@ -1,9 +1,10 @@
 FROM centos:latest
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.2.1 - 2017-12-10
+# v.1.4.1 - 2018-04-04
 ENV container docker
-ENV http_proxy http://wwwcache.qmul.ac.uk:8080
-ENV https_proxy https://wwwcache.qmul.ac.uk:8080
+# uncomment the next 2 lines when running inside a network that requires proxy for access
+#ENV http_proxy http://wwwcache.qmul.ac.uk:8080
+#ENV https_proxy https://wwwcache.qmul.ac.uk:8080
 
 # install repositories
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
@@ -23,6 +24,7 @@ RUN yum install -y \
 	php71w-dom \
 	php71w-gd \
 	php71w-intl \
+	php71w-ldap \
 	php71w-mbstring \
 	php71w-mcrypt \
 	php71w-mysqli \
@@ -38,8 +40,9 @@ RUN yum install -y \
 	openssl \
 	cronie \
 	sudo \
-	nano 
-
+	nano \
+        vim-enchanced
+ 
 RUN yum -y clean all
 
 # SSL - Install self-signed certificate
@@ -66,7 +69,9 @@ RUN echo "zend_extension=xdebug.so" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini
+	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini \
+        sed -i '2s/^/;/' /etc/php.d/xdebug.ini
+
 
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
@@ -81,6 +86,9 @@ RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
+
+# compile locale definitions to australian english required for unit testing
+#RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
 
 # install systemd - the resulting image needs to run with --privileged=true !!
 
