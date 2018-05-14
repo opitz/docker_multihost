@@ -89,25 +89,36 @@ function load_static_content(){
 	append_html('lib/cli_enable.php', '#cli_enable_section');
 }
 
-//--------------------------------------------------------------------------
-function reload_vhosts(){
-	$.ajax({
-		url: 'lib/enabled.php',
-		success: function(result) {
-			$('#enabled_section').html('').append(result);
-			$.ajax({
-				url: 'lib/disabled.php',
-				success: function(result) {
-					$('#disabled_section').html('').append(result);
-					if($('#logged_in').length) {
-						admin_mode(2);
-					}
-				}
-			});
-		}
-	});
+var focused = false;
+
+function onBlur() {
+	focused = false;	
 }
 
+function onFocus() {
+	focused = true;
+}
+
+//--------------------------------------------------------------------------
+function reload_vhosts(){
+	if(focused === true){
+		$.ajax({
+			url: 'lib/enabled.php',
+			success: function(result) {
+				$('#enabled_section').html('').append(result);
+				$.ajax({
+					url: 'lib/disabled.php',
+					success: function(result) {
+						$('#disabled_section').html('').append(result);
+						if($('#logged_in').length) {
+							admin_mode(2);
+						}
+					}
+				});
+			}
+		});
+	}
+}
 //--------------------------------------------------------------------------
 function enable_vhost(vhost){
 	$.ajax({
