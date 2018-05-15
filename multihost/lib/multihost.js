@@ -88,7 +88,7 @@ function load_static_content(){
 	append_html('lib/cli.php', '#cli_section');
 	append_html('lib/cli_enable.php', '#cli_enable_section');
 }
-var focused = false;
+var focused = true;
 
 if (/*@cc_on!@*/false) { // check for Internet Explorer
 	document.onfocusin = onFocus;
