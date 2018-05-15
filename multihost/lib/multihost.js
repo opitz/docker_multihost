@@ -89,7 +89,7 @@ function load_static_content(){
 	append_html('lib/cli_enable.php', '#cli_enable_section');
 }
 
-var focused = false;
+var focused = true;
 
 function onBlur() {
 	focused = false;	
