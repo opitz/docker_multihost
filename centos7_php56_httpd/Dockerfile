@@ -84,7 +84,7 @@ RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed -i "s/^memory_limit = 128M$/memory_limit = 512M /" $phpini
+	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini
 
 # compile locale definitions to australian english required for unit testing
 #RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
