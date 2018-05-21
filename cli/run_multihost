@@ -213,8 +213,7 @@ if [ -d $www_path/html ]
 	then
 	echo $ip > $www_path/html/ip.txt
 	docker images $os --format "{{.CreatedAt}}" > $www_path/html/created$port.txt
-	docker images $os --format "{{.CreatedAt}}" > $www_p		--add-host laptop:${laptop_ip} \
-ath/html/created$ssl_port.txt
+	docker images $os --format "{{.CreatedAt}}" > $www_path/html/created$ssl_port.txt
 	docker images $os2 --format "{{.CreatedAt}}" > $www_path/html/created$port2.txt
 	docker images $os2 --format "{{.CreatedAt}}" > $www_path/html/created$ssl_port2.txt
 
@@ -228,8 +227,7 @@ fi
 echo "--> placing symlinks for enabled VHOSTs"
 # finally check for all enabled VHOSTs and create a symlink for each one insde the default html instance
 for D in `find ${www_path} -mindepth 1 -maxdepth 1 -type d`
-do		--add-host laptop:${laptop_ip} \
-
+do
 	DD=$(basename $D)
 	if [ -f ${sites_enabled_path}/${DD}.conf ]
 		then
