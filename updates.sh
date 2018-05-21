@@ -32,3 +32,11 @@ if [ "$setup_path" == "" ]
 	sudo echo "# where the configuration file and web interface user file will be found on the Docker host" >> /etc/multihost.conf
 	sudo echo "export setup_path=/etc" >> /etc/multihost.conf
 fi
+
+if [ "$laptop_ip" == "" ]
+	then
+	echo "--> updating /etc/multihost.conf with laptop_ip"
+	sudo echo " " >> /etc/multihost.conf
+	sudo echo "# alternate laptop IP address" >> /etc/multihost.conf
+	sudo echo "export laptop_ip=172.17.0.1" >> /etc/multihost.conf
+fi
