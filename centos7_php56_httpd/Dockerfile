@@ -65,7 +65,7 @@ RUN echo "apache ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 
 # setup xdebug
 #RUN rm /etc/php.d/15-xdebug.ini && \
-RUN echo echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
+RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini \
