@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with external config using Docker image with centos7 / Apache / PHP 
-# m.opitz@qmul.ac.uk | 2018-04-16
+# m.opitz@qmul.ac.uk | 2018-08-08
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
    exit 1
@@ -26,6 +26,7 @@ fi
 # v.1.9 - removed HOST_IP_ADDR settings due to incompatibility issues with ipv6
 # v.2.0 - now supporting /etc/multihost.user file on host machine for web user management
 # v.2.1 - allowing to set path to userfile in config file, fixed faulty symlink when restoring enabled VHOSTs
+# v.2.2 - adding support for Mahara data
 
 usage() { echo "Usage: $0 [-o<c/u>] [-p<7/5>]" 1>&2; exit 1; }
 
@@ -109,6 +110,7 @@ if [ "${o}" == "u" ]
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -129,6 +131,7 @@ if [ "${o}" == "u" ]
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -157,6 +160,7 @@ else
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -183,6 +187,7 @@ else
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/moodledata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \

@@ -40,3 +40,14 @@ if [ "$laptop_ip" == "" ]
 	sudo echo "# alternate laptop IP address" >> /etc/multihost.conf
 	sudo echo "export laptop_ip=172.17.0.1" >> /etc/multihost.conf
 fi
+
+# 2018-08-08: adding mahara data path
+if [ "$maharadata_path" == "" ]
+	then
+	echo "--> updating /etc/multihost.conf with laptop_ip"
+	sudo echo " " >> /etc/multihost.conf
+	sudo echo "# the path to the Mahara dataroot." >> /etc/multihost.conf
+	sudo echo "# The directory needs to be writable." >> /etc/multihost.conf
+	sudo echo "# If the directory does not exist it will be created by the build script." >> /etc/multihost.conf
+	sudo echo "export maharadata_path=/var/maharadata" >> /etc/multihost.conf
+fi
