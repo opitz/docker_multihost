@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # script to build all docker images for multihost
-# 2018-03-16
+# 2018-08-08
 
 if [[ $EUID -ne 0 ]]; then
    echo "SORRY! This script must be run as root/superuser!" 
@@ -118,6 +118,9 @@ check_path '/filedir' no_chmod
 # check if moodledata_path exists and create it otherwise
 check_path $moodledata_path
 check_file $moodledata_path/moodle_crontab
+
+# check if maharadata_path exists and create it otherwise
+check_path $maharadata_path
 
 # check if sites_enabled_path exists and create it otherwise
 check_path $sites_enabled_path
