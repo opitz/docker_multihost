@@ -110,7 +110,7 @@ if [ "${o}" == "u" ]
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
-		-v ${maharadata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/maharadata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -131,7 +131,7 @@ if [ "${o}" == "u" ]
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
-		-v ${maharadata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/maharadata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -160,7 +160,7 @@ else
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
-		-v ${maharadata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/maharadata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
@@ -187,7 +187,7 @@ else
 		-v ${sites_enabled_path}:${conf_path} \
 		-v ${www_path}:/var/www \
 		-v ${moodledata_path}:/var/moodledata \
-		-v ${maharadata_path}:/var/moodledata \
+		-v ${maharadata_path}:/var/maharadata \
 		-v ${filedir_path}:/filedir \
 		-v ${xchange_path}:/xchange \
         -v ${setup_path}/multihost.conf:/etc/multihost.conf \
