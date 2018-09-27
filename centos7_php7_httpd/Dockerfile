@@ -41,8 +41,8 @@ RUN yum install -y \
 	cronie \
 	sudo \
 	nano \
-        vim-enchanced
- 
+  vim-enchanced
+
 RUN yum -y clean all
 
 # SSL - Install self-signed certificate
@@ -78,13 +78,18 @@ RUN mkdir /var/moodledata && \
 
 # set PHP max execution time
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed "s/^;date.timezone =$/date.timezone = Europe\/London /" $phpini; \
 	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
 	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
 
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini
+	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini;  \
+
+#Set PHP timezone
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+	   sed -i "s/;date.timezone =/date.timezone = Europe\/London /" $phpini;
+
+
 
 # compile locale definitions to australian english required for unit testing
 #RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8

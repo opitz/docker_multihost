@@ -41,7 +41,7 @@ RUN yum install -y \
 	cronie \
 	sudo \
 	nano \
-        vim-enhanced  
+  vim-enhanced
 
 RUN yum -y clean all
 
@@ -69,7 +69,7 @@ RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini \
-        sed -i '2s/^/;/' /etc/php.d/xdebug.ini    
+        sed -i '2s/^/;/' /etc/php.d/xdebug.ini
 
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
@@ -77,13 +77,17 @@ RUN mkdir /var/moodledata && \
 
 ## set PHP max execution time
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed "s/^;date.timezone =$/date.timezone = Europe\/London /" $phpini; \
 	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
 	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
 
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini
+	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini;
+
+#Set PHP timezone
+RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
+    sed -i "s/;date.timezone =/date.timezone = Europe\/London /" $phpini;
+
 
 # compile locale definitions to australian english required for unit testing
 #RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
