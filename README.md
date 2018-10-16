@@ -14,12 +14,12 @@ Quickstart
 
 The multihost web interface
 ---------------------------
-After a sucessful build of the server (see below) you should be able to enter https://<host-IP-or-DNS-name> to see the main console of Docker multihost.
+After a sucessful build of the server (see below) you should be able to enter https://<i>host-IP-or-DNS-name</i> to see the main console of Docker multihost.
 
-To make changes to teh settings (e.g. enabling or disabling VHOSTs running on this server) you will have to log in.
+To make changes to the settings (e.g. enabling or disabling VHOSTs running on this server) you will have to log in.
 After a the first installation there is only one user 'admin' with the password 'admin'. You may add new users and change the password for every user using the 'Edit User' button when logged in. As of now there all users are created equal and are able to change everyone's passwords.
 All users and their (hashed) passwords are stored in /etc/multihost.user on the host machine and is bound into each Docker container. To reset the user settings simply remove that file and run the update_all.sh script. This will install a new users file with user 'admin' and password 'admin'.
-When logged in you may anable or disable any VHOST with the click of a button.
+When logged in you may enable or disable any VHOST with the click of a button.
 
 Dockerfiles
 -----------
@@ -29,7 +29,7 @@ This repository contains the Dockerfiles to create the following Docker images
  * ubuntu_php7_apache2
  * ubuntu_php56_apache2
 
-For every VHOST served the following files are needed on Dockerhost
+For every VHOST served the following files are needed (and created) on Dockerhost:
  * a directory inside the webroot folder /var/www/ that contains the data served
  * a .config file inside /var/sites-enabled that will define a named VHOST
  * a WRITABLE directory inside /var/moodledata/ to provide a separate space for every Moodle instance served (not needed for any non-Moodle VHOST)
