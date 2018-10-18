@@ -1,0 +1,49 @@
+#!/bin/bash
+
+
+function is_top_moodle_dir()
+{
+   if [[ -f version.php && -f config.php && -f install.php ]]
+   then
+      #is moodle top
+      return 0
+   else
+      #is not moodle top
+      return 1
+   fi
+}
+
+
+phpunit_remove_files()
+{
+    rootpath=$(pwd)
+    rm -i -v -f -R $rootpath/vendor
+    rm -i -v -f -R $rootpath/composer.phar
+    rm -i -v -f -R $rootpath/phpunit.xml
+}
+
+phpunit_remove_database()
+{
+    rootpath=$(pwd)
+    php $rootpath/admin/tool/phpunit/cli/util.php --drop
+}
+
+
+remove_phpunit ()
+{
+  #running script from docker container
+  #contains instance path option -p
+  #is a moodle root directory
+  #it deletes all the vendor files so beware - you may be doing other things
+  #add flags
+
+  if is_top_moodle_dir $1;
+  then
+    phpunit_remove_database
+    phpunit_remove_files
+    echo "removal of phputil complete."
+  else
+    echo "Is not a moodle root directory. Please cd there are rerun."
+  fi
+
+}

@@ -1,0 +1,103 @@
+#!/bin/bash
+
+#currently can only run on root
+#TODO: make it so that it finds top of instance
+runpath=$(pwd)
+rootpath=$runpath
+
+function is_top_moodle_dir()
+{
+   if [[ -f version.php && -f config.php && -f install.php ]]
+   then
+      #is moodle top
+      return 0
+   else
+      #is not moodle top
+      return 1
+   fi
+}
+
+# function find_top_moodle_dir ()
+# {
+#    #find top moodle dir and return path to setup process
+#    return 0
+# }
+
+phpunit_setup_composer ()
+{
+  #must be run in root
+  currenthashvalue=93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8
+  php -r "copy('https://getcomposer.org/installer', '$rootpath/composer-setup.php');"
+  php -r "if (hash_file('SHA384', '$rootpath/composer-setup.php') === '${currenthashvalue}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+  #if stndout says invalid exit script
+  php $rootpath/composer-setup.php
+  php -r "unlink('$rootpath/composer-setup.php');"
+}
+
+phpunit_run_composer ()
+{
+  pharfile="$rootpath/composer.phar"
+  if [ -f "$pharfile" ]; then
+    php $pharfile install
+  else
+    echo "There is no ${pharfile}. Please retry setting up composer (run_composer)"
+  fi
+}
+
+phpunit_check_config ()
+{
+  #checks config has phpunit config
+  hasprefix=$(grep -c 'phpunit_prefix' $rootpath/config.php)
+  hasdataroot=$(grep -c 'phpunit_dataroot' $rootpath/config.php)
+  count=$((hasprefix + hasdataroot))
+
+  if [ $count -eq 2 ]; then
+      echo "Config seems ok"
+      return 0
+  else
+      echo "Moodle's config.php requires attention"
+      echo "Please add \$CFG->phpunit_prefix \$CFG->phpunit_dataroot"
+      return 1
+  fi
+}
+
+phpunit_legacy_cleanup ()
+{
+   #this removes a few issues with Bloom plugins that we cannot touch. Yet!
+   problemfile=$rootpath/blocks/myoverview/lang/en/block_myoverview.php
+   if [ -f problemfile ];then
+      sed -i -e 's/Course overview/Course uberview/g' problemfile
+   else
+     echo "${problemfile} does not exist, so no problem."
+   fi
+}
+
+phpunit_init_env ()
+{
+   php $rootpath/admin/tool/phpunit/cli/init.php
+}
+
+phpunit_uninstall_mods ()
+{
+   #TODO : a process that uninstalls all the mods using moosh bundled in
+   #get current moodle version
+   #download latest version of moosh?
+   return 1
+}
+
+
+
+setup_phpunit ()
+{
+  if is_top_moodle_dir $1;
+  then
+    phpunit_setup_composer
+    phpunit_run_composer
+    phpunit_check_config
+    phpunit_legacy_cleanup
+    phpunit_init_env
+    echo "PHPUnit setup complete."
+  else
+    echo "Is not a moodle root directory. Please cd to your application root there are run the script from there."
+  fi
+}
