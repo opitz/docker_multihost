@@ -3,7 +3,7 @@
 # 2018-08-08
 
 if [[ $EUID -ne 0 ]]; then
-   echo "SORRY! This script must be run as root/superuser!" 
+   echo "SORRY! This script must be run as root/superuser!"
    exit 1
 fi
 
@@ -28,7 +28,7 @@ check_path() {
 				echo "--> checking path $1"
 				sudo chmod -R 777 $1
 			else
-				echo "--> checking path (no chmod) $1"	
+				echo "--> checking path (no chmod) $1"
 			fi
 		fi
 	fi
@@ -52,7 +52,7 @@ check_file() {
 				echo "--> checking file $1"
 				sudo chmod 777 $1
 			else
-				echo "--> checking file (no chmod) $1"	
+				echo "--> checking file (no chmod) $1"
 			fi
 		fi
 	fi
@@ -64,7 +64,7 @@ if [ "$1" == "nodocker" ]
 	then
 	echo "--> Bypassing building Docker images."
 else
-	docker build -t centos7_php7_httpd centos7_php7_httpd 
+	docker build -t centos7_php7_httpd centos7_php7_httpd
 	docker build -t centos7_php56_httpd centos7_php56_httpd
 #	docker build -t ubuntu_php7_apache2 ubuntu_php7_apache2
 #	docker build -t ubuntu_php56_apache2 ubuntu_php56_apache2
@@ -85,7 +85,7 @@ echo "The setup will continue after you have closed the editor."
 read -n 1 -s
 sudo nano /etc/multihost.conf
 
-# check for the updated config file and read the settings 
+# check for the updated config file and read the settings
 if [ ! -f /etc/multihost.conf ]
 	then
 	echo "No configuration file found at /etc/multihost.conf - aborting!"
@@ -132,7 +132,7 @@ sudo cp default.configuration ${sites_enabled_path}/default.configuration
 sudo chmod 777 ${sites_enabled_path}/default.configuration
 
 # check if basic webroot exists and create it otherwise
-# each VHOST will need to have a subdirectory in here 
+# each VHOST will need to have a subdirectory in here
 check_path $www_path no_chmod
 
 # check if default html webroot exists and create it otherwise with a simple message
@@ -160,7 +160,7 @@ else
 	sudo rm -rf $www_path/html/>/dev/null 2>/dev/null
 	sudo rm -f $www_path/html>/dev/null 2>/dev/null
 	cp -r ./multihost $www_path/html
-	sudo chmod -R 777 $www_path/html 
+	sudo chmod -R 777 $www_path/html
 	sudo chmod +x $www_path/html/cli/*.sh
 #	sudo enable_vhost multihost>/dev/null
 

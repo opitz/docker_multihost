@@ -40,8 +40,7 @@ RUN yum install -y \
 	openssl \
 	cronie \
 	sudo \
-	nano \
-  vim-enchanced
+	nano
 
 RUN yum -y clean all
 
@@ -83,13 +82,11 @@ RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini;  \
+	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini;
 
 #Set PHP timezone
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 	   sed -i "s/;date.timezone =/date.timezone = Europe\/London /" $phpini;
-
-
 
 # compile locale definitions to australian english required for unit testing
 #RUN localedef -c -i en_AU -f --quiet UTF-8 en_AU.UTF-8
@@ -105,5 +102,13 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 	rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 	rm -f /lib/systemd/system/basic.target.wants/*;\
 	rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+#phpUnit set up processes loaded in system
+ADD setup_phpunit /usr/local/bin/
+RUN echo "source /usr/local/bin/setup_phpunit" >> /etc/bashrc
+
+RUN echo 'alias apps="cd /var/www/"' >> ~/.bashrc
+
 VOLUME [ "/sys/fs/cgroup" ]
+
 CMD ["/usr/sbin/init"]
