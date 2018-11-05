@@ -16,10 +16,9 @@ ENV LC_ALL     en_US.UTF-8
 
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get -y install php5.6 php7.0 php7.0-mysqli php7.0-xdebug php7.0-xml
+RUN apt-get -y install php7.0 php7.0-mysqli php7.0-xdebug php7.0-xml
 RUN apt-get -y --allow-unauthenticated install php7.0-mcrypt php7.0-curl php7.0-zip php7.0-gd php7.0-mbstring
 RUN apt-get -y --allow-unauthenticated install php7.0-xmlrpc php7.0-soap php7.0-intl
-#RUN apt-get -y --allow-unauthenticated install php5.6-mcrypt php5.6-xml php5.6-curl php5.6-zip php5.6-gd php5.6-mbstring php5.6-xmlrpc php5.6-soap php5.6-intl
 RUN apt-get install -y cron
 
 RUN a2dismod php5.6

@@ -1,0 +1,202 @@
+#!/bin/bash
+
+#currently can only run on root
+#TODO: make it so that it finds top of instance
+
+
+function is_top_moodle_dir ()
+{
+   echo "Setting up instance vars..."
+   currentrootpath=$(pwd)
+   echo "Current root path is: $currentrootpath"
+   if [[ -f version.php && -f config.php && -f install.php ]];
+   then
+     # echo "Is moodle root dir..."
+      return 1
+   else
+      #is not moodle top
+      echo "Is not a moodle root directory. Please cd to your application root there are run the script from there."
+      return 0
+   fi
+}
+
+# function find_top_moodle_dir ()
+# {
+#    #find top moodle dir and return path to setup process
+#    return 0
+# }
+
+phpunit_setup_composer ()
+{
+    if is_top_moodle_dir $1; then
+      return
+    fi
+    echo "Getting composer ..."
+
+    #must be run in root
+    currenthashvalue=3b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8
+    php -r "copy('https://getcomposer.org/installer', '$currentrootpath/composer-setup.php');"
+    out=$(php -r "if (hash_file('SHA384', '$currentrootpath/composer-setup.php') === '${currenthashvalue}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;")
+    if [ "$out" = "Installer corrupt" ];then
+        echo "$out - check the hashkey, it may need updating"
+        return 1
+    fi
+    #if stndout says invalid exit script
+    php $currentrootpath/composer-setup.php
+    php -r "unlink('$currentrootpath/composer-setup.php');"
+
+}
+
+phpunit_run_composer ()
+{
+  if is_top_moodle_dir $1; then
+     return
+  fi
+  echo "Installing items using composer ..."
+
+  pharfile="$currentrootpath/composer.phar"
+  if [ -f "$pharfile" ]; then
+    php $pharfile install
+  else
+    echo "There is no ${pharfile}. Please retry setting up composer (run_composer)"
+  fi
+
+
+}
+
+phpunit_check_config ()
+{
+  if is_top_moodle_dir $1; then
+     return
+  fi
+  echo "Just checking that your moodle config has the required vars..."
+
+
+  #checks config has phpunit config
+  hasprefix=$(grep -c 'phpunit_prefix' $currentrootpath/config.php)
+  hasdataroot=$(grep -c 'phpunit_dataroot' $currentrootpath/config.php)
+  count=$((hasprefix + hasdataroot))
+
+  if [ $count -eq 2 ]; then
+      echo "Config seems ok"
+      return 0
+  else
+      echo "Moodle's config.php requires attention"
+      echo "Please add \$CFG->phpunit_prefix \$CFG->phpunit_dataroot"
+      return 1
+  fi
+}
+
+phpunit_legacy_cleanup ()
+{
+    if is_top_moodle_dir $1; then
+       return
+    fi
+    echo "Cleaning up your moodle code so the set up process will run..."
+
+     #this removes a few issues with Bloom plugins that we cannot touch. Yet!
+     problemfile=$currentrootpath/blocks/myoverview/lang/en/block_myoverview.php
+     if [ -f problemfile ];then
+        sed -i -e 's/Course overview/Course uberview/g' problemfile
+     else
+       echo "${problemfile} does not exist, so no problem."
+     fi
+
+
+}
+
+phpunit_init_env ()
+{
+   if is_top_moodle_dir $1; then
+      return
+   fi
+   echo "Running the phpunit install process ..."
+
+   php $currentrootpath/admin/tool/phpunit/cli/init.php
+
+}
+
+phpunit_uninstall_mods ()
+{
+   if is_top_moodle_dir $1; then
+      return
+   fi
+   echo "Will uninstall some plugins to make the test errors go away ..."
+
+
+
+   #TODO : a process that uninstalls all the mods using moosh bundled in
+   # uninstall qmframework
+   #get current moodle version
+   #download latest version of moosh?
+   return 1
+}
+
+phpunit_test_run ()
+{
+  if is_top_moodle_dir $1; then
+     return
+  fi
+  echo "Let's just test it all works ..."
+  echo "Running a sample test..."
+
+  # $currentrootpath/vendor/bin/phpunit mod_assign_lib_testcase mod/assign/tests/lib_test.php
+  $currentrootpath/vendor/bin/phpunit mod_choice_lib_testcase mod/choice/tests/lib_test.php
+
+}
+
+
+
+setup_phpunit ()
+{
+    if is_top_moodle_dir $1; then
+       return
+    fi
+
+    phpunit_setup_composer
+    phpunit_run_composer
+    phpunit_check_config
+    phpunit_legacy_cleanup
+    phpunit_init_env
+
+}
+
+
+phpunit_remove_files()
+{
+    if is_top_moodle_dir $1; then
+       return
+    fi
+
+    rm -i -v -f -R $rootpath/vendor
+    rm -i -v -f -R $rootpath/composer.phar
+    rm -i -v -f -R $rootpath/phpunit.xml
+}
+
+phpunit_remove_database()
+{
+    if is_top_moodle_dir $1; then
+       return
+    fi
+
+    rootpath=$(pwd)
+    php $rootpath/admin/tool/phpunit/cli/util.php --drop
+}
+
+
+remove_phpunit ()
+{
+    #running script from docker container
+    #contains instance path option -p
+    #is a moodle root directory
+    #it deletes all the vendor files so beware - you may be doing other things
+    #add flags
+
+    if is_top_moodle_dir $1; then
+       return
+    fi
+
+    phpunit_remove_database
+    phpunit_remove_files
+    echo "removal of phputil complete."
+}

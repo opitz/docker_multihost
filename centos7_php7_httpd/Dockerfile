@@ -19,7 +19,7 @@ RUN yum -y install deltarpm
 # install Apache2 with PHP 7.1 and all the needed trimmings for Moodle development
 RUN yum install -y \
 	httpd \
-	mod_\
+
 	php71w \
 	php71w-dom \
 	php71w-gd \
@@ -67,7 +67,7 @@ RUN echo "apache ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini \
+	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini && \
         sed -i '2s/^/;/' /etc/php.d/xdebug.ini
 
 
