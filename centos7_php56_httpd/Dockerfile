@@ -105,7 +105,7 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 	rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 #phpUnit set up processes loaded in system
-# ADD setup_phpunit /usr/local/bin/
+ADD setup_phpunit /usr/local/bin/
 RUN echo "source /usr/local/bin/setup_phpunit" >> /etc/bashrc
 
 RUN echo 'alias apps="cd /var/www/"' >> ~/.bashrc
