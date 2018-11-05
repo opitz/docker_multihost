@@ -19,7 +19,7 @@ RUN yum -y install deltarpm
 # install Apache2 with PHP 7.1 and all the needed trimmings for Moodle development
 RUN yum install -y \
 	httpd \
-	mod_php \
+
 	php71w \
 	php71w-dom \
 	php71w-gd \
