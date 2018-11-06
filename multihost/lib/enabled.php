@@ -5,7 +5,7 @@ function server_button($vhost = false, $php_version = false, $port = false) {
 	if(!$vhost) return false;
 	if(!$php_version) 
 		return false;
-	return '<button class="ui blue mini button server_button" id="server_'.$vhost.'" value="https://'.$_SERVER['HTTP_HOST'].':'.$port.'/'.$vhost.'">'.$vhost.'</button>';
+	return '<button class="ui blue mini button server_button" id="server_'.$vhost.'" value="https://'.$_SERVER['SERVER_NAME'].':'.$port.'/'.$vhost.'">'.$vhost.'</button>';
 }
 
 #------------------------------------------------------------------------------

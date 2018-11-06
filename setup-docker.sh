@@ -28,6 +28,11 @@ sudo usermod -aG docker $USER
 # postpone docker boot time initiations
 # echo manual | sudo tee /etc/init/docker.override
 
+# open the xdebug incoming port to the host of the PHPStorm IDE system
+sudo iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
+# add it in the permanent rules
+sudo iptables-save
+
 sudo systemctl start docker
 # this will remind the user to create a docker.io account and use it
 docker login

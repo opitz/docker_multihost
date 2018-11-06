@@ -65,10 +65,14 @@ RUN echo "apache ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 # setup xdebug
 #RUN rm /etc/php.d/15-xdebug.ini && \
 RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.remote_autostart=off" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.remote_autostart=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.remote_handler=dbgp" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.remote_port=9000" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.remote_port=9000" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.remote_connect_back=0" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini && \
-        sed -i '2s/^/;/' /etc/php.d/xdebug.ini
+        sed -i '1s/^/;/' /etc/php.d/xdebug.ini
 
 
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
