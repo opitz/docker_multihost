@@ -102,6 +102,20 @@ phpunit_legacy_cleanup ()
        echo "${problemfile} does not exist, so no problem."
      fi
 
+     RESPONDUSVERSION="<?php
+// Respondus 4.0 Web Service Extension For Moodle
+// Copyright (c) 2009-2017 Respondus, Inc.  All Rights Reserved.
+// Date: May 01, 2017.
+defined(\"MOODLE_INTERNAL\") || die();
+\$plugin->version = 2017042800;
+\$plugin->requires = 2010122500;
+\$plugin->cron = 0;
+\$plugin->component = 'mod_respondusws';
+\$respondusws_info = \$plugin;
+\$respondusws_info->release = '3.0.0.02';"
+
+     #replace respondusws file
+     echo -n "$RESPONDUSVERSION" > "$currentrootpath/mod/respondusws/version.php"
 
 }
 
