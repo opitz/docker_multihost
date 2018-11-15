@@ -14,32 +14,45 @@ rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 RUN yum -y update; yum clean all
 
 # install deltarpm
-RUN yum -y install deltarpm
+RUN yum -y install deltarpm yum-plugin-replace 
 
 # install Apache2 with PHP 7.1 and all the needed trimmings for Moodle development
 RUN yum install -y \
 	httpd \
 	php71w \
+	php71w-cli \
+	php71w-common \
 	php71w-dom \
 	php71w-gd \
+	php71w-phpdbg \
 	php71w-intl \
 	php71w-ldap \
 	php71w-mbstring \
 	php71w-mcrypt \
-	php71w-mysqli \
+	php71w-mysqlnd \
 	php71w-opcache \
 	php71w-pecl-xdebug \
 	php71w-pear \
 	php71w-process \
 	php71w-soap \
 	php71w-xmlrpc \
+	php71w-opcache \
+	php71w-pgsql \
 	ssl \
 	mod_ssl \
+	mod_php71w \
 	systemd \
 	openssl \
 	cronie \
 	sudo \
 	nano
+
+RUN	echo "[tideways] " > /etc/yum.repos.d/tideways.repo
+	echo "name = Tideways" >> /etc/yum.repos.d/tideways.repo
+	echo "baseurl = https://s3-eu-west-1.amazonaws.com/tideways/rpm" >> /etc/yum.repos.d/tideways.repo
+RUN	rpm --import https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg
+RUN	yum makecache --disablerepo=* --enablerepo=tideways
+RUN	yum install -y tideways-php tideways-cli tideways-daemon
 
 RUN yum -y clean all
 
