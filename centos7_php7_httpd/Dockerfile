@@ -71,17 +71,17 @@ RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.idekey=PHPSTORM" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.profiler_enable_trigger=1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.profiler_output_dir=/tmp >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.profiler_enable_trigger_value=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.profiler_enable=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.auto_trace=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.show_error_trace=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.show_exception_trace=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.trace_enable_trigger=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.trace_enable_trigger_value=1 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.trace_format=0 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.trace_options=0 >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.trace_output_dir=/tmp >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.profiler_output_dir=/tmp" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.profiler_enable_trigger_value=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.profiler_enable=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.auto_trace=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.show_error_trace=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.show_exception_trace=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.trace_enable_trigger=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.trace_enable_trigger_value=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.trace_format=0" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.trace_options=0" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.trace_output_dir=/tmp" >> /etc/php.d/xdebug.ini && \
         sed -i '1s/^/;/' /etc/php.d/xdebug.ini
 
 
