@@ -76,6 +76,7 @@ RUN echo "apache ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 
 # setup xdebug
 #RUN rm /etc/php.d/15-xdebug.ini && \
+
 RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=0" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_handler=dbgp" >> /etc/php.d/xdebug.ini && \
@@ -86,8 +87,8 @@ RUN echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.profiler_enable_trigger=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.profiler_output_dir=/tmp" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.profiler_enable_trigger_value=1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.profiler_enable=1" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.auto_trace=1" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.profiler_enable=0" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.auto_trace=0" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.show_error_trace=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.show_exception_trace=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.trace_enable_trigger=1" >> /etc/php.d/xdebug.ini && \
