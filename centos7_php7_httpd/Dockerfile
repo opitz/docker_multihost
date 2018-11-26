@@ -105,6 +105,7 @@ RUN     echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo ";xdebug.trace_options=0" >> /etc/php.d/xdebug.ini && \
 	echo ";xdebug.trace_output_dir=/tmp" >> /etc/php.d/xdebug.ini
 
+RUN 	echo LoadModule mpm_event_module modules/mod_mpm_event.so > /etc/httpd/conf.modules.d/00-mpm.conf
 
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
