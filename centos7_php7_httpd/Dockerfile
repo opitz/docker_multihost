@@ -32,12 +32,14 @@ RUN yum install -y \
 	php71w-mysqlnd \
 	php71w-opcache \
 	php71w-pecl-xdebug \
+	php71w-pecl-memcached \
 	php71w-pear \
 	php71w-process \
 	php71w-soap \
 	php71w-xmlrpc \
 	php71w-opcache \
 	php71w-pgsql \
+	memcached \
 	ssl \
 	mod_ssl \
 	mod_php71w \
@@ -118,7 +120,7 @@ RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 
 # set PHP memory limit
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
-	sed -i "s/^memory_limit = 128M$/memory_limit = 1G /" $phpini;
+	sed -i "s/^memory_limit = 128M$/memory_limit = 2G /" $phpini;
 
 #Set PHP timezone
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
