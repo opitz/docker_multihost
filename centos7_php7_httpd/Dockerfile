@@ -94,7 +94,7 @@ RUN     echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.collect_return=On" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.collect_vars=On" >> /etc/php.d/xdebug.ini && \
 	echo ";xdebug.default_enable=On" >> /etc/php.d/xdebug.ini && \
-	echo "xdebug.show_local_vars=On" >> /etc/php.d/xdebug.ini && \
+	echo "xdebug.show_local_vars=Off" >> /etc/php.d/xdebug.ini && \
 	echo "xdebug.remote_mode=req" >> /etc/php.d/xdebug.ini && \
 	echo ";xdebug.profiler_enable_trigger=1" >> /etc/php.d/xdebug.ini && \
 	echo ";xdebug.profiler_output_dir=/tmp" >> /etc/php.d/xdebug.ini && \
@@ -116,6 +116,9 @@ RUN mkdir /var/moodledata && \
 # set PHP max execution time
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
 	sed -i "s/^max_execution_time = 30$/max_execution_time = 0 /" $phpini; \
+	sed -i "s|;upload_tmp_dir =\(.*\)|upload_tmp_dir = /tmp |" $phpini; \
+	sed -i "s/upload_max_filesize =\(.*\)/upload_max_filesize = 100M/" $phpini; \
+	sed -i "s/post_max_size =\(.*\)|post_max_size = 100M/" $phpini; \
 	sed -i "s/^max_input_time = 60$/max_input_time = -1 /" $phpini
 
 # set PHP memory limit
