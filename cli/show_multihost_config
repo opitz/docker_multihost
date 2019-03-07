@@ -1,0 +1,22 @@
+#!/bin/bash
+# check for the multihost config file and read the settings 
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo "No configuration file found at /etc/multihost.conf - aborting!"
+	exit 1
+fi
+. /etc/multihost.conf
+
+
+echo ' '
+echo "Multihost settings on this host:"
+echo "---------------------------------------------------------"
+echo '$sites_enabled_path = '$sites_enabled_path
+echo '$www_path = '$www_path
+echo '$moodledata_path = '$moodledata_path
+echo '$filedir_path = '$filedir_path
+echo '$xchange_path = '$xchange_path
+echo ' '
+echo '$db_host_ip = '$db_host_ip
+echo '$laptop_ip = '$laptop_ip
+echo ' '

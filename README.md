@@ -75,7 +75,7 @@ This script will install/update the following multihost CLI commands (please see
 
 run_multihost
 -------------
-<i>located at: /usr/bin/</i>
+<i>located at: /usr/local/bin/</i>
 
 This will run TWO almost identical web servers - the only difference will be the PHP version (5.6 vs 7.1).
 The first server will run on ports 80 and 443 while the second runs on ports 8080 and 8443.
@@ -86,13 +86,13 @@ This script will also create/update the /usr/local/bin/restart_multihost command
 
 restart_multihost
 ----------------
-<i>located at: /usr/bin</i>
+<i>located at: /usr/local/bin</i>
 
 This command allows to restart both Apache2/httpd servers inside the Docker containers so to reload changes in the - shared - config files.
 
 enable_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
 
 With this command a new VHOST with the name <i>servername</i> will be eanbled for the multihost server.
 
@@ -103,11 +103,24 @@ You then will need to change your local /etc/hosts file accordingly to access th
 
 purge_moodlecache <i>servername</i>
 -----------------------------------
-<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
 
 Since cached data is preserved between restarts or even rebuilds of the multihost server they may be purged using this command.
 
 It removes all cached data for the given Moodle VHOST. The data then will be recreated by the application.
+
+show_multihost_db
+-----------------
+<i>located at: /usr/local/bin/</i>
+
+This will show the database setup from the config files of each installed Moodle to allow to quickly check which database is used by what instance.
+
+show_multihost_config
+---------------------
+<i>located at: /usr/local/bin/</i>
+
+This command will show all settings from the /etc/multihost.conf file  
+
 
 default.configuration
 ---------------------
@@ -123,7 +136,7 @@ This file contains all user defined settings for the multihost. It contains the 
 
 disable_vhost <i>servername</i>
 ------------------------------
-<i>located at: /usr/bin</i> | <i>needs to run as superuser</i>
+<i>located at: /usr/local/bin</i> | <i>needs to run as superuser</i>
 
 This command will disable a given VHOST and will remove all related settings - but not the web data itself!
 
@@ -152,4 +165,4 @@ Use this script to easily update all installed scripts and commands. It will pre
 Use option 'nodocker' to keep the current Docker images. 
 
 ----------------
-v.1.6.1
+v.1.6.2
