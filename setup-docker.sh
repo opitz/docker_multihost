@@ -33,6 +33,7 @@ sudo iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
 # add it in the permanent rules
 sudo iptables-save
 sudo firewall-cmd --zone=public --add-port=9000/tcp --permanent
+sudo firewall-cmd --zone=home --change-interface=docker0
 sudo firewall-cmd --reload
 
 sudo systemctl start docker
