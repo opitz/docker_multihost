@@ -73,8 +73,8 @@ if [ -f $www_path/$servername/blocks/moodleblock.class.php ]
 	chmod -R 777 ${moodledata_path}/${servername}
 	ln -s /filedir ${moodledata_path}/${servername}/filedir
 	# add a crontab entry
-	echo "*/1 * * * * /usr/bin/php  /var/www/${servername}/admin/cli/cron.php >/dev/null" >> ${moodledata_path}/moodle_crontab
-	echo "*/1 * * * * /usr/bin/php  find /tmp/ -type f -mmin +5 -delete>/dev/null" >> ${moodledata_path}/moodle_crontab
+	echo "*/5 * * * * /usr/bin/php  /var/www/${servername}/admin/cli/cron.php >/dev/null" >> ${moodledata_path}/moodle_crontab
+	echo "*/5 * * * * /usr/bin/php  find /tmp/ -type f -mmin +5 -delete>/dev/null" >> ${moodledata_path}/moodle_crontab
 
 	echo "--> A moodledata folder has been created at ${moodledata_path}/${servername}"
 fi
