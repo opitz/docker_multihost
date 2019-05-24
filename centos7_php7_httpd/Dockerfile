@@ -109,9 +109,20 @@ RUN     echo "xdebug.remote_enable=1" >> /etc/php.d/xdebug.ini && \
 
 # RUN 	echo LoadModule mpm_event_module modules/mod_mpm_event.so > /etc/httpd/conf.modules.d/00-mpm.conf
 
+# install moosh
+RUN	yum install -y git wget less && \
+   	cd /var && \
+	git clone git://github.com/tmuras/moosh.git && \
+	cd moosh && \
+	wget -qO- https://getcomposer.org/installer | php && \
+	./composer.phar install && \
+	sudo ln -s /var/moosh/moosh.php /usr/local/bin/moosh
+
+
 # create directory for moodle data - if present on host it may be mapped to here ( -v /path/to/moodedata/on/host:/var/moodledata )
 RUN mkdir /var/moodledata && \
-	chmod -R 777 /var/moodledata
+	chmod -R 777 /var/moodledata && \
+	chown -R apache:apache /var/moodledata
 
 # set PHP max execution time
 RUN phpini=$(php -i|grep 'Loaded Configuration'| awk '{print $5}'); \
