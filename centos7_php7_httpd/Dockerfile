@@ -47,8 +47,14 @@ RUN yum install -y \
 	openssl \
 	cronie \
 	sudo \
-	nano
+	nano \
+	git
 
+RUN	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN	php composer-setup.php
+RUN	php -r "unlink('composer-setup.php');"
+RUN	mv composer.phar /usr/bin/composer
+RUN	git clone git://github.com/tmuras/moosh.git && cd moosh && composer install && ln -s $PWD/moosh.php /usr/bin/moosh
 RUN	echo "[tideways] " > /etc/yum.repos.d/tideways.repo
 RUN	echo "name = Tideways" >> /etc/yum.repos.d/tideways.repo 
 RUN	echo "baseurl = https://s3-eu-west-1.amazonaws.com/tideways/rpm" >> /etc/yum.repos.d/tideways.repo
