@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:7
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 # v.1.4.1 - 2018-04-04
 ENV container docker
@@ -14,7 +14,7 @@ rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 RUN yum -y update; yum clean all
 
 # install deltarpm
-RUN yum -y install deltarpm yum-plugin-replace 
+RUN yum -y install deltarpm yum-plugin-replace
 
 # install Apache2 with PHP 7.1 and all the needed trimmings for Moodle development
 RUN yum install -y \
@@ -56,7 +56,7 @@ RUN	php -r "unlink('composer-setup.php');"
 RUN	mv composer.phar /usr/bin/composer
 RUN	git clone git://github.com/tmuras/moosh.git && cd moosh && composer install && ln -s $PWD/moosh.php /usr/bin/moosh
 RUN	echo "[tideways] " > /etc/yum.repos.d/tideways.repo
-RUN	echo "name = Tideways" >> /etc/yum.repos.d/tideways.repo 
+RUN	echo "name = Tideways" >> /etc/yum.repos.d/tideways.repo
 RUN	echo "baseurl = https://s3-eu-west-1.amazonaws.com/tideways/rpm" >> /etc/yum.repos.d/tideways.repo
 RUN	rpm --import https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg
 RUN	yum makecache --disablerepo=* --enablerepo=tideways
