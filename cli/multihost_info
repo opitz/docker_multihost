@@ -1,0 +1,39 @@
+#!/bin/bash
+# check for the multihost config file and read the settings 
+if [ ! -f /etc/multihost.conf ]
+	then
+	echo "No configuration file found at /etc/multihost.conf - aborting!"
+	exit 1
+fi
+. /etc/multihost.conf
+
+echo "listing information by moodle instance on this multihost server"
+echo "==============================================================="
+
+for i in $(ls -d $www_path/*/)
+do
+	print_this=0
+	if [ -f $i/version.php ]
+	then
+		release=$(cat $i/version.php | grep '$release')
+		print_this=1
+	else
+		release=''
+	fi
+	if [ -f $i/config.php ]
+	then
+		dbinfo=$(cat $i/config.php | grep 'db_name')
+		print_this=1
+	else
+		dbinfo=''
+	fi
+	echo "--------------------------------------------"
+	echo "==> Instance: $i"
+	if [ $print_this == 1 ]
+	then
+		echo $release
+		echo $dbinfo
+	fi
+done
+echo ' '
+
